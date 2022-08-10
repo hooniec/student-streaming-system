@@ -4,6 +4,9 @@ namespace StreamTec.Models
 {
     public class WelTecContext : DbContext
     {
+        public WelTecContext()
+        {
+        }
 
         //Creating a constructor for the Context Class inheriting from the base class
         public WelTecContext(DbContextOptions options) : base(options)
