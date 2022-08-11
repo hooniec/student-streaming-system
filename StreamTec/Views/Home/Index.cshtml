@@ -1,65 +1,66 @@
-﻿@model IEnumerable<StreamTec.Models.Stream>
+﻿@model StreamTec.Models.Student
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-@*<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>*@
-
-<!-- ======= Hero Section ======= -->
-<section id="hero" class="d-flex align-items-center justify-content-center">
-<div class="container position-relative">
-    <h1>Student Streaming System</h1>
-    @*<h2>We are team of talented designers making websites with Bootstrap</h2>
-    <a href="#about" class="btn-get-started scrollto">Get Started</a>*@
-    <!-- ======= Login/Registration Section ======= -->
-    <section id="contact" class="contact">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Registration / Login</h2>
-          <p>Descriptions here.</p>
-        </div>
-
-        <div class="row">
-
-         <div class="col-lg-6">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="form-group mt-3">
-                <input type="number" class="form-control" name="studentID" id="studentID" placeholder="Student ID" required>
+<body>
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex align-items-center justify-content-center">
+    <div class="container position-relative">
+        <h1>Student Streaming System</h1>
+        <!-- ======= Login/Registration Section ======= -->
+        <section id="contact" class="contact">
+          <div class="container">
+            <div class="row">     
+             <div class="col-lg-6">
+                <div class="section-title">
+                    <h2>Registration</h2>
+                    <p class="mt-3">Register for System.</p>
+                </div>
+                <form asp-action="Register" class="php-email-form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mt-3">
+                        <input asp-for="StudentId" class="form-control" placeholder="Student ID" required/>
+                        <span asp-validation-for="StudentId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input asp-for="Email" class="form-control" placeholder="Email" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group my-3">
+                        <div class="text-center"><button type="submit">Registration</button></div>
+                    </div>
+                </form>
               </div>
-              <div class="form-group mt-3">
-                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+             <div class="col-lg-6">
+                <div class="section-title">
+                    <h2>Login</h2>
+                    <p class="mt-3">Login for System.</p>
+                </div>
+                <form asp-action="Login" class="php-email-form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mt-3">
+                        <input asp-for="StudentId" class="form-control" placeholder="Student ID" required/>
+                        <span asp-validation-for="StudentId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input asp-for="Email" class="form-control" placeholder="Email" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group my-3">
+                        <div class="text-center"><button type="submit">Login</button></div>
+                    </div>
+                </form>
               </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Registration</button></div>
-            </form>
+            </div>
           </div>
-          <div class="col-lg-6">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="form-group mt-3">
-                <input type="number" class="form-control" name="studentID" id="studentID" placeholder="Student ID" required>
-              </div>
-              <div class="form-group mt-3">
-                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
-              </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Login</button></div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section><!-- End Login/Registration Section -->
-</div>
-</section><!-- End Hero -->
+        </section><!-- End Login/Registration Section -->
+    </div>
+    </section><!-- End Hero -->
+
+    @if (TempData["message"] != null)
+    {
+        <script>alert('@TempData["message"]');</script>
+    }
+</body>
