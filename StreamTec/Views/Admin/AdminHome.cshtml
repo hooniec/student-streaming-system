@@ -1,0 +1,64 @@
+﻿@model IEnumerable<StreamTec.Models.Stream>
+
+@{
+    ViewData["Title"] = "Admin Page";
+}
+<body>
+<div class="container">
+     <div class="d-flex justify-content-between align-items-center">
+       <h2>Administration</h2>
+   </div>
+
+   <div class="d-flex justify-content-between align-items-center">
+         <p>Search: </p>
+   </div>
+
+   <div class="d-flex align-items-center">
+          <input type="text" class="input-group-text  align-items-left"/><input type="submit" value="Search" class="input-group-text align-items-left"/>
+   </div>
+
+   <div>
+       <table class="table table-striped">
+           <thead>
+    <tr>
+      <th scope="col">StudentID</th>
+      <th scope="col">Email</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+       @foreach(var s in Model)
+         {
+            <tr>@Html.DisplayFor(modelItem => s.StreamID)</tr>
+         }
+    <tr>
+      <th scope="row">1</th>
+      <td></td>
+      <td>Otto</td>
+      <td>mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>twitter</td>
+    </tr>
+  </tbody>
+       </table>
+   </div>
+</div>
+
+   <div class="d-flex align-items-center">
+         <input type="submit" value="Delete" class="input-group-text align-items-left"/>
+   </div>
+   
+   <div class="d-flex align-items-center">
+         <input type="submit" value="Export" class="input-group-text align-items-left"/>
+   </div>
+</body>
