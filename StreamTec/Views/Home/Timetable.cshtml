@@ -1,4 +1,4 @@
-﻿@model IEnumerable<StreamTec.Models.Stream>
+﻿@model Dictionary<string, List<Stream>>
 
 @{
     ViewData["Title"] = "Timetable";
@@ -10,10 +10,6 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <h2>Stream Timetable</h2>
-        <ol>
-        <li><a asp-action="Index">Home</a></li>
-        <li>Timetable</li>
-        </ol>
     </div>
 
     </div>
@@ -26,10 +22,10 @@
         <ul class="nav flex-column" id="nav_accordion">
 	        <li class="nav-item">
 		        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                  <option selected>Open this select menu</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option selected>Please select a major</option>
+					@foreach(var major in Model){
+						<option value="@major.Value">@major.Key</option>
+					}
                 </select>
 	        </li>
 	        <li class="nav-item has-submenu">
@@ -57,60 +53,8 @@
 	        </li>
         </ul>
         </nav>
+		
+
     </div>
 </section><!-- End Main Content -->
 
-@*<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StreamID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Room)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Credits)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Day)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StreamID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Room)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Credits)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Day)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-        </tr>
-}
-    </tbody>
-</table>*@

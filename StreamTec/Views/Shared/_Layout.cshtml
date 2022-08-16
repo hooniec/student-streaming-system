@@ -16,12 +16,13 @@
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top">
         <div class="container d-flex align-items-center justify-content-between">
-          <a class="logo" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo.png" alt="" class="img-fluid"></a>
+          <a class="logo"><img src="~/img/logo.png" alt="" class="img-fluid"></a>
           <nav id="navbar" class="navbar">
             <ul>
-              <li><a class="nav-link scrollto active" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-              <li><a class="nav-link scrollto" asp-area="" asp-controller="Home" asp-action="Timetable">Timetable</a></li>
-              <li><span class="nav-link scrollto">@HttpContextAccessor.HttpContext.Session.GetString("_StudentId")</span></li>
+              @if(@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") != null){
+                  <li><span class="text-white">Student ID: @HttpContextAccessor.HttpContext.Session.GetString("_StudentId")</span></li>
+                  <li><a class="text-danger" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+              }
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
           </nav><!-- .navbar -->
@@ -45,6 +46,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
