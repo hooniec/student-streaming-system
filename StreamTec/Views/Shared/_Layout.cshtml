@@ -19,8 +19,9 @@
           <a class="logo"><img src="~/img/logo.png" alt="" class="img-fluid"></a>
           <nav id="navbar" class="navbar">
             <ul>
+                <li><a class="text-white" asp-area="" asp-controller="Admin" asp-action="AdminHome">Admin test</a></li>
               @if(@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") != null){
-                  <li><span class="text-white">Student ID: @HttpContextAccessor.HttpContext.Session.GetString("_StudentId")</span></li>
+                  <li><span class="text-white ml-3">Student ID: @HttpContextAccessor.HttpContext.Session.GetString("_StudentId")</span></li>
                   <li><a class="text-danger" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
               }
             </ul>

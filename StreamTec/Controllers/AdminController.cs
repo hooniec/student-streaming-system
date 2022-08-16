@@ -23,14 +23,6 @@ namespace StreamTec.Controllers
 
         public List<Models.Stream> StreamList()
         {
-            var stre = Context.Streams.Include(s => s.StreamID);
-
-            foreach(Models.Stream s in stre)
-            {
-
-            }
-
-
             List<Models.Stream> strea = (from a in Context.Streams.Take(5)  select a).ToList();
             return (strea);
         }
