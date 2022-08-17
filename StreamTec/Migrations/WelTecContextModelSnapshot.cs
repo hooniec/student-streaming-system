@@ -21,6 +21,24 @@ namespace StreamTec.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("StreamTec.Models.Enrollment", b =>
+                {
+                    b.Property<string>("StreamID")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EnrollmentID")
+                        .HasColumnType("int");
+
+                    b.HasKey("StreamID", "StudentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Enrollment", (string)null);
+                });
+
             modelBuilder.Entity("StreamTec.Models.Stream", b =>
                 {
                     b.Property<string>("StreamID")
@@ -71,6 +89,25 @@ namespace StreamTec.Migrations
                     b.HasKey("StudentId");
 
                     b.ToTable("Student", (string)null);
+                });
+
+            modelBuilder.Entity("StreamTec.Models.Enrollment", b =>
+                {
+                    b.HasOne("StreamTec.Models.Stream", "Streams")
+                        .WithMany()
+                        .HasForeignKey("StreamID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StreamTec.Models.Student", "Students")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Streams");
+
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }

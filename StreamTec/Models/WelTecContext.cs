@@ -24,9 +24,14 @@ namespace StreamTec.Models
         {
             //Using the modelBuilder from EntityFrameworkCore we can create an entity of student or stream
             //and convert it into a table using ToTable();
-            modelBuilder.Entity<Student>().ToTable("Student").HasOne(s => Enrollments);
+            modelBuilder.Entity<Student>().ToTable("Student");
             modelBuilder.Entity<Stream>().ToTable("Stream");
-            modelBuilder.Entity<Enrollment>().ToTable("Enrollment").HasMany(s => Students).WithOne().HasForeignKey(s => s.StudentId);
+            modelBuilder.Entity<Enrollment>().ToTable("Enrollment");
+
+            modelBuilder.Entity<Enrollment>().Property(s => s.StreamID).IsRequired();
+            modelBuilder.Entity<Enrollment>().Property(s => s.StudentId).IsRequired();
+
+            //modelBuilder.Entity<Enrollment>().HasKey(s => new { s.StreamID, s.StudentId });
         }
     }
 }

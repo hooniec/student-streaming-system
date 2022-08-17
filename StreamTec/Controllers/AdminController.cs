@@ -15,30 +15,16 @@ namespace StreamTec.Controllers
             Context = context;
         }
 
-        public List<Student> StudentList()
+        public List<Enrollment> EnrollmentList()
         {
-            List<Student> students = (from stud in Context.Students.Take(5) select stud).ToList();
-            return (students);
+            var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList();        
+            return (enrollments);
         }
-
-        public List<Models.Stream> StreamList()
-        {
-            var stre = Context.Streams.Include(s => s.StreamID);
-
-            foreach(Models.Stream s in stre)
-            {
-
-            }
-
-
-            List<Models.Stream> strea = (from a in Context.Streams.Take(5)  select a).ToList();
-            return (strea);
-        }
-
+        //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-a-more-complex-data-model-for-an-asp-net-mvc-application
+        //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/reading-related-data-with-the-entity-framework-in-an-asp-net-mvc-application
         public ActionResult AdminHome()
         {
-            ViewData["Streams"] = StreamList();
-            ViewData["Students"] = StudentList();
+            ViewData["Enrollments"] = EnrollmentList();
 
             return View();
         }

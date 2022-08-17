@@ -4,8 +4,9 @@
     ViewData["Title"] = "Admin Page";
     IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
     IEnumerable<Student> students = ViewData["Students"] as IEnumerable<Student>;
+    IEnumerable<Enrollment> enrollments = ViewData["Enrollments"] as IEnumerable<Enrollment>;
 }
-<body>
+    <body>
 <div class="container">
      <div class="d-flex justify-content-between align-items-center">
        <h2>Administration</h2>
@@ -31,17 +32,15 @@
   </thead>
   <tbody>
 
-       @foreach(Stream stream in streams)
+       @foreach(Enrollment enrol in enrollments)
          {            
          <tr>
-            <td>@Html.DisplayFor(s =>  stream.StreamID)</td>
-            <td>@stream.Room</td>
-            @foreach(Student student in students)
-         {
-            <td>@student.StudentId</td>
-            <td>@student.Email</td>    
-         }
-         </tr>
+            <td>@enrol.StreamID</td>
+            <td>@enrol.StudentId</td>
+            <td>@enrol.Students.Email</td>
+            <td>@enrol.Streams.Room</td>
+            <td>@enrol.Streams.EndTime</td>
+         </tr>         
          }
   </tbody>
        </table>
