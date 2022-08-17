@@ -1,8 +1,15 @@
-﻿namespace StreamTec.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace StreamTec.Models
 {
     public class Enrollment
     {
-        public int EnrollmentID { get; set; }
 
+        public int EnrollmentID { get; set; }
+        public virtual Student Students { get; set; }
+        public virtual Stream Streams { get; set; }
+        public int StudentId { get; set; }
+        public string StreamID { get; set; }
     }
 }

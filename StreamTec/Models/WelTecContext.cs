@@ -27,6 +27,11 @@ namespace StreamTec.Models
             modelBuilder.Entity<Student>().ToTable("Student");
             modelBuilder.Entity<Stream>().ToTable("Stream");
             modelBuilder.Entity<Enrollment>().ToTable("Enrollment");
+
+            modelBuilder.Entity<Enrollment>().Property(s => s.StreamID).IsRequired();
+            modelBuilder.Entity<Enrollment>().Property(s => s.StudentId).IsRequired();
+
+            //modelBuilder.Entity<Enrollment>().HasKey(s => new { s.StreamID, s.StudentId });
         }
     }
 }
