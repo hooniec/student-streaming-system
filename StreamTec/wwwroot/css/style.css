@@ -11,6 +11,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: #444444;
+  margin-top: 80px;
 }
 
 a {
@@ -61,10 +62,11 @@ h1, h2, h3, h4, h5, h6 {
 # Header
 --------------------------------------------------------------*/
 #header {
-  transition: all 0.5s;
-  z-index: 997;
-  padding: 20px 0;
-  background: rgba(55, 64, 85, 0.9);
+    transition: all 0.5s;
+    z-index: 997;
+    padding: 20px 0;
+    /*background: rgba(55, 64, 85, 0.9);*/
+    background: rgba(55, 64, 85, 1);
 }
 #header.header-transparent {
   background: transparent;

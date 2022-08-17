@@ -165,6 +165,12 @@ namespace StreamTec.Migrations
                 {
                     table.PrimaryKey("PK_Student", x => x.StudentId);
                 });
+			migrationBuilder.InsertData(
+			   table: "Student",
+			   columns: new[] { "StudentId", "Email"},
+			   values: new object[,] {
+					{"2208266","ethan.riwaka01@student.weltec.ac.nz"},
+			   });
 
 			migrationBuilder.CreateTable(
 				name: "Enrollment",

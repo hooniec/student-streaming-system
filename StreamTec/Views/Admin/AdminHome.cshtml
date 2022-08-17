@@ -1,7 +1,9 @@
-﻿@model IEnumerable<StreamTec.Models.Stream>
+﻿@using StreamTec;
 
 @{
     ViewData["Title"] = "Admin Page";
+    IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
+    IEnumerable<Student> students = ViewData["Students"] as IEnumerable<Student>;
 }
 <body>
 <div class="container">
@@ -28,37 +30,29 @@
     </tr>
   </thead>
   <tbody>
-       @foreach(var s in Model)
+
+       @foreach(Stream stream in streams)
+         {            
+         <tr>
+            <td>@Html.DisplayFor(s =>  stream.StreamID)</td>
+            <td>@stream.Room</td>
+            @foreach(Student student in students)
          {
-            <tr>@Html.DisplayFor(modelItem => s.StreamID)</tr>
+            <td>@student.StudentId</td>
+            <td>@student.Email</td>    
          }
-    <tr>
-      <th scope="row">1</th>
-      <td></td>
-      <td>Otto</td>
-      <td>mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>twitter</td>
-    </tr>
+         </tr>
+         }
   </tbody>
        </table>
    </div>
 </div>
 
    <div class="d-flex align-items-center">
-         <input type="submit" value="Delete" class="input-group-text align-items-left"/>
+         <input type="submit" value="Delete" class="input-group-text"/>
    </div>
    
    <div class="d-flex align-items-center">
-         <input type="submit" value="Export" class="input-group-text align-items-left"/>
+         <input type="submit" value="Export" class="input-group-text"/>
    </div>
 </body>
