@@ -5,7 +5,7 @@ namespace StreamTec.Models
 {
     public class Enrollment
     {
-
+        [Key]
         public int EnrollmentID { get; set; }
         public virtual Student Students { get; set; }
         public virtual Stream Streams { get; set; }
