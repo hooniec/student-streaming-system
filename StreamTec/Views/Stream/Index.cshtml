@@ -1,4 +1,4 @@
-﻿@model Dictionary<string, List<Stream>>
+﻿@model Dictionary<string, Dictionary<string, List<Stream>>>
 
 @{
     ViewData["Title"] = "Timetable";
@@ -19,42 +19,41 @@
 <section class="inner-page">
     <div class="container">
         <nav class="sidebar card py-2 mb-4 col-2">
-        <ul class="nav flex-column" id="nav_accordion">
-	        <li class="nav-item">
-		        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                  <option selected>Please select a major</option>
-					@foreach(var major in Model){
-						<option value="@major.Value">@major.Key</option>
-					}
-                </select>
-	        </li>
-	        <li class="nav-item has-submenu">
-		        <a class="nav-link" href="#"> Submenu links  </a>
-		        <ul class="submenu collapse">
-			        <li><a class="nav-link" href="#">Submenu item 1 </a></li>
-			        <li><a class="nav-link" href="#">Submenu item 2 </a></li>
-			        <li><a class="nav-link" href="#">Submenu item 3 </a> </li>
-		        </ul>
-	        </li>
-	        <li class="nav-item has-submenu">
-		        <a class="nav-link" href="#"> More menus  </a>
-		        <ul class="submenu collapse">
-			        <li><a class="nav-link" href="#">Submenu item 4 </a></li>
-			        <li><a class="nav-link" href="#">Submenu item 5 </a></li>
-			        <li><a class="nav-link" href="#">Submenu item 6 </a></li>
-			        <li><a class="nav-link" href="#">Submenu item 7 </a></li>
-		        </ul>
-	        </li>
-	        <li class="nav-item">
-		        <a class="nav-link" href="#"> Something </a>
-	        </li>
-	        <li class="nav-item">
-		        <a class="nav-link" href="#"> Other link </a>
-	        </li>
-        </ul>
+			<ul class="nav flex-column" id="nav_accordion">
+				<li class="nav-item">
+					<select class="form-select form-select-sm" aria-label=".form-select-sm example">
+					  <option selected>Please select a major</option>
+						@foreach(var major in Model){
+							<option value="@major.Key">@major.Key</option>
+						}
+					</select>
+				</li>
+				<li class="nav-item has-submenu">
+					<a class="nav-link" href="#"> Submenu links  </a>
+					<ul class="submenu collapse">
+						<li><a class="nav-link" href="#">Submenu item 1 </a></li>
+						<li><a class="nav-link" href="#">Submenu item 2 </a></li>
+						<li><a class="nav-link" href="#">Submenu item 3 </a> </li>
+					</ul>
+				</li>
+				<li class="nav-item has-submenu">
+					<a class="nav-link" href="#"> More menus  </a>
+					<ul class="submenu collapse">
+						<li><a class="nav-link" href="#">Submenu item 4 </a></li>
+						<li><a class="nav-link" href="#">Submenu item 5 </a></li>
+						<li><a class="nav-link" href="#">Submenu item 6 </a></li>
+						<li><a class="nav-link" href="#">Submenu item 7 </a></li>
+					</ul>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#"> Something </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#"> Other link </a>
+				</li>
+			</ul>
         </nav>
-		
-
     </div>
 </section><!-- End Main Content -->
+
 
