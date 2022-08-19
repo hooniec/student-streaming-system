@@ -20,35 +20,6 @@ namespace StreamTec.Controllers
             return View();
         }
 
-        public IActionResult Timetable()
-        {
-            // TimeTable Dictionary <majorname, a list of streams>
-            Dictionary<string, List<Models.Stream>> streamDic = new Dictionary<string, List<Models.Stream>>();
-
-            // A Dictionary for major names and its code
-            Dictionary<string, string> majorDic = new Dictionary<string, string>()
-            {
-                { "Cyber Security", "CS" },
-                { "Data Science", "DS"},
-                { "Interaction Design", "ID" },
-                { "Networking and Infra", "NI" },
-                { "Software Development", "SD" },
-                { "Other", "IT"},
-            };
-
-            // A list of streams
-            List<Models.Stream> streamList = new List<Models.Stream>();
-
-            foreach (KeyValuePair<string, string> major in majorDic)
-            {
-                streamDic.Add(major.Key, streamList.Where(s => s.StreamID.StartsWith(major.Value)).ToList());
-                streamList.Clear();
-            }
-
-            return View(streamDic);
-            //return View(_context.Streams.ToList());
-        }
-
         // Register Action for registring a student
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -92,7 +63,7 @@ namespace StreamTec.Controllers
                             // Add a student details to session
                             HttpContext.Session.SetString("_StudentId", obj.StudentId.ToString());
                             HttpContext.Session.SetString("_Email", obj.Email.ToString());
-                            return RedirectToAction("Timetable", "Home");
+                            return RedirectToAction("Index", "Stream");
                         }
                     }
                 }

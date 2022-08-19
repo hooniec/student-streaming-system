@@ -11,7 +11,7 @@ using StreamTec.Models;
 namespace StreamTec.Migrations
 {
     [DbContext(typeof(WelTecContext))]
-    [Migration("20220817011207_InitialCreate")]
+    [Migration("20220818231023_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,16 +25,22 @@ namespace StreamTec.Migrations
 
             modelBuilder.Entity("StreamTec.Models.Enrollment", b =>
                 {
+                    b.Property<int>("EnrollmentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentID"), 1L, 1);
+
                     b.Property<string>("StreamID")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EnrollmentID")
-                        .HasColumnType("int");
+                    b.HasKey("EnrollmentID");
 
-                    b.HasKey("StreamID", "StudentId");
+                    b.HasIndex("StreamID");
 
                     b.HasIndex("StudentId");
 
@@ -79,10 +85,7 @@ namespace StreamTec.Migrations
             modelBuilder.Entity("StreamTec.Models.Student", b =>
                 {
                     b.Property<int>("StudentId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()
