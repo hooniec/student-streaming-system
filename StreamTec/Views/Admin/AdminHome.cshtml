@@ -24,11 +24,9 @@
        <table class="table table-striped">
            <thead>
     <tr>
-      <th scope="col">StreamID</th>
       <th scope="col">StudentID</th>
       <th scope="col">Email</th>
-      <th scope="col">Room</th>
-      <th scope="col">End Time</th>
+      <th scope="col">StreamID</th>
     </tr>
   </thead>
   <tbody>
@@ -36,11 +34,9 @@
        @foreach(Enrollment enrol in enrollments)
          {            
          <tr>
-            <td>@enrol.StreamID</td>
             <td>@enrol.StudentId</td>
             <td>@enrol.Students.Email</td>
-            <td>@enrol.Streams.Room</td>
-            <td>@enrol.Streams.EndTime</td>
+            <td>@enrol.StreamID</td>       
          </tr>         
          }
   </tbody>
