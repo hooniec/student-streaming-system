@@ -9,6 +9,8 @@ namespace StreamTec.Models
         public int EnrollmentID { get; set; }
         public virtual Student Students { get; set; }
         public virtual Stream Streams { get; set; }
+
+
         public int StudentId { get; set; }
         public string StreamID { get; set; }
     }

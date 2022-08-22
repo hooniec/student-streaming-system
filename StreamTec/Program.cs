@@ -19,6 +19,8 @@ builder.Services.AddHttpContextAccessor();
 // Build the web application
 var app = builder.Build();
 
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -40,7 +42,7 @@ using (var scope = app.Services.CreateScope())
     // Creating the Database/Tables
     DBInitialize.Initialize(context);
 }
- 
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -52,5 +54,6 @@ app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

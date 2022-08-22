@@ -15,7 +15,12 @@
    <div class="d-flex justify-content-between align-items-center">
          <p>Search: </p>
    </div>
-
+        <form asp-controller="Admin" asp-action="AdminSearch">
+            <p>
+                Title: <input type="text" name="search" />
+                <input type="submit" value="Search" />
+            </p>
+        </form>
    <div class="d-flex align-items-center">
           <input type="text" class="input-group-text  align-items-left"/><input type="submit" value="Search" class="input-group-text align-items-left"/>
    </div>
