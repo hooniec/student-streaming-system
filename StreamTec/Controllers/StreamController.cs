@@ -14,6 +14,23 @@ namespace StreamTec.Controllers
 
         private readonly WelTecContext _context;
 
+
+
+
+        public List<Stream> StreamList()
+        {
+            var enrollments = _context.Streams.ToList();
+            return (enrollments);
+        }
+
+
+
+
+
+
+
+
+
         // Stream Dictionary<majorname, Dictionary<courseid, List<stream object>>>
         Dictionary<string, Dictionary<string, List<Stream>>> streamDic = new Dictionary<string, Dictionary<string, List<Stream>>>();
 
@@ -21,8 +38,8 @@ namespace StreamTec.Controllers
         Dictionary<string, string> majorDic = new Dictionary<string, string>()
         {
             { "Cyber Security", "CS" },
+            //Applied Data Science
             { "Data Science", "DS"},
-            { "Interaction Design", "ID" },
             { "Networking and Infra", "NI" },
             { "Software Development", "SD" },
             { "Other", "IT"},
@@ -60,7 +77,7 @@ namespace StreamTec.Controllers
                                 streamDic[major.Key].Add(courseId, new List<Stream>());
                                 streamDic[major.Key][courseId].Add(stream);
                             }
-                        }
+                        }//Else statement for creating a new Major. How do we define each major with only a major code?
                     }
                 }
             }
@@ -68,7 +85,8 @@ namespace StreamTec.Controllers
             {
 
             }
-
+            //ViewData["Streams"] = StreamList();
+            //return View();
             //var serialized = JsonConvert.SerializeObject(streamDic);
             //return Content(serialized, "application/json");
             return View(streamDic);

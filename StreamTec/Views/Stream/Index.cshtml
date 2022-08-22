@@ -2,58 +2,102 @@
 
 @{
     ViewData["Title"] = "Timetable";
+    IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 }
 
 <!-- ======= Breadcrumbs ======= -->
 <section class="breadcrumbs">
-    <div class="container">
+	<div class="container">
 
-    <div class="d-flex justify-content-between align-items-center">
-        <h2>Stream Timetable</h2>
-    </div>
+		<div class="d-flex justify-content-between align-items-center">
+			<h2>Stream Timetable</h2>
+		</div>
 
-    </div>
+	</div>
 </section><!-- End Breadcrumbs -->
 
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
-    <div class="container">
-        <nav class="sidebar card py-2 mb-4 col-2">
+	<div class="container">
+		<nav class="sidebar card py-2 mb-4 col-2">
 			<ul class="nav flex-column" id="nav_accordion">
 				<li class="nav-item">
-					<select class="form-select form-select-sm" aria-label=".form-select-sm example">
-					  <option selected>Please select a major</option>
-						@foreach(var major in Model){
+					<select class="form-select form-select-sm" aria-label=".form-select-sm example" onchange="detectMajor(this)">
+						<option selected>Please select a major</option>
+						@foreach (var major in Model)
+						{
 							<option value="@major.Key">@major.Key</option>
 						}
 					</select>
+				</li>	
+				<li>
+					<div id="course-select-wrap">
+
+					</div>
+					
 				</li>
-				<li class="nav-item has-submenu">
-					<a class="nav-link" href="#"> Submenu links  </a>
-					<ul class="submenu collapse">
-						<li><a class="nav-link" href="#">Submenu item 1 </a></li>
-						<li><a class="nav-link" href="#">Submenu item 2 </a></li>
-						<li><a class="nav-link" href="#">Submenu item 3 </a> </li>
-					</ul>
-				</li>
-				<li class="nav-item has-submenu">
-					<a class="nav-link" href="#"> More menus  </a>
-					<ul class="submenu collapse">
-						<li><a class="nav-link" href="#">Submenu item 4 </a></li>
-						<li><a class="nav-link" href="#">Submenu item 5 </a></li>
-						<li><a class="nav-link" href="#">Submenu item 6 </a></li>
-						<li><a class="nav-link" href="#">Submenu item 7 </a></li>
-					</ul>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#"> Something </a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#"> Other link </a>
+				
+				<li>
+					<span id="course-list"></span>
 				</li>
 			</ul>
-        </nav>
-    </div>
+		</nav>
+	</div>
 </section><!-- End Main Content -->
 
+<p class="test"></p>
 
+<script>
+	var collection = @Json.Serialize(Model);
+	const checkbox = document.querySelector(".course-checkbox");
+	
+
+function detectMajor(selectMajor){
+	const courseSelectElem = document.getElementById("course-select-wrap");
+	var courseList = collection[selectMajor.value];
+	var courses= []
+
+	courseSelectElem.innerHTML = "";
+
+	for(var key in collection[selectMajor.value]){
+		courses.push(key);
+	}
+
+	//Check box Constraints - Internship and Capstone are different.
+	//Select from checkbox and then add it to local storage and display the stream data from the courseID
+	
+	for(const key in collection){
+		for(const inner in collection[key]){
+			console.log(inner)
+			for(const stream in collection[key][inner]){
+
+			}
+		}
+	}	
+
+	for (let key in courseList)
+	{
+		let label = document.createElement("label");
+		label.innerText = key;
+		let input = document.createElement("input");
+		input.type = "checkbox";
+		input.classList.add("course-checkbox")
+		label.appendChild(input);
+		courseSelectElem.appendChild(label);
+	}
+
+	localStorage.setItem('Stream', courses)
+	localStorage.getItem('Stream');
+	console.log(courses);
+}
+
+checkbox.addEventListener('click', (event) => {
+	let checkboxes = document.querySelectorAll('.course-checkbox:checked');
+	let values = [];
+	checkboxes.forEach((label) => {
+		document.querySelector(".test").innerHTML += label;
+	});
+	
+});
+
+</script>
