@@ -38,7 +38,10 @@
 				</li>
 				
 				<li>
-					<span id="course-list"></span>
+					<span name="course" id="course-list"></span>
+				</li>
+				<li>
+					<button id="btn">Get Selected Courses</button>
 				</li>
 			</ul>
 		</nav>
@@ -50,7 +53,7 @@
 <script>
 	var collection = @Json.Serialize(Model);
 	const checkbox = document.querySelector(".course-checkbox");
-	
+	const btn = document.querySelector('#btn');
 
 function detectMajor(selectMajor){
 	const courseSelectElem = document.getElementById("course-select-wrap");
@@ -91,13 +94,15 @@ function detectMajor(selectMajor){
 	console.log(courses);
 }
 
-checkbox.addEventListener('click', (event) => {
-	let checkboxes = document.querySelectorAll('.course-checkbox:checked');
+btn.addEventListener('click', (event) => {
+		let checkboxes = document.querySelectorAll('input:checked');
 	let values = [];
-	checkboxes.forEach((label) => {
-		document.querySelector(".test").innerHTML += label;
+	checkboxes.forEach((checkbox) => {
+		var text = checkbox.parentElement.innerText;
+		values.push(text)
 	});
-	
+	alert(values);
+	console.log(values);
 });
 
 </script>
