@@ -6,25 +6,19 @@
     IEnumerable<Student> students = ViewData["Students"] as IEnumerable<Student>;
     IEnumerable<Enrollment> enrollments = ViewData["Enrollments"] as IEnumerable<Enrollment>;
 }
-    <body>
+<body>
 <div class="container">
      <div class="d-flex justify-content-between align-items-center">
        <h2>Administration</h2>
-   </div>
+</div>
 
-   <div class="d-flex justify-content-between align-items-center">
-         <p>Search: </p>
-   </div>
-        <form asp-controller="Admin" asp-action="AdminSearch">
-            <p>
-                Title: <input type="text" name="search" />
-                <input type="submit" value="Search" />
-            </p>
-        </form>
-   <div class="d-flex align-items-center">
-          <input type="text" class="input-group-text  align-items-left"/><input type="submit" value="Search" class="input-group-text align-items-left"/>
-   </div>
 
+    <form asp-controller="Admin" asp-action="Search">
+        <p>
+            <input type="text" name="search" />
+            <input type="submit" value="Search" />
+        </p>
+    </form>
    <div>
        <table class="table table-striped">
            <thead>
@@ -32,28 +26,32 @@
       <th scope="col">StudentID</th>
       <th scope="col">Email</th>
       <th scope="col">StreamID</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
-
        @foreach(Enrollment enrol in enrollments)
          {            
          <tr>
             <td>@enrol.StudentId</td>
             <td>@enrol.Students.Email</td>
-            <td>@enrol.StreamID</td>       
-         </tr>         
+            <td>@enrol.StreamID</td>
+            <td><a asp-action="Delete" asp-route-id="@enrol.EnrollmentID">Delete</a></td>
+        </tr>         
          }
   </tbody>
        </table>
    </div>
-</div>
-
-   <div class="d-flex align-items-center">
-         <input type="submit" value="Delete" class="input-group-text"/>
-   </div>
-   
+</div> 
    <div class="d-flex align-items-center">
          <input type="submit" value="Export" class="input-group-text"/>
    </div>
+    
+    <div class="d-flex align-items-center">
+        <form asp-controller="Admin" asp-action="AddView">
+            <p>
+                <input type="submit" value="Add" />
+            </p>
+        </form>
+    </div>
 </body>
