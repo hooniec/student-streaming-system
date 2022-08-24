@@ -22,7 +22,7 @@
 		<nav class="sidebar card py-2 mb-4 col-2">
 			<ul class="nav flex-column" id="nav_accordion">
 				<li class="nav-item">
-					<select class="form-select form-select-sm" aria-label=".form-select-sm example" onchange="detectMajor(this)">
+					<select class="form-select form-select-sm" aria-label=".form-select-sm example" onchange="displayMajorCourses(this)">
 						<option selected>Please select a major</option>
 						@foreach (var major in Model)
 						{
@@ -51,68 +51,82 @@
 <p class="test"></p>
 
 <script>
-	const checkbox = document.querySelector(".course-checkbox");
-	const btn = document.querySelector('#btn');
-
 	var collection = @Json.Serialize(Model);
 	const courseSelection = document.querySelector(".js-course-selection");
+	const btn = document.querySelector('#btn');
+	let submitCourses = [];
 	let courses = [];
 	var courseTest = [];
 
 
-function detectMajor(selectMajor){
-	const courseSelectElem = document.getElementById("course-select-wrap");
-	var courseList = collection[selectMajor.value];
-	for(var key in collection[selectMajor.value]){
-		courses.push(key);
-		console.log(key);		
+
+	function displayMajorCourses(selectMajor) {
+		let majorCourseList = collection[selectMajor.value];
+		let majorCourses = [];
+		const courseObjs = document.getElementsByClassName("courseObj");
+
+		for (const [key, value] of Object.entries(majorCourseList)) {
+			majorCourses.push(key);
+		}
+
+		for (const courseObj of courseObjs) {
+			let courseID = courseObj.firstElementChild.innerHTML;
+			courseObj.style.display = "none";
+
+			if (majorCourses.includes(courseID)) {
+				courseObj.style.display = "block";
+			}
+		}
 	}
-	console.log(courseList);
-	courseTest.push(courseList);
-	console.log(courseTest);
+	
 
-}
+	function createCourseCheckbox(course) {
+		const li = document.createElement("li");
+		const label = document.createElement("label");
+		const checkbox = document.createElement("input");
+		label.innerText = course;
+		checkbox.type = "checkbox";
+		li.appendChild(label);
+		li.appendChild(checkbox);
+		li.classList.add("courseObj")
+		courseSelection.appendChild(li);
+	}
 
-function createCourseCheckbox(courses) {
-    for (var i = 0; i < courses.length; i++) {
-        const li = document.createElement("li");
-        const label = document.createElement("label");
-        const checkbox = document.createElement("input");
-        label.innerText = courses[i];
-        checkbox.type = "checkbox";
-        li.appendChild(label);
-        li.appendChild(checkbox);
-        courseSelection.appendChild(li);
-    }
-}
-
-function loadAllCourse() {
-    for (const major in collection) {
+	function loadAllCourse() {
+		for (var major in collection) {
 			var courseList = collection[major];
-			courses.push(courseList);
-        //for (const course in collection[major]) {
-        //    courses.push(course);
-        //}			
-    }	
-	console.log(courses);
-	//console.log(courseList);
-    createCourseCheckbox(courses);
-};
+			courses[major] = courseList;
+
+			for (const [key, value] of Object.entries(courseList)) {
+				createCourseCheckbox(key);
+			}
+		}
+	};
 
 window.onload = function() {
     loadAllCourse();
 };
 
 btn.addEventListener('click', (event) => {
-		let checkboxes = document.querySelectorAll('input:checked');
-	let values = [];
+	
+	let checkboxes = document.querySelectorAll('input:checked');
+	let selected = [];
 	checkboxes.forEach((checkbox) => {
 		var text = checkbox.parentElement.innerText;
-		values.push(text);		
+		selected.push(text);		
 	});
-	alert(values);
-	console.log(values);
-	console.log(courseTest);
+	submitCourses.length = 0;
+	for (const [key, course] of Object.entries(courses)){
+		for(const [key, value] of Object.entries(course)){
+				if (selected.includes(key)) {
+					const submitcourse = { key, value };
+					submitCourses.push(submitcourse);
+					localStorage.setItem("submitCourses", JSON.stringify(submitCourses));
+				}
+		}
+	}
+	//alert(selected);
+	//console.log(selected);
 });
 
 
