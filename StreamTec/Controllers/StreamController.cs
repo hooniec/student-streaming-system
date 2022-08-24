@@ -22,7 +22,6 @@ namespace StreamTec.Controllers
         {
             { "Cyber Security", "CS" },
             { "Data Science", "DS"},
-            { "Interaction Design", "ID" },
             { "Networking and Infra", "NI" },
             { "Software Development", "SD" },
             { "Other", "IT"},
@@ -70,7 +69,7 @@ namespace StreamTec.Controllers
             }
 
             //var serialized = JsonConvert.SerializeObject(streamDic);
-            //return Content(serialized, "application/json");
+            //return View(serialized, "application/json");
             return View(streamDic);
         }
     }
