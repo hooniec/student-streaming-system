@@ -23,14 +23,6 @@ namespace StreamTec.Controllers
             return (enrollments);
         }
 
-
-
-
-
-
-
-
-
         // Stream Dictionary<majorname, Dictionary<courseid, List<stream object>>>
         Dictionary<string, Dictionary<string, List<Stream>>> streamDic = new Dictionary<string, Dictionary<string, List<Stream>>>();
 

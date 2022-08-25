@@ -6,7 +6,19 @@
     IEnumerable<Student> students = ViewData["Students"] as IEnumerable<Student>;
     IEnumerable<Enrollment> enrollments = ViewData["Enrollments"] as IEnumerable<Enrollment>;
 }
-<body>
+
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Stream Timetable</h2>
+        </div>
+
+    </div>
+</section><!-- End Breadcrumbs -->
+
+
 <div class="container">
      <div class="d-flex justify-content-between align-items-center">
        <h2>Administration</h2>
@@ -17,6 +29,11 @@
         <p>
             <input type="text" name="search" />
             <input type="submit" value="Search" />
+        </p>
+    </form>
+    <form asp-controller="Admin" asp-action="AddView">
+        <p>
+            <input type="submit" value="Add" />
         </p>
     </form>
    <div>
@@ -48,10 +65,5 @@
    </div>
     
     <div class="d-flex align-items-center">
-        <form asp-controller="Admin" asp-action="AddView">
-            <p>
-                <input type="submit" value="Add" />
-            </p>
-        </form>
+
     </div>
-</body>

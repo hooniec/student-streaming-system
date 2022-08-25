@@ -6,7 +6,18 @@
     IEnumerable<Student> students = ViewData["Students"] as IEnumerable<Student>;
     IEnumerable<Enrollment> enrollments = ViewData["Enrollments"] as IEnumerable<Enrollment>;
 }
-<body>
+
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Stream Timetable</h2>
+        </div>
+
+    </div>
+</section><!-- End Breadcrumbs -->
+
 <div class="container">
      <div class="d-flex justify-content-between align-items-center">
        <h2>Administration</h2>
@@ -18,4 +29,3 @@
             <input type="submit" value="Add" />
         </p>
     </form>
-</body>
