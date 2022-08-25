@@ -199,14 +199,28 @@ namespace StreamTec.Migrations
                 columns: new[] { "StudentId", "Email" },
                 values: new object[,]
                 {
-                    {"2208266", "ethan@email.com" }
+                 {"2208827","justin.martin01@student.weltec.ac.nz"},
+                 {"2208266","ethan.riwaka01@student.weltec.ac.nz"},
+                 {"2208282","sunghoon.cho@student.weltec.ac.nz"},
+                 {"2107212","jeremy2001@gmail.com"},
+                 {"2307542","darolmansfield@outlook.com"},
+                 {"2007872","rebeccasmith01@hotmail.com"},
+                 {"2209341","lily2008@gmail.com"},
+                 {"2106785","abel.abraham01@student.weltec.ac.nz"},
+                 {"2309174","susan.solomons01@student.weltec.ac.nz"}
+
                 });
             migrationBuilder.InsertData(
                 table: "Enrollment",
                 columns: new[] { "EnrollmentID", "StudentId", "StreamID" },
                 values: new object[,]
                 {
-                    {"1", "2208266", "IT-4105-Com-B-02" }
+                {"1","2208827","DS-6504-Com-B-01"},
+                {"2","2208827","DS-6504-Com-A-01"},
+                {"3","2208827","CS-7501-Com-A-02"},
+                {"4","2208266","DS-6504-Com-B-01"},
+                {"5","2208266","DS-6504-Com-A-01"},
+                {"6","2208266","CS-7501-Com-A-02"}
                 });
 
             migrationBuilder.CreateIndex(
