@@ -44,7 +44,7 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 	        </nav>
             <div class="timetable col-10">
               <div class="timeline">
-                <div class="spacer"></div>
+                <div class=<"spacer"></div>
                 <div class="time-marker">8:00</div>
                 <div class="time-marker">9:00</div>
                 <div class="time-marker">10:00</div>
@@ -63,14 +63,6 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                     <p class="date-day">Mon</p>
                   </div>
                   <div class="events">
-                    <div class="event start-14 end-17 securities">
-                      <p class="title">Securities Regulation</p>
-                      <p class="time">14:00 - 17:00</p>
-                    </div>
-                    <div class="event start-15 end-18 securities">
-                      <p class="title">Securities Regulation</p>
-                      <p class="time">14:00 - 17:00</p>
-                    </div>
                   </div>
                 </div>
                 <div class="day tues">
@@ -78,14 +70,6 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                     <p class="date-day">Tues</p>
                   </div>
                   <div class="events">
-                    <div class="event start-10 end-12 corp-fi">
-                      <p class="title">Corporate Finance</p>
-                      <p class="time">10:00 - 12:00</p>
-                    </div>
-                    <div class="event start-13 end-16 ent-law">
-                      <p class="title">Entertainment Law</p>
-                      <p class="time">13:00 - 16:00</p>
-                    </div>
                   </div>
                 </div>
                 <div class="day wed">
@@ -93,14 +77,6 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                     <p class="date-day">Wed</p>
                   </div>
                   <div class="events">
-                    <div class="event start-12 end-13 writing">
-                      <p class="title">Writing Seminar</p>
-                      <p class="time">12:00 - 13:00</p>
-                    </div>
-                    <div class="event start-14 end-17 securities">
-                      <p class="title">Securities Regulation</p>
-                      <p class="time">14:00 - 17:00</p>
-                    </div>
                   </div>
                 </div>
                 <div class="day thurs">
@@ -108,14 +84,6 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                     <p class="date-day">Thurs</p>
                   </div>
                   <div class="events">
-                    <div class="event start-10 end-12 corp-fi">
-                      <p class="title">Corporate Finance</p>
-                      <p class="time">10:00 - 12:00</p>
-                    </div>
-                    <div class="event start-13 end-16 ent-law">
-                      <p class="title">Entertainment Law</p>
-                      <p class="time">13:00 - 16:00</p>
-                    </div>
                   </div>
                 </div>
                 <div class="day fri">
@@ -140,8 +108,9 @@ let collection = @Json.Serialize(Model);
 let courses = [];
 let submitCourses = [];
 const courseSelection = document.querySelector(".js-course-selection");
-const timetable = document.querySelector(".timetable");
 const btn = document.querySelector('#btn');
+const mondayEvents = document.querySelector(".mon .event");
+
 
 btn.addEventListener('click', (event) => {
 	let checkboxes = document.querySelectorAll('input:checked');
@@ -167,6 +136,17 @@ btn.addEventListener('click', (event) => {
 
 function displayTimetable(submitCourses) {
     console.log(Object.values(submitCourses))
+    for (var i = 0; i < submitCourses.length; i++){
+        var streamDay = submitCourses[i]['day']);
+        if (streamDay == 'Monday') {
+            console.log("Find monday stream")
+            const div = document.createElement("div");
+            const p = document.createElement("p");
+            p.innerText = "Test";
+            div.appendChild(p);
+            mondayEvents.appendChild(div);
+        }
+    }
 };
 
 function displayMajorCourses(selectMajor) {
