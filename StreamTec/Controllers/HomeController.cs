@@ -64,7 +64,7 @@ namespace StreamTec.Controllers
                             HttpContext.Session.SetString("_StudentId", obj.StudentId.ToString());
                             HttpContext.Session.SetString("_Email", obj.Email.ToString());
                             return RedirectToAction("Index", "Stream");
-                        }
+                        }                        
                     }
                 }
                 TempData["message"] = "Invalid student details";

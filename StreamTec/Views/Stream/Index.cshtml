@@ -45,20 +45,18 @@
 				</li>
 			</ul>
 		</nav>
-	</div>
+	</div>  
 </section><!-- End Main Content -->
 
-<p class="test"></p>
-
 <script>
+	
 	var collection = @Json.Serialize(Model);
 	const courseSelection = document.querySelector(".js-course-selection");
 	const btn = document.querySelector('#btn');
 	let submitCourses = [];
 	let courses = [];
 	var courseTest = [];
-
-
+	
 
 	function displayMajorCourses(selectMajor) {
 		let majorCourseList = collection[selectMajor.value];
@@ -116,18 +114,21 @@ btn.addEventListener('click', (event) => {
 		selected.push(text);		
 	});
 	submitCourses.length = 0;
-	for (const [key, course] of Object.entries(courses)){
-		for(const [key, value] of Object.entries(course)){
+	for (const [major, course] of Object.entries(courses)){
+		for(const [key, streams] of Object.entries(course)){
 				if (selected.includes(key)) {
-					const submitcourse = { key, value };
-					submitCourses.push(submitcourse);
-					localStorage.setItem("submitCourses", JSON.stringify(submitCourses));
+					for(const [key, stream] of Object.entries(streams)){
+						submitCourses.push(stream);
+					}
 				}
 		}
 	}
-	//alert(selected);
-	//console.log(selected);
+	displayTimetable(submitCourses);
 });
 
+function displayTimetable(submitCourses){
+	console.log(Object.values(submitCourses))
+};
 
 </script>
+
