@@ -1,133 +1,218 @@
 ﻿@model Dictionary<string, Dictionary<string, List<Stream>>>
 
 @{
-    ViewData["Title"] = "Timetable";
-    IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
+ViewData["Title"] = "Timetable";
+IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 }
 
 <!-- ======= Breadcrumbs ======= -->
 <section class="breadcrumbs">
-	<div class="container">
+<div class="container">
 
-		<div class="d-flex justify-content-between align-items-center">
-			<h2>Stream Timetable</h2>
-		</div>
-
+	<div class="d-flex justify-content-between align-items-center">
+		<h2>Stream Timetable</h2>
 	</div>
+
+</div>
 </section><!-- End Breadcrumbs -->
 
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
-	<div class="container">
-		<nav class="sidebar card py-2 mb-4 col-2">
-			<ul class="nav flex-column" id="nav_accordion">
-				<li class="nav-item">
-					<select class="form-select form-select-sm" aria-label=".form-select-sm example" onchange="displayMajorCourses(this)">
-						<option selected>Please select a major</option>
-						@foreach (var major in Model)
-						{
-							<option value="@major.Key">@major.Key</option>
-						}
-					</select>
-				</li>	
-				<li>
-					<div class="js-course-selection">
-
-					</div>
-					
-				</li>
-				
-				<li>
-					<span name="course" id="course-list"></span>
-				</li>
-				<li>
-					<button id="btn">Get Selected Courses</button>
-				</li>
-			</ul>
-		</nav>
-	</div>
+    <div class="container-fluid">
+        <div class="row pt-xxl-3">
+	        <nav class="sidebar card py-2 mb-4 col-1">
+		        <ul class="nav flex-column" id="nav_accordion">
+			        <li class="nav-item">
+				        <select class="form-select form-select-sm" aria-label=".form-select-sm example" onchange="displayMajorCourses(this)">
+					        <option selected>Please select a major</option>
+					        @foreach (var major in Model)
+					        {
+						        <option value="@major.Key">@major.Key</option>
+					        }
+				        </select>
+			        </li>	
+			        <li>
+				        <div class="js-course-selection"></div>
+			        </li>
+			        <li>
+				        <span name="course" id="course-list"></span>
+			        </li>
+			        <li>
+				        <button id="btn">Get Selected Courses</button>
+			        </li>
+		        </ul>
+	        </nav>
+            <div class="timetable col-10">
+              <div class="timeline">
+                <div class="spacer"></div>
+                <div class="time-marker">8:00</div>
+                <div class="time-marker">9:00</div>
+                <div class="time-marker">10:00</div>
+                <div class="time-marker">11:00</div>
+                <div class="time-marker">12:00</div>
+                <div class="time-marker">13:00</div>
+                <div class="time-marker">14:00</div>
+                <div class="time-marker">15:00</div>
+                <div class="time-marker">16:00</div>
+                <div class="time-marker">17:00</div>
+                <div class="time-marker">18:00</div>
+              </div>
+              <div class="days">
+                <div class="day mon">
+                  <div class="date">
+                    <p class="date-day">Mon</p>
+                  </div>
+                  <div class="events">
+                    <div class="event start-14 end-17 securities">
+                      <p class="title">Securities Regulation</p>
+                      <p class="time">14:00 - 17:00</p>
+                    </div>
+                    <div class="event start-15 end-18 securities">
+                      <p class="title">Securities Regulation</p>
+                      <p class="time">14:00 - 17:00</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="day tues">
+                  <div class="date">
+                    <p class="date-day">Tues</p>
+                  </div>
+                  <div class="events">
+                    <div class="event start-10 end-12 corp-fi">
+                      <p class="title">Corporate Finance</p>
+                      <p class="time">10:00 - 12:00</p>
+                    </div>
+                    <div class="event start-13 end-16 ent-law">
+                      <p class="title">Entertainment Law</p>
+                      <p class="time">13:00 - 16:00</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="day wed">
+                  <div class="date">
+                    <p class="date-day">Wed</p>
+                  </div>
+                  <div class="events">
+                    <div class="event start-12 end-13 writing">
+                      <p class="title">Writing Seminar</p>
+                      <p class="time">12:00 - 13:00</p>
+                    </div>
+                    <div class="event start-14 end-17 securities">
+                      <p class="title">Securities Regulation</p>
+                      <p class="time">14:00 - 17:00</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="day thurs">
+                  <div class="date">
+                    <p class="date-day">Thurs</p>
+                  </div>
+                  <div class="events">
+                    <div class="event start-10 end-12 corp-fi">
+                      <p class="title">Corporate Finance</p>
+                      <p class="time">10:00 - 12:00</p>
+                    </div>
+                    <div class="event start-13 end-16 ent-law">
+                      <p class="title">Entertainment Law</p>
+                      <p class="time">13:00 - 16:00</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="day fri">
+                  <div class="date">
+                    <p class="date-day">Fri</p>
+                  </div>
+                  <div class="events">
+                    <div class="event start-8 end-15 corp-fi">
+                      <p class="title">Corporate Finance</p>
+                      <p class="time">10:00 - 12:00</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Timetable-->
+        </div>
+    </div>
 </section><!-- End Main Content -->
 
-<p class="test"></p>
-
 <script>
-	var collection = @Json.Serialize(Model);
-	const courseSelection = document.querySelector(".js-course-selection");
-	const btn = document.querySelector('#btn');
-	let submitCourses = [];
-	let courses = [];
-	var courseTest = [];
+let collection = @Json.Serialize(Model);
+let courses = [];
+let submitCourses = [];
+const courseSelection = document.querySelector(".js-course-selection");
+const timetable = document.querySelector(".timetable");
+const btn = document.querySelector('#btn');
 
+btn.addEventListener('click', (event) => {
+	let checkboxes = document.querySelectorAll('input:checked');
+	let selectedCourses = [];
+	checkboxes.forEach((checkbox) => {
+		var text = checkbox.previousElementSibling.innerText;
+		selectedCourses.push(text);		
+	});
 
+    submitCourses.length = 0;
 
-	function displayMajorCourses(selectMajor) {
-		let majorCourseList = collection[selectMajor.value];
-		let majorCourses = [];
-		const courseObjs = document.getElementsByClassName("courseObj");
-
-		for (const [key, value] of Object.entries(majorCourseList)) {
-			majorCourses.push(key);
-		}
-
-		for (const courseObj of courseObjs) {
-			let courseID = courseObj.firstElementChild.innerHTML;
-			courseObj.style.display = "none";
-
-			if (majorCourses.includes(courseID)) {
-				courseObj.style.display = "block";
-			}
+	for (const [major, course] of Object.entries(courses)) {
+        for (const [key, streams] of Object.entries(course)) {
+            if (selectedCourses.includes(key)){
+                for (const [key, stream] of Object.entries(streams)){
+                    submitCourses.push(stream);
+                }
+            }
 		}
 	}
-	
+    displayTimetable(submitCourses);
+});
 
-	function createCourseCheckbox(course) {
-		const li = document.createElement("li");
-		const label = document.createElement("label");
-		const checkbox = document.createElement("input");
-		label.innerText = course;
-		checkbox.type = "checkbox";
-		li.appendChild(label);
-		li.appendChild(checkbox);
-		li.classList.add("courseObj")
-		courseSelection.appendChild(li);
-	}
+function displayTimetable(submitCourses) {
+    console.log(Object.values(submitCourses))
+};
 
-	function loadAllCourse() {
-		for (var major in collection) {
-			var courseList = collection[major];
-			courses[major] = courseList;
+function displayMajorCourses(selectMajor) {
+    let majorCourseList = collection[selectMajor.value];
+    let majorCourses = [];
+    const courseObjs = document.getElementsByClassName("courseObj");
 
-			for (const [key, value] of Object.entries(courseList)) {
-				createCourseCheckbox(key);
-			}
-		}
-	};
+    for (const [key, value] of Object.entries(majorCourseList)) {
+        majorCourses.push(key);
+    } 
+
+    for (const courseObj of courseObjs) {
+        let courseID = courseObj.firstElementChild.innerHTML;
+        courseObj.style.display = "none";
+
+        if (majorCourses.includes(courseID)) {
+            courseObj.style.display = "block";
+        }
+    }   
+}
+
+function createCourseCheckbox(course) {
+    const li = document.createElement("li");
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    label.innerText = course;
+    checkbox.type = "checkbox";
+    li.appendChild(label);
+    li.appendChild(checkbox);
+    li.classList.add("courseObj")
+    courseSelection.appendChild(li);
+}
+
+function loadAllCourse() {
+    for (var major in collection) {
+        var courseList = collection[major];
+        courses[major] = courseList;
+
+        for (const [key, value] of Object.entries(courseList)) {
+            createCourseCheckbox(key);
+        } 
+    }
+};
 
 window.onload = function() {
     loadAllCourse();
 };
-
-btn.addEventListener('click', (event) => {
-	
-	let checkboxes = document.querySelectorAll('input:checked');
-	let selected = [];
-	checkboxes.forEach((checkbox) => {
-		var text = checkbox.parentElement.innerText;
-		selected.push(text);		
-	});
-	submitCourses.length = 0;
-	for (const [key, course] of Object.entries(courses)){
-		for(const [key, value] of Object.entries(course)){
-				if (selected.includes(key)) {
-					const submitcourse = { key, value };
-					submitCourses.push(submitcourse);
-					localStorage.setItem("submitCourses", JSON.stringify(submitCourses));
-				}
-		}
-	}
-	//alert(selected);
-	//console.log(selected);
-});
-
 
 </script>
