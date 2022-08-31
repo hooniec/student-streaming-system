@@ -14,9 +14,6 @@ namespace StreamTec.Controllers
 
         private readonly WelTecContext _context;
 
-
-
-
         public List<Stream> StreamList()
         {
             var enrollments = _context.Streams.ToList();
@@ -30,7 +27,6 @@ namespace StreamTec.Controllers
         Dictionary<string, string> majorDic = new Dictionary<string, string>()
         {
             { "Cyber Security", "CS" },
-            //Applied Data Science
             { "Data Science", "DS"},
             { "Networking and Infra", "NI" },
             { "Software Development", "SD" },
@@ -77,10 +73,7 @@ namespace StreamTec.Controllers
             {
 
             }
-            //ViewData["Streams"] = StreamList();
-            //return View();
-            //var serialized = JsonConvert.SerializeObject(streamDic);
-            //return Content(serialized, "application/json");
+
             return View(streamDic);
         }
     }

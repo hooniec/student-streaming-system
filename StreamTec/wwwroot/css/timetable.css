@@ -37,65 +37,65 @@
 }
 
 // Place on Timeline
-.start-7 {
+.start-0700 {
     grid-row-start: 0;
 }
-.start-8 {
+.start-0800 {
     grid-row-start: 1;
 }
-.start-9 {
+.start-0900 {
     grid-row-start: 2;
 }
-.start-10 {
+.start-1000 {
     grid-row-start: 3;
 }
-.start-11 {
+.start-1100 {
     grid-row-start: 4;
 }
-.start-12 {
+.start-1200 {
     grid-row-start: 5;
 }
-.start-13 {
+.start-1300 {
     grid-row-start: 6;
 }
-.start-14 {
+.start-1400 {
     grid-row-start: 7;
 }
-.start-15 {
+.start-1500 {
     grid-row-start: 8;
 }
-.start-16 {
+.start-1600 {
     grid-row-start: 9;
 }
 
-.end-9 {
+.end-0900 {
     grid-row-end: 2;
 }
-.end-10 {
+.end-1000 {
     grid-row-end: 3;
 }
-.end-11 {
+.end-1100 {
     grid-row-end: 4;
 }
-.end-12 {
+.end-1200 {
     grid-row-end: 5;
 }
-.end-13 {
+.end-1300 {
     grid-row-end: 6;
 }
-.end-14 {
+.end-1400 {
     grid-row-end: 7;
 }
-.end-15 {
+.end-1500 {
     grid-row-end: 8;
 }
-.end-16 {
+.end-1600 {
     grid-row-end: 9;
 }
-.end-17 {
+.end-1700 {
     grid-row-end: 10;
 }
-.end-18 {
+.end-1800 {
     grid-row-end: 11;
 }
 

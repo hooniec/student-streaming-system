@@ -44,7 +44,7 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 	        </nav>
             <div class="timetable col-10">
               <div class="timeline">
-                <div class=<"spacer"></div>
+                <div class="spacer"></div>
                 <div class="time-marker">8:00</div>
                 <div class="time-marker">9:00</div>
                 <div class="time-marker">10:00</div>
@@ -62,39 +62,35 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                   <div class="date">
                     <p class="date-day">Mon</p>
                   </div>
-                  <div class="events">
+                  <div class="events mon-events">
                   </div>
                 </div>
                 <div class="day tues">
                   <div class="date">
                     <p class="date-day">Tues</p>
                   </div>
-                  <div class="events">
+                  <div class="events tues-events">
                   </div>
                 </div>
                 <div class="day wed">
                   <div class="date">
                     <p class="date-day">Wed</p>
                   </div>
-                  <div class="events">
+                  <div class="events wed-events">
                   </div>
                 </div>
                 <div class="day thurs">
                   <div class="date">
                     <p class="date-day">Thurs</p>
                   </div>
-                  <div class="events">
+                  <div class="events thurs-events">
                   </div>
                 </div>
                 <div class="day fri">
                   <div class="date">
                     <p class="date-day">Fri</p>
                   </div>
-                  <div class="events">
-                    <div class="event start-8 end-15 corp-fi">
-                      <p class="title">Corporate Finance</p>
-                      <p class="time">10:00 - 12:00</p>
-                    </div>
+                  <div class="events fri-events">
                   </div>
                 </div>
               </div>
@@ -107,9 +103,13 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 let collection = @Json.Serialize(Model);
 let courses = [];
 let submitCourses = [];
-const courseSelection = document.querySelector(".js-course-selection");
-const btn = document.querySelector('#btn');
-const mondayEvents = document.querySelector(".mon .event");
+const courseSelection = document.querySelector(".js-course-selection"),
+    btn = document.querySelector('#btn'),
+    mondayEvents = document.querySelector(".mon-events"),
+    tuesdayEvents = document.querySelector(".tues-events"),
+    wednesdayEvents = document.querySelector(".wed-events"),
+    thursdayEvents = document.querySelector(".thurs-events"),
+    fridayEvents = document.querySelector(".fri-events");
 
 
 btn.addEventListener('click', (event) => {
@@ -135,19 +135,77 @@ btn.addEventListener('click', (event) => {
 });
 
 function displayTimetable(submitCourses) {
-    console.log(Object.values(submitCourses))
+    cleanTimetable();
+
     for (var i = 0; i < submitCourses.length; i++){
-        var streamDay = submitCourses[i]['day']);
-        if (streamDay == 'Monday') {
-            console.log("Find monday stream")
-            const div = document.createElement("div");
-            const p = document.createElement("p");
-            p.innerText = "Test";
-            div.appendChild(p);
-            mondayEvents.appendChild(div);
+        const div = document.createElement("div");
+        const streamSpan = document.createElement("span");
+        const classroomSpan = document.createElement("span");
+        const capacitySpan = document.createElement("span");
+        const input = document.createElement("input");
+        
+        var streamID = submitCourses[i]['streamID'];
+
+        streamSpan.innerText = streamID;
+        classroomSpan.innerText = submitCourses[i]['room'];
+        capacitySpan.innerText = submitCourses[i]['capacity'];
+
+        input.type = "radio";
+        input.name = streamID.slice(0, -4) + streamID.slice(-2);
+        input.value = submitCourses[i]['streamID'];
+
+        div.appendChild(streamSpan);
+        div.appendChild(classroomSpan);
+        div.appendChild(capacitySpan);
+        div.appendChild(input);
+
+        div.classList.add('event', 'start-' + submitCourses[i]['startTime'], 'end-' + submitCourses[i]['endTime'])
+
+        switch (submitCourses[i]['day']) {
+            case 'Monday':
+                mondayEvents.appendChild(div);
+                break;
+            case 'Tuesday':
+                tuesdayEvents.appendChild(div);
+                break;
+            case 'Wednesday':
+                wednesdayEvents.appendChild(div);
+                break;
+            case 'Thursday':
+                thursdayEvents.appendChild(div);
+                break;
+            case 'Friday':
+                fridayEvents.appendChild(div);
         }
     }
 };
+
+function cleanTimetable() {
+    mondayEvents.replaceChildren();
+    tuesdayEvents.replaceChildren();
+    wednesdayEvents.replaceChildren();
+    thursdayEvents.replaceChildren();
+    fridayEvents.replaceChildren();
+};
+
+function limitCheckBoxSelection() {
+    const checkboxgroup = courseSelection.querySelectorAll("input");
+    console.log(checkboxgroup.value)
+	var limit = 4;
+	for (var i = 0; i < checkboxgroup.length; i++) {
+		checkboxgroup[i].onclick = function() {
+			var checkedcount = 0;
+				for (var i = 0; i < checkboxgroup.length; i++) {
+				checkedcount += (checkboxgroup[i].checked) ? 1 : 0;
+			}
+			if (checkedcount > limit) {
+				console.log("You can select maximum of " + limit + " checkbox.");
+				alert("You can select maximum of " + limit + " checkbox.");
+				this.checked = false;
+			}
+		}
+	}
+}
 
 function displayMajorCourses(selectMajor) {
     let majorCourseList = collection[selectMajor.value];
