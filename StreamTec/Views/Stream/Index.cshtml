@@ -42,9 +42,11 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 			        </li>
 		        </ul>
 	        </nav>
-            <div class="timetable col-10">
+            
+            <div class="timetable col-10 grid">
+              
               <div class="timeline">
-                <div class=<"spacer"></div>
+                <div class="spacer"></div>
                 <div class="time-marker">8:00</div>
                 <div class="time-marker">9:00</div>
                 <div class="time-marker">10:00</div>
@@ -58,42 +60,55 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                 <div class="time-marker">18:00</div>
               </div>
               <div class="days">
+                
                 <div class="day mon">
-                  <div class="date">
-                    <p class="date-day">Mon</p>
-                  </div>
-                  <div class="events">
+                       
+                  <div class="events ">
+                            <div class="event start-10 end-13 corp-fi">
+                                <p class="title">Corporate Finance</p>
+                                <p class="time">10:00 - 13:00</p>
+                            </div>
                   </div>
                 </div>
                 <div class="day tues">
-                  <div class="date">
-                    <p class="date-day">Tues</p>
-                  </div>
+
+              
                   <div class="events">
+                            
+                            <div class="event start-15 end-18 corp-fi">
+                                <p class="title">Corporate Finance</p>
+                                <p class="time">15:00 - 18:00</p>
+                            </div>
                   </div>
                 </div>
                 <div class="day wed">
-                  <div class="date">
-                    <p class="date-day">Wed</p>
-                  </div>
+                 
                   <div class="events">
+                      <div class="event start-8 end-11 corp-fi">
+                      <p class="title">Corporate Finance</p>
+                      <p class="time">8:00 - 11:00</p>
+                    </div>
                   </div>
                 </div>
                 <div class="day thurs">
-                  <div class="date">
-                    <p class="date-day">Thurs</p>
-                  </div>
+                 
                   <div class="events">
+                    <div class="event start-10 end-12 corp-fi">
+                      <p class="title">Corporate Finance</p>
+                      <p class="time">10:00 - 12:00</p>
+                    </div>
+                    <div class="event start-11 end-13 corp-fi">
+                      <p class="title">Corporate Finance</p>
+                      <p class="time">11:00 - 13:00</p>
+                    </div>
                   </div>
                 </div>
                 <div class="day fri">
-                  <div class="date">
-                    <p class="date-day">Fri</p>
-                  </div>
+                  
                   <div class="events">
                     <div class="event start-8 end-15 corp-fi">
                       <p class="title">Corporate Finance</p>
-                      <p class="time">10:00 - 12:00</p>
+                      <p class="time">8:00 - 15:00</p>
                     </div>
                   </div>
                 </div>
