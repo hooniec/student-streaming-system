@@ -18,14 +18,14 @@ namespace StreamTec.Controllers
         {
             Context = context;
         }
-
+        [Authorize(Roles = "Admin")]
         public List<Enrollment> EnrollmentList()
         {
             var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList() ; 
            
             return enrollments;
         }
-
+        [Authorize(Roles = "Admin")]
         public ActionResult AdminHome()
         {
             ViewData["Enrollments"] = EnrollmentList();
@@ -33,7 +33,7 @@ namespace StreamTec.Controllers
             return View();
         }
 
-        
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Search(string search)
         {
             var enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
@@ -47,7 +47,7 @@ namespace StreamTec.Controllers
 
             return View("AdminHome");
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id == null || Context.Enrollments == null)
@@ -73,7 +73,7 @@ namespace StreamTec.Controllers
 
             return View("AdminHome");
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(string stream, int student)
         {
             if (stream == null || student == null|| Context.Enrollments == null)

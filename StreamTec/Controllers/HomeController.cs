@@ -9,13 +9,12 @@ using System.Security.Claims;
 using System.Security.Permissions;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Identity;
-using StreamTec.Extensions;
+
 
 namespace StreamTec.Controllers
 {
     public class HomeController : Controller
     {
-         public string ReturnUrl { get; set; }
         private readonly WelTecContext _context;
 
         public HomeController(WelTecContext context)
@@ -56,11 +55,10 @@ namespace StreamTec.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Student student, string? returnUrl)
+        public async Task<IActionResult> Login(Student student)
         {
             int testID = 2208266;
             string testEmail = "ethan@email.com";
-            ReturnUrl = returnUrl;
             try
             {
                 // Validate a student details
@@ -76,6 +74,7 @@ namespace StreamTec.Controllers
                                 new Claim(ClaimTypes.Name, obj.StudentId.ToString()),
                                 new Claim(ClaimTypes.Email, obj.Email),
                                 new Claim(ClaimTypes.Role, "Admin"),
+                                new Claim(ClaimTypes.Role, "Student"),
                             };
                             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 

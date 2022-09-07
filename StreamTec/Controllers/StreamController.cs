@@ -76,10 +76,6 @@ namespace StreamTec.Controllers
 
             }
 
-            //ViewData["Streams"] = StreamList();
-            //return View();
-            //var serialized = JsonConvert.SerializeObject(streamDic);
-            //return Content(serialized, "application/json");
             return View(streamDic);
         }
     }

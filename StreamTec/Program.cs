@@ -87,12 +87,6 @@ app.UseCookiePolicy(cookiePolicyOptions);
 app.UseAuthentication();
 app.UseAuthorization();
 
-
-//app.UseEndpoints(endpoints =>
-//{
-//    endpoints.MapControllers();
-//});
-
 app.UseSession();
 app.MapControllerRoute(
     name: "default",
