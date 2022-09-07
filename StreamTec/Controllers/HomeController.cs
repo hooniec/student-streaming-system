@@ -1,13 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using StreamTec.Models;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
+using System.Security.Claims;
+using System.Security.Permissions;
+using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Identity;
+using StreamTec.Extensions;
 
 namespace StreamTec.Controllers
 {
     public class HomeController : Controller
     {
+         public string ReturnUrl { get; set; }
         private readonly WelTecContext _context;
 
         public HomeController(WelTecContext context)
@@ -48,8 +56,11 @@ namespace StreamTec.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(Student student)
+        public async Task<IActionResult> Login(Student student, string? returnUrl)
         {
+            int testID = 2208266;
+            string testEmail = "ethan@email.com";
+            ReturnUrl = returnUrl;
             try
             {
                 // Validate a student details
@@ -58,12 +69,92 @@ namespace StreamTec.Controllers
                     using (_context)
                     {
                         var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId) && s.Email.Equals(student.Email)).FirstOrDefault();
-                        if (obj != null)
+                        if (obj.StudentId == testID && obj.Email == testEmail)
                         {
-                            // Add a student details to session
+                            var claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.Name, obj.StudentId.ToString()),
+                                new Claim(ClaimTypes.Email, obj.Email),
+                                new Claim(ClaimTypes.Role, "Admin"),
+                            };
+                            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                            var authProperties = new AuthenticationProperties
+                            {
+                                //AllowRefresh = bool,
+                                // Refreshing the authentication session should be allowed.
+
+                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
+                                // The time at which the authentication ticket expires. A 
+                                // value set here overrides the ExpireTimeSpan option of 
+                                // CookieAuthenticationOptions set with AddCookie.
+
+                                IsPersistent = true,
+                                // Whether the authentication session is persisted across 
+                                // multiple requests. When used with cookies, controls
+                                // whether the cookie's lifetime is absolute (matching the
+                                // lifetime of the authentication ticket) or session-based.
+
+                                //IssuedUtc = < DateTimeOffset >,
+                                // The time at which the authentication ticket was issued.
+
+                                RedirectUri = "~/Home/Index"
+                                // The full path or absolute URI to be used as an http 
+                                // redirect response value.
+                            };
+
+                            // Add a student details to session                            
                             HttpContext.Session.SetString("_StudentId", obj.StudentId.ToString());
                             HttpContext.Session.SetString("_Email", obj.Email.ToString());
+
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                            
                             return RedirectToAction("Index", "Stream");
+                        }else if (obj != null)
+                        {
+                            var claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.Name, obj.StudentId.ToString()),
+                                new Claim(ClaimTypes.Email, obj.Email),
+                                new Claim(ClaimTypes.Role, "Student"),
+                            };
+                            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                            var authProperties = new AuthenticationProperties
+                            {
+                                //AllowRefresh = bool,
+                                // Refreshing the authentication session should be allowed.
+
+                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
+                                // The time at which the authentication ticket expires. A 
+                                // value set here overrides the ExpireTimeSpan option of 
+                                // CookieAuthenticationOptions set with AddCookie.
+
+                                IsPersistent = true,
+                                // Whether the authentication session is persisted across 
+                                // multiple requests. When used with cookies, controls
+                                // whether the cookie's lifetime is absolute (matching the
+                                // lifetime of the authentication ticket) or session-based.
+
+                                //IssuedUtc = < DateTimeOffset >,
+                                // The time at which the authentication ticket was issued.
+
+                                RedirectUri = "~/Home/Index"
+                                // The full path or absolute URI to be used as an http 
+                                // redirect response value.
+                            };
+
+                            // Add a student details to session                            
+                            HttpContext.Session.SetString("_StudentId", obj.StudentId.ToString());
+                            HttpContext.Session.SetString("_Email", obj.Email.ToString());
+
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                            return RedirectToAction("Index", "Stream");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
                         }                        
                     }
                 }
@@ -80,10 +171,13 @@ namespace StreamTec.Controllers
             return View();
         }
 
-        public ActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
             TempData["message"] = "Successfully logged out";
+
             return RedirectToAction("Index", "Home");
         }
 

@@ -10,6 +10,7 @@ using System.Linq;
 
 namespace StreamTec.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private WelTecContext Context { get; }
@@ -24,8 +25,7 @@ namespace StreamTec.Controllers
            
             return enrollments;
         }
-        //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-a-more-complex-data-model-for-an-asp-net-mvc-application
-        //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/reading-related-data-with-the-entity-framework-in-an-asp-net-mvc-application
+
         public ActionResult AdminHome()
         {
             ViewData["Enrollments"] = EnrollmentList();

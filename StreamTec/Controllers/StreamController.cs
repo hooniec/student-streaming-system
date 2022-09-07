@@ -6,7 +6,7 @@ using Stream = StreamTec.Models.Stream;
 
 namespace StreamTec.Controllers
 {
- 
+    [Authorize(Roles = "Student")]
     public class StreamController : Controller
     {
         public StreamController(WelTecContext context)
@@ -15,7 +15,6 @@ namespace StreamTec.Controllers
         }
 
         private readonly WelTecContext _context;
-
         public List<Stream> StreamList()
         {
             var enrollments = _context.Streams.ToList();
@@ -76,6 +75,7 @@ namespace StreamTec.Controllers
             {
 
             }
+
             //ViewData["Streams"] = StreamList();
             //return View();
             //var serialized = JsonConvert.SerializeObject(streamDic);
