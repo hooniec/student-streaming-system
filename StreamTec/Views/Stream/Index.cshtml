@@ -42,7 +42,9 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 			        </li>
 		        </ul>
 	        </nav>
-            <div class="timetable col-10">
+            
+            <div class="timetable col-10 grid">
+              
               <div class="timeline">
                 <div class="spacer"></div>
                 <div class="time-marker">8:00</div>
@@ -58,37 +60,38 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                 <div class="time-marker">18:00</div>
               </div>
               <div class="days">
+                
                 <div class="day mon">
                   <div class="date">
-                    <p class="date-day">Mon</p>
+                    <p class="text-primary">Monday</p>
                   </div>
                   <div class="events mon-events">
                   </div>
                 </div>
                 <div class="day tues">
                   <div class="date">
-                    <p class="date-day">Tues</p>
+                    <p class="text-primary">Tuesday</p>
                   </div>
                   <div class="events tues-events">
                   </div>
                 </div>
                 <div class="day wed">
                   <div class="date">
-                    <p class="date-day">Wed</p>
+                    <p class="text-primary">Wednesday</p>
                   </div>
                   <div class="events wed-events">
                   </div>
                 </div>
                 <div class="day thurs">
                   <div class="date">
-                    <p class="date-day">Thurs</p>
+                    <p class="text-primary">Thursday</p>
                   </div>
                   <div class="events thurs-events">
                   </div>
                 </div>
                 <div class="day fri">
                   <div class="date">
-                    <p class="date-day">Fri</p>
+                    <p class="text-primary">Friday</p>
                   </div>
                   <div class="events fri-events">
                   </div>
@@ -170,6 +173,19 @@ btn.addEventListener('click', (event) => {
 		selectedCourses.push(text);		
 	});
 
+    submitCourses.length = 0;
+
+	for (const [major, course] of Object.entries(courses)) {
+        for (const [key, streams] of Object.entries(course)) {
+            if (selectedCourses.includes(key)){
+                for (const [key, stream] of Object.entries(streams)){
+                    submitCourses.push(stream);
+                }
+            }
+		}
+	}
+    displayTimetable(submitCourses);
+});
 
 function displayTimetable(submitCourses) {
     cleanTimetable();
@@ -197,7 +213,7 @@ function displayTimetable(submitCourses) {
         div.appendChild(capacitySpan);
         div.appendChild(input);
 
-        div.classList.add('event', 'start-' + submitCourses[i]['startTime'], 'end-' + submitCourses[i]['endTime'])
+        div.classList.add('event', 'start-' + submitCourses[i]['startTime'], 'end-' + submitCourses[i]['endTime'], 'bg-primary', 'text-white')
 
         switch (submitCourses[i]['day']) {
             case 'Monday':
@@ -299,5 +315,6 @@ window.onload = function() {
     loadAllCourse();
     limitCheckBoxSelection(courseSelection.querySelectorAll("input"), 4);
 };
+
 </script>
 
