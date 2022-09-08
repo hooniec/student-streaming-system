@@ -15,6 +15,9 @@ namespace StreamTec.Controllers
         }
 
         private readonly WelTecContext _context;
+
+
+
         public List<Stream> StreamList()
         {
             var enrollments = _context.Streams.ToList();
@@ -28,7 +31,6 @@ namespace StreamTec.Controllers
         Dictionary<string, string> majorDic = new Dictionary<string, string>()
         {
             { "Cyber Security", "CS" },
-            //Applied Data Science
             { "Data Science", "DS"},
             { "Networking and Infra", "NI" },
             { "Software Development", "SD" },
