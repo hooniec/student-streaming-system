@@ -10,11 +10,20 @@
   --eventColor4: #d1ffe6;
 }
 
+
 .timetable {
     display: grid;
     gap: 10px;
     grid-template-columns: auto 1fr;
     margin: 2rem;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(211, 211, 211, .25);
+}
+
+.grid {
+    background-image: repeating-linear-gradient(rgba(211, 211, 211, .25) 0 1px, transparent 2px 100%);
+    background-size: 1px 70px;
 }
 
 .timeline {
@@ -23,19 +32,25 @@
 }
 
 .days {
-  display: grid;
-  grid-column: 2;
-  gap: 5px;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    display: grid;
+    grid-column: 2;
+    gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
 }
 
 .events {
-  display: grid;
-  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
-  border-radius: 5px;
-  background: var(--calBgColor);
+    display: grid;
+    grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+    border-left: 1px;
+    border-left-style: solid;
+    border-left-width: 2px;
+    border-color: rgba(211, 211, 211, .25);
 }
 
+.time-marker {
+    margin-top: -22px;
+}
 // Place on Timeline
 .start-0700 {
     grid-row-start: 0;
@@ -108,11 +123,11 @@
 }
 
 .event {
-  border: 1px solid var(--eventBorderColor);
-  border-radius: 5px;
-  padding: 0.5rem;
-  margin: 0 0.5rem;
+  
+  
+  margin: 2px 1px 2px 5px;
   background: white;
+
 }
 
 .space,
@@ -155,6 +170,5 @@ body {
 
 .date-day {
   display: inline;
-  font-size: 3rem;
-  font-weight: 100;
+  font-size: 2rem;
 }
