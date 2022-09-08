@@ -158,8 +158,9 @@ body {
 }
 
 .date {
-  display: flex;
-  gap: 1em;
+    display: flex;
+    gap: 1em;
+    justify-content: space-evenly;
 }
 
 .date-num {
