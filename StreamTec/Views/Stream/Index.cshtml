@@ -35,7 +35,7 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 				        <div class="js-course-selection"></div>
 			        </li>
 			        <li>
-				        <span name="course" id="course-list"></span>
+				        <button id="reset-btn">Unchecked All</button>
 			        </li>
 			        <li>
 				        <button id="btn">Get Selected Courses</button>
@@ -94,6 +94,7 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                   </div>
                 </div>
               </div>
+              <button id="submit-btn">Submit Timetable</button>
             </div><!-- End Timetable-->
         </div>
     </div>
@@ -104,6 +105,8 @@ let collection = @Json.Serialize(Model);
 let courses = [];
 let submitCourses = [];
 const courseSelection = document.querySelector(".js-course-selection"),
+    submitBtn = document.querySelector('#submit-btn'),
+    resetBtn = document.querySelector('#reset-btn'),
     btn = document.querySelector('#btn'),
     mondayEvents = document.querySelector(".mon-events"),
     tuesdayEvents = document.querySelector(".tues-events"),
@@ -111,6 +114,53 @@ const courseSelection = document.querySelector(".js-course-selection"),
     thursdayEvents = document.querySelector(".thurs-events"),
     fridayEvents = document.querySelector(".fri-events");
 
+submitBtn.addEventListener('click', (event) => {
+    var mondayRadioBtns = thursdayEvents.querySelectorAll('input[type="radio"]:checked');
+    //for (var radiobtn of mondayRadioBtns) {
+    //    var streamValueArr = radiobtn.value.split(',');
+    //    var streamStartTime = streamValueArr[1];
+    //    var streamEndTime = streamValueArr[2];
+
+    //    console.log(streamStartTime, streamEndTime);
+
+        
+    //}
+
+    for (var i = 0; i < mondayRadioBtns.length - 1; i++) {
+        var stream1 = mondayRadioBtns[i],
+            streamValueArr = mondayRadioBtns[i].value.split(','),
+            stream1StartTime = streamValueArr[1],
+            stream1EndTime = streamValueArr[2];
+
+        for (var j = i + 1; j < mondayRadioBtns.length; j++) {
+            var stream2 = mondayRadioBtns[j],
+            streamValueArr = mondayRadioBtns[j].value.split(','),
+            stream2StartTime = streamValueArr[1],
+            stream2EndTime = streamValueArr[2];
+
+            //if ((stream1EndTime >= stream2StartTime && stream1StartTime <= stream2StartTime) || (stream1StartTime >= stream2EndTime && stream1EndTime >= stream2StartTime)) {
+            //    console.log("There is clash");
+            //}
+            if ((stream1StartTime < stream2EndTime && stream1StartTime >= stream2StartTime) || 
+                (stream2StartTime < stream1EndTime && stream2StartTime > stream1StartTime) || 
+                (stream1StartTime == stream2StartTime && stream1EndTime == stream2EndTime)) {
+                    console.log("There is clash");
+            }
+            else {
+                console.log("No clashes");
+            }
+        }
+    }
+
+});
+
+resetBtn.addEventListener('click', (event) => {
+    var checkboxes = courseSelection.querySelectorAll("input");
+
+    for (var checkbox of checkboxes) {
+        checkbox.checked = false;
+    }
+});
 
 btn.addEventListener('click', (event) => {
 	let checkboxes = document.querySelectorAll('input:checked');
@@ -136,6 +186,7 @@ btn.addEventListener('click', (event) => {
 
 function displayTimetable(submitCourses) {
     cleanTimetable();
+    console.log(submitCourses);
 
     for (var i = 0; i < submitCourses.length; i++){
         const div = document.createElement("div");
@@ -151,8 +202,8 @@ function displayTimetable(submitCourses) {
         capacitySpan.innerText = submitCourses[i]['capacity'];
 
         input.type = "radio";
-        input.name = streamID.slice(0, -4) + streamID.slice(-2);
-        input.value = submitCourses[i]['streamID'];
+        input.name = streamID.slice(0, -3);
+        input.value = submitCourses[i]['streamID'] + ", " + submitCourses[i]['startTime'] + ", " + submitCourses[i]['endTime'];
 
         div.appendChild(streamSpan);
         div.appendChild(classroomSpan);
@@ -188,22 +239,26 @@ function cleanTimetable() {
     fridayEvents.replaceChildren();
 };
 
-function limitCheckBoxSelection() {
-    const checkboxgroup = courseSelection.querySelectorAll("input");
-    console.log(checkboxgroup.value)
-	var limit = 4;
+function limitCheckBoxSelection(checkboxgroup, limit) {
 	for (var i = 0; i < checkboxgroup.length; i++) {
-		checkboxgroup[i].onclick = function() {
-			var checkedcount = 0;
-				for (var i = 0; i < checkboxgroup.length; i++) {
-				checkedcount += (checkboxgroup[i].checked) ? 1 : 0;
-			}
-			if (checkedcount > limit) {
-				console.log("You can select maximum of " + limit + " checkbox.");
-				alert("You can select maximum of " + limit + " checkbox.");
-				this.checked = false;
-			}
-		}
+        checkboxgroup[i].addEventListener('click', function() {
+            var checkedcount = 0;
+
+            for (var i = 0; i < checkboxgroup.length; i++) {
+
+                if (checkboxgroup[i].checked && checkboxgroup[i].classList.contains("45credits")) {
+                    checkedcount += 3;
+                } else if (checkboxgroup[i].checked) {
+                    checkedcount += 1;
+                }
+
+                if (checkedcount > limit){
+                    this.checked = false;
+                    checkedcount -= 1;
+                    alert("You can only select a maximum of 60 credits");
+                }
+            }
+        })
 	}
 }
 
@@ -230,13 +285,17 @@ function createCourseCheckbox(course) {
     const li = document.createElement("li");
     const label = document.createElement("label");
     const checkbox = document.createElement("input");
+
+    if (course == "IT-7510") {
+        checkbox.classList.add("45credits");
+    }
     label.innerText = course;
     checkbox.type = "checkbox";
     li.appendChild(label);
     li.appendChild(checkbox);
     li.classList.add("courseObj")
     courseSelection.appendChild(li);
-}
+};
 
 function loadAllCourse() {
     for (var major in collection) {
@@ -251,6 +310,6 @@ function loadAllCourse() {
 
 window.onload = function() {
     loadAllCourse();
+    limitCheckBoxSelection(courseSelection.querySelectorAll("input"), 4);
 };
-
 </script>
