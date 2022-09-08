@@ -124,10 +124,14 @@
 
 .event {
   
-  
+  text-align: center;
   margin: 2px 1px 2px 5px;
   background: white;
 
+}
+
+.event p {
+    display: block;
 }
 
 .space,
