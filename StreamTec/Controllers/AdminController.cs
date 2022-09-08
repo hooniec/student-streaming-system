@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sql;
 using Microsoft.EntityFrameworkCore;
 using StreamTec.Models;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace StreamTec.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private WelTecContext Context { get; }
@@ -16,15 +18,14 @@ namespace StreamTec.Controllers
         {
             Context = context;
         }
-
+        [Authorize(Roles = "Admin")]
         public List<Enrollment> EnrollmentList()
         {
             var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList() ; 
            
             return enrollments;
         }
-        //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-a-more-complex-data-model-for-an-asp-net-mvc-application
-        //https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/reading-related-data-with-the-entity-framework-in-an-asp-net-mvc-application
+        [Authorize(Roles = "Admin")]
         public ActionResult AdminHome()
         {
             ViewData["Enrollments"] = EnrollmentList();
@@ -32,7 +33,7 @@ namespace StreamTec.Controllers
             return View();
         }
 
-        
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Search(string search)
         {
             var enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
@@ -46,7 +47,7 @@ namespace StreamTec.Controllers
 
             return View("AdminHome");
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id == null || Context.Enrollments == null)
@@ -72,7 +73,7 @@ namespace StreamTec.Controllers
 
             return View("AdminHome");
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(string stream, int student)
         {
             if (stream == null || student == null|| Context.Enrollments == null)

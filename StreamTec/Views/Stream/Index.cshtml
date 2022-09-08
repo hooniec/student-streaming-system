@@ -170,19 +170,6 @@ btn.addEventListener('click', (event) => {
 		selectedCourses.push(text);		
 	});
 
-    submitCourses.length = 0;
-
-	for (const [major, course] of Object.entries(courses)) {
-        for (const [key, streams] of Object.entries(course)) {
-            if (selectedCourses.includes(key)){
-                for (const [key, stream] of Object.entries(streams)){
-                    submitCourses.push(stream);
-                }
-            }
-		}
-	}
-    displayTimetable(submitCourses);
-});
 
 function displayTimetable(submitCourses) {
     cleanTimetable();
@@ -313,3 +300,4 @@ window.onload = function() {
     limitCheckBoxSelection(courseSelection.querySelectorAll("input"), 4);
 };
 </script>
+

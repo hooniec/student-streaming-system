@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using StreamTec.Models;
 using Stream = StreamTec.Models.Stream;
 
 namespace StreamTec.Controllers
 {
+    [Authorize(Roles = "Student")]
     public class StreamController : Controller
     {
         public StreamController(WelTecContext context)
@@ -13,6 +15,8 @@ namespace StreamTec.Controllers
         }
 
         private readonly WelTecContext _context;
+
+
 
         public List<Stream> StreamList()
         {
