@@ -31,7 +31,7 @@ namespace StreamTec.Models
 
             modelBuilder.Entity<Student>().Property(s => s.StudentId).ValueGeneratedNever().IsRequired();
             modelBuilder.Entity<Enrollment>().Property(s => s.StreamID).ValueGeneratedNever().IsRequired();
-            modelBuilder.Entity<Enrollment>().Property(s => s.StudentId).IsRequired();
+            modelBuilder.Entity<Enrollment>().Property(s => s.StudentId).ValueGeneratedNever().IsRequired();
         }
     }
 }

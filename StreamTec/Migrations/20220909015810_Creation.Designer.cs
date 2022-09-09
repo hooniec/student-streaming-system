@@ -11,14 +11,14 @@ using StreamTec.Models;
 namespace StreamTec.Migrations
 {
     [DbContext(typeof(WelTecContext))]
-    [Migration("20220818231023_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220909015810_Creation")]
+    partial class Creation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -35,8 +35,9 @@ namespace StreamTec.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(7)");
 
                     b.HasKey("EnrollmentID");
 
@@ -84,8 +85,9 @@ namespace StreamTec.Migrations
 
             modelBuilder.Entity("StreamTec.Models.Student", b =>
                 {
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
+                    b.Property<string>("StudentId")
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
 
                     b.Property<string>("Email")
                         .IsRequired()

@@ -40,7 +40,7 @@ namespace StreamTec.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
-                enrollments = enrollments.Where(s => s.StudentId.ToString().Contains(search));
+                enrollments = enrollments.Where(s => s.StudentId.Contains(search));
             }
 
             ViewData["Enrollments"] = enrollments.ToList();
@@ -74,7 +74,7 @@ namespace StreamTec.Controllers
             return View("AdminHome");
         }
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Add(string stream, int student)
+        public async Task<IActionResult> Add(string stream, string student)
         {
             if (stream == null || student == null|| Context.Enrollments == null)
             {
