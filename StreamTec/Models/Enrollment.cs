@@ -11,7 +11,7 @@ namespace StreamTec.Models
         public virtual Stream Streams { get; set; }
 
 
-        public int StudentId { get; set; }
+        public string StudentId { get; set; }
         public string StreamID { get; set; }
     }
 }

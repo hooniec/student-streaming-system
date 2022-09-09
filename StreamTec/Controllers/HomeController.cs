@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace StreamTec.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly WelTecContext _context;
@@ -54,14 +55,14 @@ namespace StreamTec.Controllers
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
             }
-            return View();
+            return View(student);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(Student student)
         {
-            int testID = 2208266;
+            string testID = "2208266";
             string testEmail = "ethan@email.com";
             try
             {
@@ -69,13 +70,13 @@ namespace StreamTec.Controllers
                 if (ModelState.IsValid)
                 {
                     using (_context)
-                    {
+                    {   
                         var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId) && s.Email.Equals(student.Email)).FirstOrDefault();
                         if (obj.StudentId == testID && obj.Email == testEmail)
                         {
                             var claims = new List<Claim>
                             {
-                                new Claim(ClaimTypes.Name, obj.StudentId.ToString()),
+                                new Claim(ClaimTypes.Name, obj.StudentId),
                                 new Claim(ClaimTypes.Email, obj.Email),
                                 new Claim(ClaimTypes.Role, "Admin"),
                                 new Claim(ClaimTypes.Role, "Student"),
@@ -84,10 +85,10 @@ namespace StreamTec.Controllers
 
                             var authProperties = new AuthenticationProperties
                             {
-                                //AllowRefresh = bool,
+                                AllowRefresh = true,
                                 // Refreshing the authentication session should be allowed.
 
-                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
+                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                                 // The time at which the authentication ticket expires. A 
                                 // value set here overrides the ExpireTimeSpan option of 
                                 // CookieAuthenticationOptions set with AddCookie.
@@ -107,7 +108,7 @@ namespace StreamTec.Controllers
                             };
 
                             // Add a student details to session                            
-                            HttpContext.Session.SetString("_StudentId", obj.StudentId.ToString());
+                            HttpContext.Session.SetString("_StudentId", obj.StudentId);
                             HttpContext.Session.SetString("_Email", obj.Email.ToString());
 
                             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
@@ -117,7 +118,7 @@ namespace StreamTec.Controllers
                         {
                             var claims = new List<Claim>
                             {
-                                new Claim(ClaimTypes.Name, obj.StudentId.ToString()),
+                                new Claim(ClaimTypes.Name, obj.StudentId),
                                 new Claim(ClaimTypes.Email, obj.Email),
                                 new Claim(ClaimTypes.Role, "Student"),
                             };
@@ -125,10 +126,10 @@ namespace StreamTec.Controllers
 
                             var authProperties = new AuthenticationProperties
                             {
-                                //AllowRefresh = bool,
+                                AllowRefresh = true,
                                 // Refreshing the authentication session should be allowed.
 
-                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
+                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                                 // The time at which the authentication ticket expires. A 
                                 // value set here overrides the ExpireTimeSpan option of 
                                 // CookieAuthenticationOptions set with AddCookie.
@@ -161,7 +162,7 @@ namespace StreamTec.Controllers
                         }                        
                     }
                 }
-                //TempData["message"] = "Invalid student details";
+                TempData["message"] = "Invalid student details";
                 return View(student);
             }
             catch (DbUpdateException /* ex */)
