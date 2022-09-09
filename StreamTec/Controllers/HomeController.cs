@@ -42,6 +42,10 @@ namespace StreamTec.Controllers
                     TempData["message"] = string.Format("Successfully Registered with Student ID: {0}", student.StudentId);
                     return RedirectToAction("Index", "Home");
                 }
+                else
+                {
+                    return View(student);
+                }
             }
             catch (DbUpdateException /* ex */)
             {
@@ -55,7 +59,7 @@ namespace StreamTec.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Student student)
+        public async Task<IActionResult> Index(Student student)
         {
             int testID = 2208266;
             string testEmail = "ethan@email.com";
@@ -153,12 +157,12 @@ namespace StreamTec.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home");
+                            return View(student);
                         }                        
                     }
                 }
-                TempData["message"] = "Invalid student details";
-                return RedirectToAction("Index", "Home");
+                //TempData["message"] = "Invalid student details";
+                return View(student);
             }
             catch (DbUpdateException /* ex */)
             {

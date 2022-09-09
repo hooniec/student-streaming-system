@@ -119,15 +119,6 @@ const courseSelection = document.querySelector(".js-course-selection"),
 
 submitBtn.addEventListener('click', (event) => {
     var mondayRadioBtns = thursdayEvents.querySelectorAll('input[type="radio"]:checked');
-    //for (var radiobtn of mondayRadioBtns) {
-    //    var streamValueArr = radiobtn.value.split(',');
-    //    var streamStartTime = streamValueArr[1];
-    //    var streamEndTime = streamValueArr[2];
-
-    //    console.log(streamStartTime, streamEndTime);
-
-        
-    //}
 
     for (var i = 0; i < mondayRadioBtns.length - 1; i++) {
         var stream1 = mondayRadioBtns[i],
@@ -141,9 +132,6 @@ submitBtn.addEventListener('click', (event) => {
             stream2StartTime = streamValueArr[1],
             stream2EndTime = streamValueArr[2];
 
-            //if ((stream1EndTime >= stream2StartTime && stream1StartTime <= stream2StartTime) || (stream1StartTime >= stream2EndTime && stream1EndTime >= stream2StartTime)) {
-            //    console.log("There is clash");
-            //}
             if ((stream1StartTime < stream2EndTime && stream1StartTime >= stream2StartTime) || 
                 (stream2StartTime < stream1EndTime && stream2StartTime > stream1StartTime) || 
                 (stream1StartTime == stream2StartTime && stream1EndTime == stream2EndTime)) {
