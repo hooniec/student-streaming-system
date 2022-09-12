@@ -55,6 +55,7 @@ namespace StreamTec.Controllers
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
             }
+
             return View(student);
         }
 
@@ -162,7 +163,7 @@ namespace StreamTec.Controllers
                         }                        
                     }
                 }
-                TempData["message"] = "Invalid student details";
+                //TempData["message"] = "Invalid student details";
                 return View(student);
             }
             catch (DbUpdateException /* ex */)
