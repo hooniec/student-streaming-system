@@ -43,6 +43,10 @@ namespace StreamTec.Controllers
                     TempData["message"] = string.Format("Successfully Registered with Student ID: {0}", student.StudentId);
                     return RedirectToAction("Index", "Home");
                 }
+                else
+                {
+                    return View(student);
+                }
             }
             catch (DbUpdateException /* ex */)
             {
@@ -168,7 +172,7 @@ namespace StreamTec.Controllers
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
             }
-            return View("Index");
+            return View();
         }
 
         public async Task<IActionResult> Logout()
