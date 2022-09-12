@@ -16,10 +16,35 @@ namespace StreamTec.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("StreamTec.Models.Enrollment", b =>
+                {
+                    b.Property<int>("EnrollmentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentID"), 1L, 1);
+
+                    b.Property<string>("StreamID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(7)");
+
+                    b.HasKey("EnrollmentID");
+
+                    b.HasIndex("StreamID");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Enrollment", (string)null);
+                });
 
             modelBuilder.Entity("StreamTec.Models.Stream", b =>
                 {
@@ -58,11 +83,9 @@ namespace StreamTec.Migrations
 
             modelBuilder.Entity("StreamTec.Models.Student", b =>
                 {
-                    b.Property<int>("StudentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"), 1L, 1);
+                    b.Property<string>("StudentId")
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -71,6 +94,25 @@ namespace StreamTec.Migrations
                     b.HasKey("StudentId");
 
                     b.ToTable("Student", (string)null);
+                });
+
+            modelBuilder.Entity("StreamTec.Models.Enrollment", b =>
+                {
+                    b.HasOne("StreamTec.Models.Stream", "Streams")
+                        .WithMany()
+                        .HasForeignKey("StreamID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StreamTec.Models.Student", "Students")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Streams");
+
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }
