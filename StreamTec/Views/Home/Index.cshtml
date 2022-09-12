@@ -7,7 +7,7 @@ ViewData["Title"] = "Home Page";
 <!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center justify-content-center">
 <div class="container position-relative">
-    <h1>Student Streaming System</h1>
+    <h1>Student Streaming Services</h1>
     <!-- ======= Login/Registration Section ======= -->
     <section id="contact" class="contact">
         <div class="container">
@@ -15,7 +15,7 @@ ViewData["Title"] = "Home Page";
             <div class="col-lg-6">
                 <div class="section-title">
                     <h2>Registration / Login</h2>
-                    <p class="mt-3">Register and Login for System.</p>
+                    <p class="mt-3">Register or Login for Timetable Enrollment.</p>
                 </div>
                 <form method="post" class="php-email-form">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -38,8 +38,8 @@ ViewData["Title"] = "Home Page";
 </div>
 </section><!-- End Hero -->
 
-@if (TempData["message"] != null)
+@*@if (TempData["message"] != null)
 {
     <script>alert('@TempData["message"]');</script>
-}
+}*@
 
