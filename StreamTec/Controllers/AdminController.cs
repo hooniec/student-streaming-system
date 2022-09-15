@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using StreamTec.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Stream = StreamTec.Models.Stream;
 // Was causing ambgious error with .Include but dont think it is being used for anything else.
 //using System.Data.Entity; 
 
@@ -25,10 +26,19 @@ namespace StreamTec.Controllers
            
             return enrollments;
         }
+
+        public List<Stream> StreamList()
+        {
+            var streams = Context.Streams.ToList();
+
+            return streams;
+        }
+
         [Authorize(Roles = "Admin")]
         public ActionResult AdminHome()
         {
             ViewData["Enrollments"] = EnrollmentList();
+            ViewData["Streams"] = StreamList();
 
             return View();
         }
@@ -44,7 +54,7 @@ namespace StreamTec.Controllers
             }
 
             ViewData["Enrollments"] = enrollments.ToList();
-
+            ViewData["Streams"] = StreamList();
             return View("AdminHome");
         }
         [Authorize(Roles = "Admin")]
@@ -70,22 +80,29 @@ namespace StreamTec.Controllers
 
             var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList();
             ViewData["Enrollments"] = enrollments.ToList();
-
+            ViewData["Streams"] = StreamList();
             return View("AdminHome");
         }
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(string stream, string student)
         {
-            if (stream == null || student == null|| Context.Enrollments == null)
+            var studentObj = Context.Enrollments.Where(s => s.Students.StudentId.Equals(student) && s.StreamID.Equals(stream));
+            var streamObj = Context.Enrollments.Where(s => s.Students.StudentId.Equals(student) && s.StreamID.Equals(stream));
+
+            if (streamObj == null || studentObj == null)
             {
+
                 return NotFound();
             }
+            else
+            {
+                Context.Enrollments.Add(new Enrollment { StudentId = student, StreamID = stream });
+                Context.SaveChanges();
+            }
 
-            Context.Enrollments.Add(new Enrollment { StudentId = student, StreamID = stream });
-            Context.SaveChanges();
             var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList();
             ViewData["Enrollments"] = enrollments.ToList();
-
+            ViewData["Streams"] = StreamList();
             return View("AdminHome");
         }
         public ActionResult Index()
