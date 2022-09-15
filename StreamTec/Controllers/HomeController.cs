@@ -2,18 +2,14 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using StreamTec.Models;
-using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Security.Claims;
-using System.Security.Permissions;
-using System.Reflection.Metadata;
-using Microsoft.AspNetCore.Identity;
 
 
 namespace StreamTec.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         private readonly WelTecContext _context;
@@ -181,6 +177,56 @@ namespace StreamTec.Controllers
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
             TempData["message"] = "Successfully logged out";
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> AfterSubmit()
+        {
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+            TempData["message"] = "Successfully Submitted";
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitTimetable(string studentId, List<string> completedStreamList)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (_context)
+                    {
+                        foreach (var stream in completedStreamList)
+                        {
+                            var enrollment = new Enrollment { StudentId = studentId, StreamID = stream };
+                            _context.Add(enrollment);
+
+                            //var streamObj = _context.Enrollments.Where(s => s..Equals(student.StudentId) && s.Email.Equals(student.Email)).FirstOrDefault();
+                        }
+
+                        _context.SaveChanges();
+                        return Json("Success");
+                    }
+                }
+                else
+                {
+                    return Json("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return Json("Caught error");
+            }
+
+
+            //HttpContext.Session.Clear();
+            //await HttpContext.SignOutAsync(
+            //    CookieAuthenticationDefaults.AuthenticationScheme);
+            //TempData["message"] = "Successfully submitted your timetable";
 
             return RedirectToAction("Index", "Home");
         }

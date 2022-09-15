@@ -24,7 +24,7 @@
               <li><a class="text-white" asp-area="" asp-controller="Stream" asp-action="Index">Timetable test</a></li>
               <li><a></a></li>
               @if(@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") != null){
-                  <li><span class="text-white ml-3">Student ID: @HttpContextAccessor.HttpContext.Session.GetString("_StudentId")</span></li>
+                  <li><span class="text-white ml-3">Student ID: <span class="student-id">@HttpContextAccessor.HttpContext.Session.GetString("_StudentId")</span></span></li>
                   <li><a class="text-danger" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
               }
             </ul>

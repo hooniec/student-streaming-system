@@ -115,10 +115,12 @@ const courseSelection = document.querySelector(".js-course-selection"),
     tuesdayEvents = document.querySelector(".tues-events"),
     wednesdayEvents = document.querySelector(".wed-events"),
     thursdayEvents = document.querySelector(".thurs-events"),
-    fridayEvents = document.querySelector(".fri-events");
+    fridayEvents = document.querySelector(".fri-events"),
+    studentId = document.querySelector(".student-id").innerText;
 
 submitBtn.addEventListener('click', (event) => {
     let radioBtnsByDays = [];
+    let selectedStreamCodes = [];
 
     var mondayRadioBtns = tuesdayEvents.querySelectorAll('input[type="radio"]:checked'),
      tuesdayRadioBtns = tuesdayEvents.querySelectorAll('input[type="radio"]:checked'),
@@ -185,7 +187,6 @@ function validateClash(radioBtnsByDays) {
                     (stream1StartTime == stream2StartTime && stream1EndTime == stream2EndTime)) {
 
                     hasClash = true;
-                    //console.log(stream1Code, stream2Code, hasClash);
                     console.log(hasClash);
                 }
                 else {
@@ -195,19 +196,44 @@ function validateClash(radioBtnsByDays) {
         }
     }
 
+
     if (hasClash) {
         if (confirm('We found stream clash(es)\nAre you sure you want to submit this timetable?')) {
             console.log("Submit timetable and user acknowledge the clahses.")
+            pushSelectedStreams();
         } else {
             console.log("Do nothing and user acknowledged the clashes.")
         }
     } else {
         if (confirm('There are no clahses\nAre you sure you want to submit this timetable?')) {
             console.log("Submit timetable with no clashes.")
+            pushSelectedStreams();
         } else {
             console.log("Do nothing")
         }
     }
+};
+
+function pushSelectedStreams() {
+    var selectedStreamCodes = [];
+    var timetable = document.querySelector('.timetable');
+    var selectedStreams = timetable.querySelectorAll('input[type="radio"]:checked');
+
+    for (var stream of selectedStreams){
+        var streamValueArr = stream.value.split(','),
+            streamCode = streamValueArr[0];
+
+        selectedStreamCodes.push(streamCode);
+    }
+
+    $.post('/Home/SubmitTimetable', { studentId: studentId, completedStreamList: selectedStreamCodes },
+        function(data) {
+            if (data.result != null && data.result != undefined) {
+                alert(data.result);
+            }
+    })
+
+    window.location.href = '@Url.Action("AfterSubmit", "Home")';
 };
 
 function displayTimetable(submitCourses) {
