@@ -19,7 +19,7 @@ namespace StreamTec.Controllers
         {
             Context = context;
         }
-        [Authorize(Roles = "Admin")]
+        
         public List<Enrollment> EnrollmentList()
         {
             var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList() ; 
@@ -34,12 +34,18 @@ namespace StreamTec.Controllers
             return streams;
         }
 
-        [Authorize(Roles = "Admin")]
+        public List<Student> StudentList()
+        {
+            var studentsList = Context.Students.ToList();
+
+            return studentsList;
+        }
+
         public ActionResult AdminHome()
         {
             ViewData["Enrollments"] = EnrollmentList();
             ViewData["Streams"] = StreamList();
-
+            ViewData["Students"] = StudentList();
             return View();
         }
 
@@ -55,6 +61,7 @@ namespace StreamTec.Controllers
 
             ViewData["Enrollments"] = enrollments.ToList();
             ViewData["Streams"] = StreamList();
+            ViewData["Students"] = StudentList();
             return View("AdminHome");
         }
         [Authorize(Roles = "Admin")]
@@ -74,13 +81,16 @@ namespace StreamTec.Controllers
             }
             else
             {
+
                 Context.Enrollments.Remove(enrol);
                 await Context.SaveChangesAsync();
+
             }
 
             var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList();
             ViewData["Enrollments"] = enrollments.ToList();
             ViewData["Streams"] = StreamList();
+            ViewData["Students"] = StudentList();
             return View("AdminHome");
         }
         [Authorize(Roles = "Admin")]
@@ -91,7 +101,6 @@ namespace StreamTec.Controllers
 
             if (streamObj == null || studentObj == null)
             {
-
                 return NotFound();
             }
             else
@@ -103,12 +112,13 @@ namespace StreamTec.Controllers
             var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList();
             ViewData["Enrollments"] = enrollments.ToList();
             ViewData["Streams"] = StreamList();
+            ViewData["Students"] = StudentList();
             return View("AdminHome");
         }
         public ActionResult Index()
         { 
 
-            return View();
+            return View("AdminHome");
         }
 
         public ActionResult AddView()
