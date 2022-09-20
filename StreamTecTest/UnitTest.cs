@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using StreamTec.Controllers;
 using StreamTec.Models;
+using System.Net;
+
 namespace StreamTecTest
 {
     [TestClass]
@@ -40,7 +42,6 @@ namespace StreamTecTest
             //var result = controller.Index() as ViewResult;
             var test =  controller.Search(searchID);
 
-            Assert.IsNotNull(test, "Expected not Null");
             Console.Write(test);
             Assert.IsTrue(test.IsCompleted);
         }
@@ -52,7 +53,6 @@ namespace StreamTecTest
             var result = controller.Index() as ViewResult;
             var test = controller.Search(searchID);
             
-            Assert.IsNotNull(test, "Expected Not Null");
             Assert.IsTrue(test.IsCompleted);
         }
 
@@ -64,8 +64,8 @@ namespace StreamTecTest
             var controller = new HomeController(_context);
             var result = controller.Register(student);
 
-            Assert.AreEqual(student.StudentId, "4569874");
-            Assert.AreEqual(student.Email, "register@email.com");
+            //Assert.AreEqual(result, student.StudentId);
+            //Assert.AreEqual(result.Email, "register@email.com");            
 
             Assert.IsTrue(result.IsCompleted);
 
@@ -78,32 +78,28 @@ namespace StreamTecTest
 
             var controller = new HomeController(_context);
             var result = controller.Index(student);
-
             var index = controller.Index() as ViewResult;
 
-            Assert.AreEqual(student.StudentId, "2208266");
-            Assert.AreEqual(student.Email, "ethan@email.com");
+            //var okResult = result as IActionResult;
+            //Assert.IsNotNull(okResult);
+            //Console.WriteLine(okResult);
 
-            Assert.IsTrue(result.IsCompleted);
+            Assert.IsTrue(result.IsCompleted);            
             Assert.IsTrue(index.ViewName == "Index");
-
         }
 
         [TestMethod]
         public void InvalidLoginTest()
         {
-            var student = new Student { Email = "badEmail", StudentId = "Test" };
+            var student = new Student { StudentId = "2208266", Email = "ethan@email.com" };
 
             var controller = new HomeController(_context);
             var result = controller.Index(student);
 
             var index = controller.Index() as ViewResult;
 
-            Assert.AreEqual(student.StudentId, "Test");
-            Assert.AreEqual(student.Email, "badEmail");
-
-            Assert.IsTrue(result.IsCompleted);
-            Console.WriteLine(result);
+            Assert.IsFalse(result.IsCompletedSuccessfully);
+            Console.WriteLine(student.StudentId + student.Email);
             Assert.IsTrue(index.ViewName == "Index");
         }
     }
