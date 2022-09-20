@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NuGet.Protocol.Core.Types;
+using Moq;
 using StreamTec.Controllers;
 using StreamTec.Models;
-using System.Data.Entity.Infrastructure;
 namespace StreamTecTest
 {
     [TestClass]
@@ -11,7 +9,14 @@ namespace StreamTecTest
     {
         string searchID = "2208266";
 
-        private WelTecContext _context;
+        public WelTecContext _context;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+
+        }
+
         [TestMethod]
         public void TestHomeView()
         {
@@ -19,13 +24,7 @@ namespace StreamTecTest
             var result = controller.Index() as ViewResult;
             Assert.IsTrue(result.ViewName == "Index");
         }
-        //[TestMethod]
-        //public void TestStreamIndex()
-        //{
-        //    var controller = new StreamController(_context);
-        //    var result = controller.Index() as ViewResult;
-        //    Assert.IsTrue(result.ViewName == "");
-        //}
+
         [TestMethod]
         public void TestAdminHome()
         {
@@ -35,16 +34,80 @@ namespace StreamTecTest
         }
 
         [TestMethod]
-        public void SearchAdmin()
+        public void SearchAdminWithEntry()
+        {
+            var controller = new AdminController(_context);
+            //var result = controller.Index() as ViewResult;
+            var test =  controller.Search(searchID);
+
+            Assert.IsNotNull(test, "Expected not Null");
+            Console.Write(test);
+            Assert.IsTrue(test.IsCompleted);
+        }
+
+        [TestMethod]
+        public void SearchAdminWithoutEntry()
         {
             var controller = new AdminController(_context);
             var result = controller.Index() as ViewResult;
-
             var test = controller.Search(searchID);
+            
+            Assert.IsNotNull(test, "Expected Not Null");
+            Assert.IsTrue(test.IsCompleted);
+        }
 
+        [TestMethod]
+        public void RegisterTest()
+        {
+            var student = new Student { Email = "register@email.com", StudentId = "4569874" };
 
+            var controller = new HomeController(_context);
+            var result = controller.Register(student);
 
-            Assert.IsTrue(result.ViewName == "AdminHome");
+            Assert.AreEqual(student.StudentId, "4569874");
+            Assert.AreEqual(student.Email, "register@email.com");
+
+            Assert.IsTrue(result.IsCompleted);
+
+        }
+
+        [TestMethod]
+        public void ValidLoginTest()
+        {
+            var student = new Student { Email = "ethan@email.com", StudentId = "2208266" };
+
+            var controller = new HomeController(_context);
+            var result = controller.Index(student);
+
+            var index = controller.Index() as ViewResult;
+
+            Assert.AreEqual(student.StudentId, "2208266");
+            Assert.AreEqual(student.Email, "ethan@email.com");
+
+            Assert.IsTrue(result.IsCompleted);
+            Assert.IsTrue(index.ViewName == "Index");
+
+        }
+
+        [TestMethod]
+        public void InvalidLoginTest()
+        {
+            var student = new Student { Email = "badEmail", StudentId = "Test" };
+
+            var controller = new HomeController(_context);
+            var result = controller.Index(student);
+
+            var index = controller.Index() as ViewResult;
+
+            Assert.AreEqual(student.StudentId, "Test");
+            Assert.AreEqual(student.Email, "badEmail");
+
+            Assert.IsTrue(result.IsCompleted);
+            Console.WriteLine(result);
+            Assert.IsTrue(index.ViewName == "Index");
         }
     }
 }
+
+
+

@@ -64,6 +64,7 @@ namespace StreamTec.Controllers
             ViewData["Students"] = StudentList();
             return View("AdminHome");
         }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {

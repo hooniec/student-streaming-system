@@ -16,8 +16,6 @@ namespace StreamTec.Controllers
 
         private readonly WelTecContext _context;
 
-
-
         public List<Stream> StreamList()
         {
             var enrollments = _context.Streams.ToList();
