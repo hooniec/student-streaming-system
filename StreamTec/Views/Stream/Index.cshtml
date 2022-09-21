@@ -1,4 +1,5 @@
 ﻿@model Dictionary<string, Dictionary<string, List<Stream>>>
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
 ViewData["Title"] = "Timetable";
@@ -227,6 +228,13 @@ function pushSelectedStreams() {
     }
 
     $.post('/Home/SubmitTimetable', { studentId: studentId, completedStreamList: selectedStreamCodes },
+        function(data) {
+            if (data.result != null && data.result != undefined) {
+                alert(data.result);
+            }
+    })
+
+    $.post('/Home/SendEmail', { studentId: studentId, completedStreamList: selectedStreamCodes },
         function(data) {
             if (data.result != null && data.result != undefined) {
                 alert(data.result);

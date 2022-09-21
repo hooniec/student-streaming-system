@@ -5,7 +5,8 @@ using StreamTec.Models;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Security.Claims;
-
+using System.Net.Mail;
+using MimeKit;
 
 namespace StreamTec.Controllers
 {
@@ -107,6 +108,7 @@ namespace StreamTec.Controllers
                             // Add a student details to session                            
                             HttpContext.Session.SetString("_StudentId", obj.StudentId);
                             HttpContext.Session.SetString("_Email", obj.Email.ToString());
+                            TempData["_Email"] = obj.Email;
 
                             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                             
@@ -184,6 +186,7 @@ namespace StreamTec.Controllers
 
         public async Task<IActionResult> AfterSubmit()
         {
+            // SendEmail();
             HttpContext.Session.Clear();
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
@@ -206,10 +209,11 @@ namespace StreamTec.Controllers
                             var enrollment = new Enrollment { StudentId = studentId, StreamID = stream };
                             _context.Add(enrollment);
 
-                            //var streamObj = _context.Enrollments.Where(s => s..Equals(student.StudentId) && s.Email.Equals(student.Email)).FirstOrDefault();
+                            //var streamObj = _context.Streams.Where(s => s.StreamID.Equals(stream)).FirstOrDefault();
+                            //streamObj.Capacity -= 1;
                         }
-
                         _context.SaveChanges();
+
                         return Json("Success");
                     }
                 }
@@ -222,14 +226,39 @@ namespace StreamTec.Controllers
             {
                 return Json("Caught error");
             }
+        }
 
+        [HttpPost]
+        public IActionResult SendEmail(string studentId, List<string> completedStreamList)
+        {
+            //string studentEmail = HttpContext.Session.GetString("_Email");
+            var studentEmail = _context.Students.Where(s => s.StudentId.Equals(studentId)).FirstOrDefault().Email;
 
-            //HttpContext.Session.Clear();
-            //await HttpContext.SignOutAsync(
-            //    CookieAuthenticationDefaults.AuthenticationScheme);
-            //TempData["message"] = "Successfully submitted your timetable";
+            var msg = new MimeMessage();
+            msg.From.Add(new MailboxAddress("WelTec Stream System", "streamtec.weltec@gmail.com"));
+            msg.To.Add(new MailboxAddress("Student", studentEmail));
+            msg.Subject = "Here is your completed timetable for student ID: " + studentId + ".";
 
-            return RedirectToAction("Index", "Home");
+            var builder = new BodyBuilder();
+
+            foreach (var stream in completedStreamList)
+            {
+                var obj = _context.Streams.Where(s => s.StreamID.Equals(stream)).FirstOrDefault();
+
+                builder.TextBody += obj.StreamID + " : " + obj.Day + " ( Start - " + obj.StartTime + ", End - " + obj.EndTime + " ) \n";
+            }
+
+            msg.Body = builder.ToMessageBody();
+
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("streamtec.weltec@gmail.com", "yacdyxmmtfldmkrh");
+
+                client.Send(msg);
+                client.Disconnect(true);
+            }
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
