@@ -71,7 +71,7 @@ namespace StreamTec.Controllers
                 if (ModelState.IsValid)
                 {
                     using (_context)
-                    {   
+                    {                        
                         var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId) && s.Email.Equals(student.Email)).FirstOrDefault();
                         if (obj.StudentId == testID && obj.Email == testEmail)
                         {
@@ -150,10 +150,10 @@ namespace StreamTec.Controllers
                             };
 
                             // Add a student details to session                            
-                            HttpContext.Session.SetString("_StudentId", obj.StudentId.ToString());
-                            HttpContext.Session.SetString("_Email", obj.Email.ToString());
+                            //HttpContext.Session.SetString("_StudentId", obj.StudentId.ToString());
+                            //HttpContext.Session.SetString("_Email", obj.Email.ToString());
 
-                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                            //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                             return RedirectToAction("Index", "Stream");
                         }
