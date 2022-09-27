@@ -15,12 +15,6 @@ namespace StreamTecTest
         string searchID = "2208266";
 
         private WelTecContext _context;
-        public List<Student> StudentList()
-        {
-            var studentsList = _context.Students.ToList();
-
-            return studentsList;
-        }
 
         //private Mock<WelTecContext> _mockRepository;
         //private ModelStateDictionary _modelState;

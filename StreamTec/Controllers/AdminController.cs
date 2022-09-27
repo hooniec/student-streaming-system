@@ -52,14 +52,25 @@ namespace StreamTec.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Search(string search)
         {
-            var enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
-
-            if (!String.IsNullOrEmpty(search))
+            try
             {
-                enrollments = enrollments.Where(s => s.StudentId.Contains(search));
+                var enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
+
+                if (!String.IsNullOrEmpty(search))
+                {
+                    enrollments = enrollments.Where(s => s.StudentId.Contains(search));
+                }
+
+                ViewData["Enrollments"] = enrollments.ToList();
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
             }
 
-            ViewData["Enrollments"] = enrollments.ToList();
             ViewData["Streams"] = StreamList();
             ViewData["Students"] = StudentList();
             return View("AdminHome");
