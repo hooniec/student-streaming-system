@@ -40,7 +40,7 @@ namespace StreamTec.Controllers
                 {
                     _context.Add(student);
                     await _context.SaveChangesAsync();
-                    TempData["message"] = string.Format("Successfully Registered with Student ID: {0}", student.StudentId);
+                    //TempData["message"] = string.Format("Successfully Registered with Student ID: {0}", student.StudentId);
                     return RedirectToAction("Index", "Home");
                 }
                 else
