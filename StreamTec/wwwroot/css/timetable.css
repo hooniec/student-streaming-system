@@ -10,6 +10,17 @@
   --eventColor4: #d1ffe6;
 }
 
+/*--------------------------------------------------------------
+# Sidebar 
+--------------------------------------------------------------*/
+
+.courseObj label {
+    font-size: small;
+}
+
+/*--------------------------------------------------------------
+# Timetable 
+--------------------------------------------------------------*/
 
 .timetable {
     display: grid;
@@ -28,6 +39,7 @@
 
 .timeline {
     display: grid;
+    grid-template-columns: minmax(30px, 100px);
     grid-template-rows: repeat(var(--numHours), var(--timeHeight));
 }
 
@@ -45,11 +57,15 @@
     border-left: 1px;
     border-left-style: solid;
     border-left-width: 2px;
+    border-bottom-width: 2px;
     border-color: rgba(211, 211, 211, .25);
+    margin-top: 10.6px;
+
+    
 }
 
 .time-marker {
-    margin-top: -22px;
+    margin-top: -10px;
 }
 // Place on Timeline
 .start-0700 {
@@ -176,4 +192,9 @@ body {
 .date-day {
   display: inline;
   font-size: 2rem;
+}
+
+
+.sidebar {
+
 }

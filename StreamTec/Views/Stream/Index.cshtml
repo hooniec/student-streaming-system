@@ -20,11 +20,11 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
     <div class="container-fluid">
-        <div class="row pt-xxl-3">
-	        <nav class="sidebar card py-2 mb-4 col-1">
-		        <ul class="nav flex-column" id="nav_accordion">
+        <div class="row pt-xxl-3 justify-content-around" ">
+	        <nav class="sidebar card py-2 col-1">
+                <ul class="flex-column list-unstyled">
 			        <li class="nav-item">
-				        <select class="form-select form-select-sm" aria-label=".form-select-sm example" onchange="displayMajorCourses(this)">
+				        <select class="form-select form-select-sm aria-label form-select-sm example my-1" onchange="displayMajorCourses(this)">
 					        <option selected>Please select a major</option>
 					        @foreach (var major in Model)
 					        {
@@ -36,70 +36,71 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 				        <div class="js-course-selection"></div>
 			        </li>
 			        <li>
-				        <button id="reset-btn">Unchecked All</button>
+				        <button id="reset-btn" class="btn btn-danger w-100 my-2">Unselect</button>
 			        </li>
 			        <li>
-				        <button id="btn">Get Selected Courses</button>
+				        <button id="btn" class="btn btn-success w-100">Get Streams</button>
 			        </li>
 		        </ul>
 	        </nav>
             
             <div class="timetable col-10 grid">
               
-              <div class="timeline">
+              <div class="timeline justify-content-center">
                 <div class="spacer"></div>
-                <div class="time-marker">8:00</div>
-                <div class="time-marker">9:00</div>
-                <div class="time-marker">10:00</div>
-                <div class="time-marker">11:00</div>
-                <div class="time-marker">12:00</div>
-                <div class="time-marker">13:00</div>
-                <div class="time-marker">14:00</div>
-                <div class="time-marker">15:00</div>
-                <div class="time-marker">16:00</div>
-                <div class="time-marker">17:00</div>
-                <div class="time-marker">18:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">8:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">9:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">10:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">11:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">12:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">13:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">14:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">15:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">16:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">17:00</div>
+                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">18:00</div>
               </div>
+
               <div class="days">
-                
                 <div class="day mon">
-                  <div class="date">
-                    <p class="text-primary">Monday</p>
+                  <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                    <p class="text-white">Monday</p>
                   </div>
                   <div class="events mon-events">
                   </div>
                 </div>
                 <div class="day tues">
-                  <div class="date">
-                    <p class="text-primary">Tuesday</p>
+                  <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                    <p class="text-white">Tuesday</p>
                   </div>
                   <div class="events tues-events">
                   </div>
                 </div>
                 <div class="day wed">
-                  <div class="date">
-                    <p class="text-primary">Wednesday</p>
+                    <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                    <p class="text-white">Wednesday</p>
                   </div>
                   <div class="events wed-events">
                   </div>
                 </div>
                 <div class="day thurs">
-                  <div class="date">
-                    <p class="text-primary">Thursday</p>
+                    <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                    <p class="text-white">Thursday</p>
                   </div>
                   <div class="events thurs-events">
                   </div>
                 </div>
                 <div class="day fri">
-                  <div class="date">
-                    <p class="text-primary">Friday</p>
+                  <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                    <p class="text-white">Friday</p>
                   </div>
                   <div class="events fri-events">
                   </div>
                 </div>
               </div>
-              <button id="submit-btn">Submit Timetable</button>
             </div><!-- End Timetable-->
+            <button id="submit-btn" class="btn btn-primary w-25 text-white">Submit Timetable</button>
+
         </div>
     </div>
 </section><!-- End Main Content -->
@@ -146,7 +147,8 @@ btn.addEventListener('click', (event) => {
 	let checkboxes = document.querySelectorAll('input:checked');
 	let selectedCourses = [];
 	checkboxes.forEach((checkbox) => {
-		var text = checkbox.previousElementSibling.innerText;
+		//var text = checkbox.previousElementSibling.innerText;
+        var text = checkbox.nextElementSibling.innerText;
 		selectedCourses.push(text);		
 	});
 
@@ -353,9 +355,10 @@ function createCourseCheckbox(course) {
     }
     label.innerText = course;
     checkbox.type = "checkbox";
-    li.appendChild(label);
+    checkbox.classList.add("mx-1");
     li.appendChild(checkbox);
-    li.classList.add("courseObj")
+    li.appendChild(label);
+    li.classList.add("courseObj");
     courseSelection.appendChild(li);
 };
 
