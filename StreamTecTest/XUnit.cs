@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
 using StreamTec.Controllers;
 using StreamTec.Models;
@@ -86,15 +87,13 @@ namespace StreamTecTest
             // Use a clean instance of the context to run the test
             using (var context = new WelTecContext(options))
             {
-                var testStudentId = "2208266";
+                var testStudentId = "99";
 
                 var adminController = new AdminController(context);
                 var view = adminController.Search(testStudentId);
-                var result = context.Enrollments.FirstOrDefault(s => s.StudentId == testStudentId);
+                var result = context.Enrollments.ToList().Where(s => s.StudentId.Contains(testStudentId));
 
-                
-                //Assert.Equal(testStudentId, result.Students.ToString());
-                _testOutputHelper.WriteLine(result.Students.ToString());
+                Assert.Equal(0.ToString(), result.Count().ToString());
                 Assert.True(view.IsCompletedSuccessfully);
             }
         }
@@ -141,6 +140,47 @@ namespace StreamTecTest
         }
 
         [Fact]
+        public void DeleteTestInvalid()
+        {
+            var options = new DbContextOptionsBuilder<WelTecContext>()
+                .UseInMemoryDatabase(databaseName: "localdb")
+                .Options;
+
+            // Insert seed data into the database using one instance of the context
+            using (var context = new WelTecContext(options))
+            {
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 1, StudentId = "2208266", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 2, StudentId = "1111111", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 3, StudentId = "2222222", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 4, StudentId = "3333333", StreamID = "IT-5115-Com-A-03" });
+                context.Students.Add(new Student { StudentId = "2208266", Email = "ethan@email.com" });
+                context.Streams.Add(new StreamTec.Models.Stream { StreamID = "IT-5115-Com-A-03", Room = "T605", Credits = 15, Day = "Monday", StartTime = "0800", EndTime = "1000", Capacity = 24 });
+                context.SaveChanges();
+            }
+
+            // Use a clean instance of the context to run the test
+            using (var context = new WelTecContext(options))
+            {
+                //
+                var deleteId = 6;
+
+                //
+                var test = context.Enrollments.ToList();
+                Assert.Equal("4", test.Count.ToString());
+
+                //
+                var adminController = new AdminController(context);
+                var view = adminController.Delete(deleteId);
+                var testDeleted = context.Enrollments.ToList();
+
+                //
+                _testOutputHelper.WriteLine(testDeleted.Count.ToString());
+                Assert.Equal("4", testDeleted.Count.ToString());
+                Assert.True(view.IsCompletedSuccessfully);
+            }
+        }
+
+        [Fact]
         public void AddTest()
         {
             var options = new DbContextOptionsBuilder<WelTecContext>()
@@ -164,11 +204,54 @@ namespace StreamTecTest
             {
                 //
                 string studentID = "4444444";
-                string streamID = "eight@email.com";
+                string streamID = "IT-5115-Com-A-02";
 
                 //
                 var test = context.Enrollments.ToList();
                 Assert.Equal("4", test.Count.ToString());
+
+                //
+                var adminController = new AdminController(context);
+                var view = adminController.Add(studentID, streamID);
+                var testAdded = context.Enrollments.ToList();
+
+                //
+                _testOutputHelper.WriteLine(testAdded.Count.ToString());
+                Assert.Equal("5", testAdded.Count.ToString());
+                Assert.True(view.IsCompletedSuccessfully);
+            }
+        }
+
+        [Fact]
+        public void AddTestInvalid()
+        {
+            var options = new DbContextOptionsBuilder<WelTecContext>()
+                .UseInMemoryDatabase(databaseName: "localdb")
+                .Options;
+
+            // Insert seed data into the database using one instance of the context
+            using (var context = new WelTecContext(options))
+            {
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 1, StudentId = "2208266", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 2, StudentId = "1111111", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 3, StudentId = "2222222", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 4, StudentId = "3333333", StreamID = "IT-5115-Com-A-03" });
+                context.Students.Add(new Student { StudentId = "2208266", Email = "ethan@email.com" });
+                context.Streams.Add(new StreamTec.Models.Stream { StreamID = "IT-5115-Com-A-03", Room = "T605", Credits = 15, Day = "Monday", StartTime = "0800", EndTime = "1000", Capacity = 24 });
+                context.SaveChanges();
+            }
+
+            // Use a clean instance of the context to run the test
+            using (var context = new WelTecContext(options))
+            {
+                //
+                string studentID = "a";
+                string streamID = "a";
+
+                //
+                var test = context.Enrollments.ToList();
+                Assert.Equal("4", test.Count.ToString());
+                _testOutputHelper.WriteLine(test.Count.ToString());
 
                 //
                 var adminController = new AdminController(context);
@@ -262,6 +345,47 @@ namespace StreamTecTest
         }
 
         [Fact]
+        public void RegisterTestDuplicate()
+        {
+            var options = new DbContextOptionsBuilder<WelTecContext>()
+               .UseInMemoryDatabase(databaseName: "localdb")
+               .Options;
+
+            // Insert seed data into the database using one instance of the context
+            using (var context = new WelTecContext(options))
+            {
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 1, StudentId = "2208266", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 2, StudentId = "1111111", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 3, StudentId = "2222222", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 4, StudentId = "3333333", StreamID = "IT-5115-Com-A-03" });
+                context.Students.Add(new Student { StudentId = "2208266", Email = "ethan@email.com" });
+                context.Streams.Add(new StreamTec.Models.Stream { StreamID = "IT-5115-Com-A-03", Room = "T605", Credits = 15, Day = "Monday", StartTime = "0800", EndTime = "1000", Capacity = 24 });
+                context.SaveChanges();
+            }
+
+            // Use a clean instance of the context to run the test
+            using (var context = new WelTecContext(options))
+            {
+                //
+                var student = new Student { StudentId = "2208266", Email = "ethan@email.com" };
+
+                //
+                var test = context.Students.ToList();
+                Assert.Equal("1", test.Count.ToString());
+
+                //
+                var homeController = new HomeController(context);
+                var view = homeController.Register(student);
+                var testRegister = context.Students.ToList();
+
+                //
+                _testOutputHelper.WriteLine(view.Exception.ToString());
+                Assert.Equal("1", testRegister.Count.ToString());
+                Assert.True(view.IsFaulted);
+            }
+        }
+
+        [Fact]
         public async void HomeLoginTest()
         {
             var options = new DbContextOptionsBuilder<WelTecContext>()
@@ -319,9 +443,35 @@ namespace StreamTecTest
             
         }
 
-        public void Dispose()
+        [Fact]
+        public void StreamIndexTest()
         {
-            throw new NotImplementedException();
+            var options = new DbContextOptionsBuilder<WelTecContext>()
+             .UseInMemoryDatabase(databaseName: "localdb")
+             .Options;
+
+
+            // Insert seed data into the database using one instance of the context
+            using (var context = new WelTecContext(options))
+            {
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 1, StudentId = "2208266", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 2, StudentId = "1111111", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 3, StudentId = "2222222", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 4, StudentId = "3333333", StreamID = "IT-5115-Com-A-03" });
+                context.Students.Add(new Student { StudentId = "2208266", Email = "ethan@email.com" });
+                context.Streams.Add(new StreamTec.Models.Stream { StreamID = "IT-5115-Com-A-03", Room = "T605", Credits = 15, Day = "Monday", StartTime = "0800", EndTime = "1000", Capacity = 24 });
+                context.SaveChanges();
+            }
+
+            // Use a clean instance of the context to run the test
+            using (var context = new WelTecContext(options))
+            {
+                var streamController = new StreamController(context);
+                var result = streamController.Index() as ViewResult;
+
+                _testOutputHelper.WriteLine(result.ToString());
+                Assert.IsType<ViewResult>(result);
+            }              
         }
     }
 }

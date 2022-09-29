@@ -150,10 +150,10 @@ namespace StreamTec.Controllers
                             };
 
                             // Add a student details to session                            
-                            //HttpContext.Session.SetString("_StudentId", obj.StudentId.ToString());
-                            //HttpContext.Session.SetString("_Email", obj.Email.ToString());
+                            HttpContext.Session.SetString("_StudentId", obj.StudentId.ToString());
+                            HttpContext.Session.SetString("_Email", obj.Email.ToString());
 
-                            //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
                             return RedirectToAction("Index", "Stream");
                         }
