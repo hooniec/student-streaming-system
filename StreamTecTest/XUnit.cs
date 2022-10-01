@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Web.Http;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -20,7 +21,7 @@ namespace StreamTecTest
     public class XUnit
     {
         private DbContextOptions<WelTecContext> dbContextOptions;
-
+        Mock<HttpContext> mockHttpContext;
 
 
         private readonly ITestOutputHelper _testOutputHelper;
@@ -411,18 +412,14 @@ namespace StreamTecTest
                 var student = new Student { StudentId = "2208266", Email = "ethan@email.com" };
 
                 //
-                var test = context.Students.ToList();
-                Assert.Equal("1", test.Count.ToString());
+                //var test = context.Students.ToList();
+                //Assert.Equal("1", test.Count.ToString());
 
                 //
                 var homeController = new HomeController(context);
 
+                HttpCookie cookie = new HttpCookie("LoginCookie", student.StudentId, "LocalHost");
 
-
-                //var sessionMock = new Mock<ISession>();
-                //sessionMock.Setup(s => s.SetString("_studentId", "2008266"));
-                //sessionMock.Setup(s => s.SetString("_Email", "ethan@email.com"));
-                
                 var view = homeController.Index(student);
                 //
                 //_testOutputHelper.WriteLine(view.Exception.ToString());
@@ -439,8 +436,12 @@ namespace StreamTecTest
 
             var adminController = new HomeController(_context);
             var result = adminController.Logout();
+            HttpCookie cookie = new HttpCookie("LoginCookie", "2208266", "LocalHost");
 
-            
+            cookie = null;
+
+            _testOutputHelper.WriteLine(result.Exception.ToString());
+            //Assert.True(result.IsCompletedSuccessfully);
         }
 
         [Fact]
