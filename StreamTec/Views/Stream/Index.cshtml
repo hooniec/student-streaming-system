@@ -6,7 +6,7 @@ ViewData["Title"] = "Timetable";
 IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 }
 
-<!-- ======= Breadcrumbs ======= -->
+@*<!-- ======= Breadcrumbs ======= -->
 <section class="breadcrumbs">
 <div class="container">
 
@@ -15,7 +15,7 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 	</div>
 
 </div>
-</section><!-- End Breadcrumbs -->
+</section><!-- End Breadcrumbs -->*@
 
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
@@ -335,8 +335,9 @@ function displayMajorCourses(selectMajor) {
         majorCourses.push(key);
     } 
 
+
     for (const courseObj of courseObjs) {
-        let courseID = courseObj.firstElementChild.innerHTML;
+        let courseID = courseObj.lastElementChild.innerHTML;
         courseObj.style.display = "none";
 
         if (majorCourses.includes(courseID)) {

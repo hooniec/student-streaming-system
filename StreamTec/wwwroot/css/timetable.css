@@ -139,21 +139,23 @@
 }
 
 .event {
-  
-  text-align: center;
-  margin: 2px 1px 2px 5px;
-  background: white;
-
+    text-align: center;
+    margin: 0px 1px 2px 5px;
+    background: white;
+    font-size: 0.7rem;
+    border-radius: 0.5rem;
 }
 
 .event p {
     display: block;
+    margin-bottom: 0.1rem !important;
 }
 
 .space,
 .date {
   height: 60px
 }
+
 
 // Global / Etc
 
