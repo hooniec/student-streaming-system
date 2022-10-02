@@ -270,11 +270,11 @@ function displayTimetable(submitCourses) {
         input.value = submitCourses[i]['streamID'] + ", " + submitCourses[i]['startTime'] + ", " + submitCourses[i]['endTime'];
 
         div.appendChild(streamSpan);
-        div.appendChild(classroomSpan);
+        //div.appendChild(classroomSpan);
         div.appendChild(capacitySpan);
         div.appendChild(input);
 
-        div.classList.add('event', 'start-' + submitCourses[i]['startTime'], 'end-' + submitCourses[i]['endTime'], 'bg-info', 'text-white')
+            div.classList.add('event', 'start-' + submitCourses[i]['startTime'], 'end-' + submitCourses[i]['endTime'], 'bg-info', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
 
         switch (submitCourses[i]['day']) {
             case 'Monday':
