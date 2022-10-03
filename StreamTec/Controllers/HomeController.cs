@@ -25,6 +25,11 @@ namespace StreamTec.Controllers
             return View("Index");
         }
 
+        public IActionResult Help()
+        {
+            return View("Help");
+        }
+
         // Register Action for registring a student
         [HttpPost]
         [ValidateAntiForgeryToken]

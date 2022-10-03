@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Stream = StreamTec.Models.Stream;
 // Was causing ambgious error with .Include but dont think it is being used for anything else.
-//using System.Data.Entity; 
+// using System.Data.Entity; 
 
 namespace StreamTec.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class AdminController : Controller
     {
         private WelTecContext Context { get; }
@@ -49,14 +49,27 @@ namespace StreamTec.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Search(string search)
+        public async Task<IActionResult> Sorting(string sortOrder)
         {
-            var enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
+            ViewData["StuSortParm"] = String.IsNullOrEmpty(sortOrder) ? "stuID_desc" : "";
+            ViewData["StrSortParm"] = sortOrder == "strID" ? "strID_desc" : "strID";
 
-            if (!String.IsNullOrEmpty(search))
+            var enrollments = from e in Context.Enrollments.Include(s => s.Students).Include(s => s.Streams) select e;
+
+            switch (sortOrder)
             {
-                enrollments = enrollments.Where(s => s.StudentId.Contains(search));
+                case "stuID_desc":
+                    enrollments = enrollments.OrderByDescending(s => s.StudentId);
+                    break;
+                case "strID":
+                    enrollments = enrollments.OrderBy(s => s.StreamID);
+                    break;
+                case "strID_desc":
+                    enrollments = enrollments.OrderByDescending(s => s.StreamID);
+                    break;
+                default:
+                    enrollments = enrollments.OrderBy(s => s.StudentId);
+                    break;
             }
 
             ViewData["Enrollments"] = enrollments.ToList();
@@ -64,7 +77,36 @@ namespace StreamTec.Controllers
             ViewData["Students"] = StudentList();
             return View("AdminHome");
         }
-        [Authorize(Roles = "Admin")]
+
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Search(string stuID, string strID)
+        {
+            var enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
+
+            if (!String.IsNullOrEmpty(stuID) && !String.IsNullOrEmpty(strID))
+            {
+                enrollments = enrollments.Where(s => s.StudentId.Contains(stuID) && s.StreamID.Contains(strID));
+                
+            }
+            else if (!String.IsNullOrEmpty(stuID))
+            {
+                enrollments = enrollments.Where(s => s.StudentId.Contains(stuID));
+            }
+            else if (!String.IsNullOrEmpty(strID))
+            {
+                enrollments = enrollments.Where(s => s.StreamID.Contains(strID));
+            }
+            else
+            {
+                enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
+            }
+
+            ViewData["Enrollments"] = enrollments.ToList();
+            ViewData["Streams"] = StreamList();
+            ViewData["Students"] = StudentList();
+            return View("AdminHome");
+        }
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id == null || Context.Enrollments == null)
@@ -93,7 +135,8 @@ namespace StreamTec.Controllers
             ViewData["Students"] = StudentList();
             return View("AdminHome");
         }
-        [Authorize(Roles = "Admin")]
+
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(string stream, string student)
         {
             var studentObj = Context.Enrollments.Where(s => s.Students.StudentId.Equals(student) && s.StreamID.Equals(stream));

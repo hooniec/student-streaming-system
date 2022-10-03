@@ -8,63 +8,68 @@
     IEnumerable<Enrollment> enrollments = ViewData["Enrollments"] as IEnumerable<Enrollment>;
 }
 
-<div class="container">
-     <div class="d-flex justify-content-between align-items-center">
-       <h2>Administration</h2>
-</div>
-    <form asp-controller="Admin" asp-action="Search">
-        <div class="d-flex justify-content-between align-items-center">
-            <h4>Search</h4>
+<!-- ======= Main Content ======= -->
+<section class="inner-page">
+    <div class="container-fluid row">
+        <div class="col-3 d-flex justify-content-center">
+            <form asp-controller="Admin" asp-action="Add" class="d-flex flex-column w-75">
+                <h4>Enroll</h4>
+                <select name="student" class="form-select-sm">
+                    <option disabled selected>Select a student</option>
+                    @foreach (Student student in students)
+                    {
+                        <option value="@student.StudentId">@student.StudentId</option>
+                    }
+                </select>
+                <select name="stream" class="form-select-sm">
+                    <option disabled selected>Select a stream</option>
+                    @foreach (Stream stream in streams)
+                    {
+                        <option value="@stream.StreamID">@stream.StreamID</option>
+                    }
+                </select>
+                <input type="submit" value="Add" />
+            </form>
         </div>
-        <p>
-            <input type="text" placeholder="StudentID" name="search" />
-            <input type="submit" value="Search" />
-        </p>
-    </form>
-    <form asp-controller="Admin" asp-action="Add">
-        <div class="d-flex justify-content-between align-items-center">
-            <h4>Enrol a Student to a Stream</h4>
+            <div class="col-9 border-left">
+                <h4>Search</h4>
+                <form asp-controller="Admin" asp-action="Search">
+                    <input type="text" placeholder="StudentID" name="stuID" />
+                    <input type="text" placeholder="StreamID" name="strID" />
+                    <input type="submit" value="Search" />
+                </form>
+                <div class="mt-5">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                <a asp-action="Sorting" asp-route-sortOrder="@ViewData["StuSortParm"]">@Html.DisplayNameFor(model => model.StudentId)</a>
+                                </th>
+                                <th scope="col">Email</th>
+                                <th scope="col">
+                                <a asp-action="Sorting" asp-route-sortOrder="@ViewData["StrSortParm"]">@Html.DisplayNameFor(model => model.StreamID)</a>
+                                </th>
+                                <th scope="col">Manage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(Enrollment enrol in enrollments)
+                            {
+                            <tr>
+                                <td>@enrol.StudentId</td>
+                                <td>@enrol.Students.Email</td>
+                                <td>@enrol.StreamID</td>
+                                <td><a asp-action="Delete" onclick="return confirm('Are you sure you want to delete this?')" asp-route-id="@enrol.EnrollmentID" class="text-danger">Delete</a></td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-        <p>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-@*            <input asp-for="StudentId" name="student" class="form-group mt-3" placeholder="StudentID" required/>
-            <span asp-validation-for="StudentId" class="text-danger field-validation-valid"></span>*@
-            <select name="student" class="form-select-sm">
-                @foreach (Student student in students)
-                {
-                    <option value="@student.StudentId">@student.StudentId</option>
-                }
-            </select>
-            <select name="stream" class="form-select-sm">
-                @foreach(Stream stream in streams)
-                {
-                    <option value="@stream.StreamID">@stream.StreamID</option>
-                }
-            </select>
-            <input type="submit" value="Add" />
-        </p>
-    </form>
-   <div>
-       <table class="table table-striped">
-           <thead>
-    <tr>
-      <th scope="col">StudentID</th>
-      <th scope="col">Email</th>
-      <th scope="col">StreamID</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-       @foreach(Enrollment enrol in enrollments)
-         {            
-         <tr>
-            <td>@enrol.StudentId</td>
-            <td>@enrol.Students.Email</td>
-            <td>@enrol.StreamID</td>
-            <td><a asp-action="Delete" onclick="return confirm('Are you sure you want to delete this?')"  asp-route-id="@enrol.EnrollmentID">Delete</a></td>
-        </tr>         
-         }
-  </tbody>
-       </table>
-   </div>
-</div> 
+    </div>
+
+</section><!-- End Main Content -->
+
+

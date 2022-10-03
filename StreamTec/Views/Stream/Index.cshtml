@@ -25,7 +25,7 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                 <ul class="flex-column list-unstyled">
 			        <li class="nav-item">
 				        <select class="form-select form-select-sm aria-label form-select-sm example my-1" onchange="displayMajorCourses(this)">
-					        <option selected>Please select a major</option>
+					        <option disabled selected>Select a major</option>
 					        @foreach (var major in Model)
 					        {
 						        <option value="@major.Key">@major.Key</option>
