@@ -18,20 +18,22 @@
     <header id="header" class="fixed-top">
         <div class="d-flex align-items-center justify-content-between px-5">
           <a class="logo"><img src="~/img/logo.png" alt="" class="img-fluid"></a>
-            @if(ViewData["Title"] != null)
-            {
-                <span class="text-white fw-bold">@ViewData["Title"]</span>
-            }
           <nav id="navbar" class="navbar">
             <ul>
                 @if(@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") == "2208266")
                 {
                         <li><a class="text-white fw-bold" asp-area="" asp-controller="Admin" asp-action="AdminHome">Admin</a></li>
+                        
                 }
+                    @if (@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") == null)
+                    {
+                        <li><a class="text-white fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    }
                     <li><a class="text-white fw-bold" asp-area="" asp-controller="Home" asp-action="Help">Help</a></li>
-                    <li><a></a></li>
+                   @* <li><a></a></li>*@
                 @if(@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") != null)
                 {
+                    <li><a class="text-white fw-bold" asp-area="" asp-controller="Stream" asp-action="Index">Timetable</a></li>
                     <li class="d-flex"><a class="text-white fw-bold ml-3">Student ID: <a class="student-id">@HttpContextAccessor.HttpContext.Session.GetString("_StudentId")</a></a></li>
                     <li><a class="text-danger fw-bold" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
                 }

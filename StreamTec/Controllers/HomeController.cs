@@ -37,14 +37,24 @@ namespace StreamTec.Controllers
         {
             try
             {
+                
                 // Add a student details to database and redirect user to homepage
                 if (ModelState.IsValid)
                 {
+                    var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId)).FirstOrDefault();
+                    if(obj != null)
+                    {
+                        TempData["message"] = string.Format("Student ID: {0} is already registered", student.StudentId);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        _context.Add(student);
+                        await _context.SaveChangesAsync();
+                        TempData["message"] = string.Format("Successfully Registered with Student ID: {0}", student.StudentId);
+                        return RedirectToAction("Index", "Home");
+                    }
 
-                    _context.Add(student);
-                    await _context.SaveChangesAsync();
-                    TempData["message"] = string.Format("Successfully Registered with Student ID: {0}", student.StudentId);
-                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -76,7 +86,11 @@ namespace StreamTec.Controllers
                     using (_context)
                     {   
                         var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId) && s.Email.Equals(student.Email)).FirstOrDefault();
-                        if (obj.StudentId == testID && obj.Email == testEmail)
+                        if (obj == null)
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (obj.StudentId == testID && obj.Email == testEmail)
                         {
                             var claims = new List<Claim>
                             {
@@ -164,7 +178,7 @@ namespace StreamTec.Controllers
                         else
                         {
                             return View(student);
-                        }                        
+                        }                  
                     }
                 }
                 //TempData["message"] = "Invalid student details";
@@ -215,8 +229,8 @@ namespace StreamTec.Controllers
                             var enrollment = new Enrollment { StudentId = studentId, StreamID = stream };
                             _context.Add(enrollment);
 
-                            //var streamObj = _context.Streams.Where(s => s.StreamID.Equals(stream)).FirstOrDefault();
-                            //streamObj.Capacity -= 1;
+                            var streamObj = _context.Streams.Where(s => s.StreamID.Equals(stream)).FirstOrDefault();
+                            streamObj.Capacity -= 1;
                         }
                         _context.SaveChanges();
 

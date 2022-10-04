@@ -4,10 +4,10 @@
   --timeHeight: 70px;
   --calBgColor: #fff1f8;
   --eventBorderColor: #f2d3d8;
-  --eventColor1: #ffd6d1;
-  --eventColor2: #fafaa3;
-  --eventColor3: #e2f8ff;
-  --eventColor4: #d1ffe6;
+  --eventColor1: #084887;
+  --eventColor2: #137547;
+  --eventColor3: #6761A8;
+  --eventColor4: #ED6A5A;
 }
 
 /*--------------------------------------------------------------
@@ -30,6 +30,10 @@
     border-style: solid;
     border-width: 1px;
     border-color: rgba(211, 211, 211, .25);
+}
+
+.marginGap{
+    margin-top: 10px;
 }
 
 .grid {
@@ -204,4 +208,21 @@ body {
     z-index: 100;
     padding: 0px 0 0;
     box-shadow: inset -1px 0 0 rgb(0 0 0 / 10%);
+}
+
+
+.first {
+    background: var(--eventColor1);
+}
+
+.second {
+    background: var(--eventColor2);
+}
+
+.third {
+    background: var(--eventColor3);
+}
+
+.fourth {
+    background: var(--eventColor4);
 }

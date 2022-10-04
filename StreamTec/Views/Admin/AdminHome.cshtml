@@ -11,7 +11,7 @@
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
     <div class="container-fluid row">
-        <div class="col-3 d-flex justify-content-center">
+        <div class="col-3 d-flex marginGap justify-content-center">
             <form asp-controller="Admin" asp-action="Add" class="d-flex flex-column w-75">
                 <h4>Enroll</h4>
                 <select name="student" class="form-select-sm">
@@ -31,7 +31,7 @@
                 <input type="submit" value="Add" />
             </form>
         </div>
-            <div class="col-9 border-left">
+        <div class="col-9 marginGap border-left">
                 <h4>Search</h4>
                 <form asp-controller="Admin" asp-action="Search">
                     <input type="text" placeholder="StudentID" name="stuID" />

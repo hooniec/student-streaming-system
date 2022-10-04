@@ -21,8 +21,9 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 <section class="inner-page">
     <div class="container-fluid">
         <div class="row justify-content-around" ">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <nav class="col-md-2 marginGap d-none d-md-block bg-light sidebar">
                 <ul class="flex-column list-unstyled">
+                    <h4>Courses: </h4>
 			        <li class="nav-item">
 				        <select class="form-select form-select-sm aria-label form-select-sm example my-1" onchange="displayMajorCourses(this)">
 					        <option disabled selected>Select a major</option>
@@ -146,8 +147,10 @@ resetBtn.addEventListener('click', (event) => {
 btn.addEventListener('click', (event) => {
 	let checkboxes = document.querySelectorAll('input:checked');
 	let selectedCourses = [];
+
+    cleanTimetable();
+
 	checkboxes.forEach((checkbox) => {
-		//var text = checkbox.previousElementSibling.innerText;
         var text = checkbox.nextElementSibling.innerText;
 		selectedCourses.push(text);		
 	});
@@ -246,6 +249,30 @@ function pushSelectedStreams() {
     window.location.href = '@Url.Action("AfterSubmit", "Home")';
 };
 
+
+function colorPicker(streamID) {
+
+    let checkboxes = document.querySelectorAll('input:checked');
+    let selectedCourses = [];
+    checkboxes.forEach((checkbox) => {
+        var text = checkbox.nextElementSibling.innerText;
+        selectedCourses.push(text);
+    });
+
+    if (streamID.includes(selectedCourses[0]) === true) {
+        return 'first';
+    }
+    else if (streamID.includes(selectedCourses[1]) === true) {
+        return 'second';
+    }
+    else if (streamID.includes(selectedCourses[2]) === true) {
+        return 'third';
+    }
+    else if (streamID.includes(selectedCourses[3]) === true) {
+        return 'fourth';
+    }
+};
+
 function displayTimetable(submitCourses) {
     cleanTimetable();
 
@@ -274,7 +301,7 @@ function displayTimetable(submitCourses) {
         div.appendChild(capacitySpan);
         div.appendChild(input);
 
-            div.classList.add('event', 'start-' + submitCourses[i]['startTime'], 'end-' + submitCourses[i]['endTime'], 'bg-info', 'text-white', 'd-flex', 'flex-column', 'justify-content-center')
+            div.classList.add('event', 'start-' + submitCourses[i]['startTime'], 'end-' + submitCourses[i]['endTime'], colorPicker(submitCourses[i]['streamID']), 'text-white')
 
         switch (submitCourses[i]['day']) {
             case 'Monday':

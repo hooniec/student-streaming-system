@@ -4695,7 +4695,7 @@ textarea.form-control-lg {
 .badgeLeftCol {
     display: inline-block;
     padding: 0.7em 0.65em;
-    font-size: 0.75em;
+    font-size: larger;
     font-weight: 700;
     font-family: sans-serif;
     line-height: 1;
@@ -7442,6 +7442,7 @@ textarea.form-control-lg {
 
 .text-white {
   color: #fff !important;
+  font-size:x-large;
 }
 
 .text-body {
