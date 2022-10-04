@@ -20,8 +20,8 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
     <div class="container-fluid">
-        <div class="row pt-xxl-3 justify-content-around" ">
-	        <nav class="sidebar card py-2 col-1">
+        <div class="row justify-content-around" ">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <ul class="flex-column list-unstyled">
 			        <li class="nav-item">
 				        <select class="form-select form-select-sm aria-label form-select-sm example my-1" onchange="displayMajorCourses(this)">
@@ -43,55 +43,55 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 			        </li>
 		        </ul>
 	        </nav>
-            
-            <div class="timetable col-10 grid">
+           <nav class="py-2 col-lg-10 text-align-center">
+            <div class="timetable grid">
               
               <div class="timeline justify-content-center">
-                <div class="spacer"></div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">8:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">9:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">10:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">11:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">12:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">13:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">14:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">15:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">16:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">17:00</div>
-                <div class="time-marker fw-bold ml-3 badge bg-secondary text-wrap">18:00</div>
+                        <div class="badgeLeftCol time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap spacer"></div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">8:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">9:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">10:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">11:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">12:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">13:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">14:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">15:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">16:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">17:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">18:00</div>
               </div>
 
-              <div class="days">
+              <div class="days events">
                 <div class="day mon">
-                  <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                            <div class="date badge bg-secondary text-wrap align-items-center">
                     <p class="text-white">Monday</p>
                   </div>
                   <div class="events mon-events">
                   </div>
                 </div>
                 <div class="day tues">
-                  <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                            <div class="date badge bg-secondary text-wrap align-items-center">
                     <p class="text-white">Tuesday</p>
                   </div>
                   <div class="events tues-events">
                   </div>
                 </div>
                 <div class="day wed">
-                    <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                            <div class="date badgeWednesday bg-secondary text-wrap align-items-center">
                     <p class="text-white">Wednesday</p>
                   </div>
                   <div class="events wed-events">
                   </div>
                 </div>
                 <div class="day thurs">
-                    <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                            <div class="date badge bg-secondary text-wrap align-items-center">
                     <p class="text-white">Thursday</p>
                   </div>
                   <div class="events thurs-events">
                   </div>
                 </div>
                 <div class="day fri">
-                  <div class="date badge bg-primary text-wrap align-items-center mt-2">
+                            <div class="date badgeFriday bg-secondary text-wrap align-items-center">
                     <p class="text-white">Friday</p>
                   </div>
                   <div class="events fri-events">
@@ -99,8 +99,8 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                 </div>
               </div>
             </div><!-- End Timetable-->
-            <button id="submit-btn" class="btn btn-primary w-25 text-white">Submit Timetable</button>
-
+                <button id="submit-btn" class="btnSubmit btn-primary w-25 text-white">Submit Timetable</button>
+            </nav>
         </div>
     </div>
 </section><!-- End Main Content -->

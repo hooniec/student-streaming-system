@@ -15,7 +15,7 @@
 --------------------------------------------------------------*/
 
 .courseObj label {
-    font-size: small;
+    font-size: large;
 }
 
 /*--------------------------------------------------------------
@@ -41,6 +41,7 @@
     display: grid;
     grid-template-columns: minmax(30px, 100px);
     grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+    z-index: -1;
 }
 
 .days {
@@ -59,13 +60,11 @@
     border-left-width: 2px;
     border-bottom-width: 2px;
     border-color: rgba(211, 211, 211, .25);
-    margin-top: 10.6px;
-
-    
+    margin-top: 0.4px;    
 }
 
 .time-marker {
-    margin-top: -10px;
+    margin-top: 0px;
 }
 // Place on Timeline
 .start-0700 {
@@ -140,7 +139,7 @@
 
 .event {
     text-align: center;
-    margin: 0px 1px 2px 5px;
+    margin: 4px 0px 4px 4px;
     background: white;
     font-size: 0.7rem;
     border-radius: 0.5rem;
@@ -153,7 +152,7 @@
 
 .space,
 .date {
-  height: 60px
+  height: 69px
 }
 
 
@@ -198,5 +197,11 @@ body {
 
 
 .sidebar {
-
+    position: unset;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 0px 0 0;
+    box-shadow: inset -1px 0 0 rgb(0 0 0 / 10%);
 }

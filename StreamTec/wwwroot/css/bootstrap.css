@@ -1241,7 +1241,7 @@ progress {
 
   .col-md-2 {
     flex: 0 0 auto;
-    width: 16.66666667%;
+    width: 10%;
   }
 
   .col-md-3 {
@@ -1455,7 +1455,7 @@ progress {
 
   .col-lg-10 {
     flex: 0 0 auto;
-    width: 83.33333333%;
+    width: 89%;
   }
 
   .col-lg-11 {
@@ -2923,8 +2923,32 @@ textarea.form-control-lg {
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
+.btnSubmit {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    align-content:center;
+    text-decoration: none;
+    vertical-align: middle;
+    margin-top: 24px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
 @media (prefers-reduced-motion: reduce) {
-  .btn {
+    .btn {
     transition: none;
   }
 }
@@ -4627,17 +4651,63 @@ textarea.form-control-lg {
 }
 
 .badge {
-  display: inline-block;
-  padding: 0.35em 0.65em;
-  font-size: 0.75em;
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0.25rem;
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #212529;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0;
+    width: 297px;
 }
+
+.badgeWednesday {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #212529;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0;
+    width: 298px;
+}
+
+.badgeFriday {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #212529;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0;
+    width: 292px;
+}
+
+.badgeLeftCol {
+    display: inline-block;
+    padding: 0.7em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    font-family: sans-serif;
+    line-height: 1;
+    color: #f9fafb;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0;
+    width: 111px;
+    height: 70px;
+}
+
 .badge:empty {
   display: none;
 }
@@ -6789,6 +6859,10 @@ textarea.form-control-lg {
   align-self: stretch !important;
 }
 
+.text-align-center {
+  text-align: center !important;
+}
+
 .order-first {
   order: -1 !important;
 }
@@ -7394,8 +7468,12 @@ textarea.form-control-lg {
   background-color: #0d6efd !important;
 }
 
+.bg-days {
+    background-color: #212529 !important;
+}
+
 .bg-secondary {
-  background-color: #6c757d !important;
+    background-color: #6c757d !important;
 }
 
 .bg-success {
