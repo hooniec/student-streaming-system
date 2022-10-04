@@ -40,6 +40,7 @@ namespace StreamTec.Controllers
                 // Add a student details to database and redirect user to homepage
                 if (ModelState.IsValid)
                 {
+
                     _context.Add(student);
                     await _context.SaveChangesAsync();
                     TempData["message"] = string.Format("Successfully Registered with Student ID: {0}", student.StudentId);
