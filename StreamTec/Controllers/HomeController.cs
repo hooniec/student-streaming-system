@@ -88,6 +88,7 @@ namespace StreamTec.Controllers
                         var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId) && s.Email.Equals(student.Email)).FirstOrDefault();
                         if (obj == null)
                         {
+                            TempData["message"] = "User does not exist";
                             return RedirectToAction("Index", "Home");
                         }
                         else if (obj.StudentId == testID && obj.Email == testEmail)
@@ -219,7 +220,7 @@ namespace StreamTec.Controllers
         public async Task<IActionResult> SubmitTimetable(string studentId, List<string> completedStreamList)
         {
             try
-            {
+            {  
                 if (ModelState.IsValid)
                 {
                     using (_context)
@@ -251,7 +252,6 @@ namespace StreamTec.Controllers
         [HttpPost]
         public IActionResult SendEmail(string studentId, List<string> completedStreamList)
         {
-            //string studentEmail = HttpContext.Session.GetString("_Email");
             var studentEmail = _context.Students.Where(s => s.StudentId.Equals(studentId)).FirstOrDefault().Email;
 
             var msg = new MimeMessage();

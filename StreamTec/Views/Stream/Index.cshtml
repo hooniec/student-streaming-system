@@ -20,7 +20,7 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
     <div class="container-fluid">
-        <div class="row justify-content-around" ">
+        <div class="row justify-content-around">
             <nav class="col-md-2 marginGap d-none d-md-block bg-light sidebar">
                 <ul class="flex-column list-unstyled">
                     <h4>Courses: </h4>
@@ -205,14 +205,12 @@ function validateClash(radioBtnsByDays) {
 
     if (hasClash) {
         if (confirm('We found stream clash(es)\nAre you sure you want to submit this timetable?')) {
-            console.log("Submit timetable and user acknowledge the clahses.")
             pushSelectedStreams();
         } else {
             console.log("Do nothing and user acknowledged the clashes.")
         }
     } else {
         if (confirm('There are no clashes\nAre you sure you want to submit this timetable?')) {
-            console.log("Submit timetable with no clashes.")
             pushSelectedStreams();
         } else {
             console.log("Do nothing")
@@ -230,6 +228,14 @@ function pushSelectedStreams() {
             streamCode = streamValueArr[0];
 
         selectedStreamCodes.push(streamCode);
+    }
+
+    if (selectedStreamCodes.length == 0){
+        if (confirm('None of streams selected.')) {
+            return;
+        } else {
+            return;
+        }
     }
 
     $.post('/Home/SubmitTimetable', { studentId: studentId, completedStreamList: selectedStreamCodes },
@@ -297,7 +303,7 @@ function displayTimetable(submitCourses) {
         input.value = submitCourses[i]['streamID'] + ", " + submitCourses[i]['startTime'] + ", " + submitCourses[i]['endTime'];
 
         div.appendChild(streamSpan);
-        //div.appendChild(classroomSpan);
+        div.appendChild(classroomSpan);
         div.appendChild(capacitySpan);
         div.appendChild(input);
 

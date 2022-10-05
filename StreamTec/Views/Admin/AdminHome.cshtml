@@ -11,32 +11,34 @@
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
     <div class="container-fluid row">
-        <div class="col-3 d-flex marginGap justify-content-center">
-            <form asp-controller="Admin" asp-action="Add" class="d-flex flex-column w-75">
+        <div class="col-md-2 marginGap d-none d-md-block bg-light sidebar">
+            <form asp-controller="Admin" asp-action="Add" class="d-flex flex-column my-1 ">
                 <h4>Enroll</h4>
+                <label class="my-1">Select a student ID:</label>
                 <select name="student" class="form-select-sm">
-                    <option disabled selected>Select a student</option>
+                    @*<option disabled selected>Select a student</option>*@
                     @foreach (Student student in students)
                     {
                         <option value="@student.StudentId">@student.StudentId</option>
                     }
                 </select>
+                <label class="my-1">Select a stream ID:</label>
                 <select name="stream" class="form-select-sm">
-                    <option disabled selected>Select a stream</option>
+                    @*<option disabled selected>Select a stream</option>*@
                     @foreach (Stream stream in streams)
                     {
                         <option value="@stream.StreamID">@stream.StreamID</option>
                     }
                 </select>
-                <input type="submit" value="Add" />
+                <input class="my-1 btn btn-sm btn-primary text-white" type="submit" value="Add" />
             </form>
         </div>
-        <div class="col-9 marginGap border-left">
+        <div class="py-2 col-lg-10 marginGap">
                 <h4>Search</h4>
-                <form asp-controller="Admin" asp-action="Search">
-                    <input type="text" placeholder="StudentID" name="stuID" />
-                    <input type="text" placeholder="StreamID" name="strID" />
-                    <input type="submit" value="Search" />
+                <form asp-controller="Admin" asp-action="Search" class="input-group">
+                    <input class="input-group-text" type="text" placeholder="StudentID" name="stuID" />
+                    <input class="input-group-text" type="text" placeholder="StreamID" name="strID" />
+                    <input class="btn btn-sm btn-primary text-white" type="submit" value="Search" />
                 </form>
                 <div class="mt-5">
                     <table class="table table-striped">
@@ -64,6 +66,7 @@
                             }
                         </tbody>
                     </table>
+                    <span>Total Count: @ViewData["EnrollmentCount"]</span>
                 </div>
             </div>
 
@@ -71,5 +74,8 @@
     </div>
 
 </section><!-- End Main Content -->
-
+@if (TempData["message"] != null)
+{
+    <script>alert('@TempData["message"]');</script>
+}
 
