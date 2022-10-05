@@ -108,17 +108,26 @@ namespace StreamTec.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(string stream, string student)
         {
-            var studentObj = Context.Enrollments.Where(s => s.Students.StudentId.Equals(student) && s.StreamID.Equals(stream));
-            var streamObj = Context.Enrollments.Where(s => s.Students.StudentId.Equals(student) && s.StreamID.Equals(stream));
-
-            if (streamObj == null || studentObj == null)
+            if (stream == null || student == null)
             {
-                return NotFound();
+                TempData["message"] = "Please select stream and student to add";
+                return View("AdminHome");
             }
             else
             {
-                Context.Enrollments.Add(new Enrollment { StudentId = student, StreamID = stream });
-                Context.SaveChanges();
+                var studentObj = Context.Students.Where(s => s.StudentId.Equals(student)).FirstOrDefault();
+                var streamObj = Context.Streams.Where(s => s.StreamID.Equals(stream)).FirstOrDefault();
+
+                if (studentObj != null && streamObj != null)
+                {
+                    Context.Enrollments.Add(new Enrollment { StudentId = student, StreamID = stream });
+                    Context.SaveChanges();
+                }
+                else
+                {
+                    TempData["message"] = "Please select stream and student to add";
+                    return View("AdminHome");
+                }
             }
 
             var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList();

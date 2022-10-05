@@ -45,15 +45,16 @@ namespace StreamTecTest
                 context.Enrollments.Add(new Enrollment { EnrollmentID = 2, StudentId = "1111111", StreamID = "IT-5115-Com-A-03" });
                 context.Enrollments.Add(new Enrollment { EnrollmentID = 3, StudentId = "2222222", StreamID = "IT-5115-Com-A-03" });
                 context.Enrollments.Add(new Enrollment { EnrollmentID = 4, StudentId = "3333333", StreamID = "IT-5115-Com-A-03" });
+                context.Enrollments.Add(new Enrollment { EnrollmentID = 5, StudentId = "3333333", StreamID = "IT-5115-Com-A-03" });
                 context.Students.Add(new Student { StudentId = "2208266", Email = "ethan@email.com" });
                 context.Streams.Add(new StreamTec.Models.Stream { StreamID = "IT-5115-Com-A-03", Room = "T605", Credits = 15, Day = "Monday", StartTime = "0800", EndTime = "1000", Capacity = 24 });
                 context.SaveChanges();
             }
-
+            
             // Use a clean instance of the context to run the test
             using (var context = new WelTecContext(options))
             {
-                var testStudentId = "1111111";                
+                var testStudentId = "3333333";                
 
                 var adminController = new AdminController(context);
                 var view = adminController.Search(testStudentId);
@@ -88,7 +89,7 @@ namespace StreamTecTest
             // Use a clean instance of the context to run the test
             using (var context = new WelTecContext(options))
             {
-                var testStudentId = "99";
+                var testStudentId = "ab";
 
                 var adminController = new AdminController(context);
                 var view = adminController.Search(testStudentId);
@@ -122,7 +123,7 @@ namespace StreamTecTest
             using (var context = new WelTecContext(options))
             {
                 //
-                var deleteId = 1;
+                var deleteId = 2;
 
                 //
                 var test = context.Enrollments.ToList();
@@ -163,7 +164,7 @@ namespace StreamTecTest
             using (var context = new WelTecContext(options))
             {
                 //
-                var deleteId = 6;
+                var deleteId = 8;
 
                 //
                 var test = context.Enrollments.ToList();
@@ -204,16 +205,17 @@ namespace StreamTecTest
             using (var context = new WelTecContext(options))
             {
                 //
-                string studentID = "4444444";
-                string streamID = "IT-5115-Com-A-02";
+                string studentID = "2208266";
+                string streamID = "IT-5115-Com-A-03";
 
                 //
                 var test = context.Enrollments.ToList();
                 Assert.Equal("4", test.Count.ToString());
+                _testOutputHelper.WriteLine(test.Count.ToString());
 
                 //
                 var adminController = new AdminController(context);
-                var view = adminController.Add(studentID, streamID);
+                var view = adminController.Add(streamID, studentID);
                 var testAdded = context.Enrollments.ToList();
 
                 //
@@ -261,8 +263,8 @@ namespace StreamTecTest
 
                 //
                 _testOutputHelper.WriteLine(testAdded.Count.ToString());
-                Assert.Equal("5", testAdded.Count.ToString());
-                Assert.True(view.IsCompletedSuccessfully);
+                Assert.Equal("4", testAdded.Count.ToString());
+                Assert.True(view.IsFaulted);
             }
         }
 
@@ -277,19 +279,6 @@ namespace StreamTecTest
             var result = adminController.Index() as ViewResult;
 
             Assert.Equal("AdminHome", result.ViewName);
-        }
-
-        [Fact]
-        public void AddViewTest()
-        {
-            var options = new DbContextOptionsBuilder<WelTecContext>()
-             .UseInMemoryDatabase(databaseName: "localdb")
-             .Options;
-
-            var adminController = new AdminController(_context);
-            var result = adminController.AddView() as ViewResult;
-
-            Assert.Equal("AdminAdd", result.ViewName);
         }
 
         [Fact]
@@ -328,7 +317,7 @@ namespace StreamTecTest
             using (var context = new WelTecContext(options))
             {
                 //
-                var student = new Student { StudentId = "9999999", Email = "nine@email.com" };
+                var student = new Student { StudentId = "8888888", Email = "eight@email.com" };
 
                 //
                 var test = context.Students.ToList();
@@ -360,6 +349,7 @@ namespace StreamTecTest
                 context.Enrollments.Add(new Enrollment { EnrollmentID = 3, StudentId = "2222222", StreamID = "IT-5115-Com-A-03" });
                 context.Enrollments.Add(new Enrollment { EnrollmentID = 4, StudentId = "3333333", StreamID = "IT-5115-Com-A-03" });
                 context.Students.Add(new Student { StudentId = "2208266", Email = "ethan@email.com" });
+                context.Students.Add(new Student { StudentId = "1111111", Email = "one@email.com" });
                 context.Streams.Add(new StreamTec.Models.Stream { StreamID = "IT-5115-Com-A-03", Room = "T605", Credits = 15, Day = "Monday", StartTime = "0800", EndTime = "1000", Capacity = 24 });
                 context.SaveChanges();
             }
@@ -368,7 +358,7 @@ namespace StreamTecTest
             using (var context = new WelTecContext(options))
             {
                 //
-                var student = new Student { StudentId = "2208266", Email = "ethan@email.com" };
+                var student = new Student { StudentId = "1111111", Email = "one@email.com" };
 
                 //
                 var test = context.Students.ToList();
@@ -380,7 +370,6 @@ namespace StreamTecTest
                 var testRegister = context.Students.ToList();
 
                 //
-                _testOutputHelper.WriteLine(view.Exception.ToString());
                 Assert.Equal("1", testRegister.Count.ToString());
                 Assert.True(view.IsFaulted);
             }
@@ -401,6 +390,7 @@ namespace StreamTecTest
                 context.Enrollments.Add(new Enrollment { EnrollmentID = 3, StudentId = "2222222", StreamID = "IT-5115-Com-A-03" });
                 context.Enrollments.Add(new Enrollment { EnrollmentID = 4, StudentId = "3333333", StreamID = "IT-5115-Com-A-03" });
                 context.Students.Add(new Student { StudentId = "2208266", Email = "ethan@email.com" });
+                context.Students.Add(new Student { StudentId = "1111111", Email = "one@email.com" });
                 context.Streams.Add(new StreamTec.Models.Stream { StreamID = "IT-5115-Com-A-03", Room = "T605", Credits = 15, Day = "Monday", StartTime = "0800", EndTime = "1000", Capacity = 24 });
                 context.SaveChanges();
             }
@@ -409,11 +399,7 @@ namespace StreamTecTest
             using (var context = new WelTecContext(options))
             {
                 //
-                var student = new Student { StudentId = "2208266", Email = "ethan@email.com" };
-
-                //
-                //var test = context.Students.ToList();
-                //Assert.Equal("1", test.Count.ToString());
+                var student = new Student { StudentId = "1111111", Email = "one@email.com" };
 
                 //
                 var homeController = new HomeController(context);
@@ -422,7 +408,6 @@ namespace StreamTecTest
 
                 var view = homeController.Index(student);
                 //
-                //_testOutputHelper.WriteLine(view.Exception.ToString());
                 Assert.True(view.IsCompletedSuccessfully);
             }
         }
@@ -434,14 +419,16 @@ namespace StreamTecTest
              .UseInMemoryDatabase(databaseName: "localdb")
              .Options;
 
-            var adminController = new HomeController(_context);
-            var result = adminController.Logout();
+            var student = new Student { StudentId = "2208266", Email = "ethan@email.com" };
+
+            var homeController = new HomeController(_context);
+            var login = homeController.Index(student);
+            var result = homeController.Logout();
             HttpCookie cookie = new HttpCookie("LoginCookie", "2208266", "LocalHost");
 
-            cookie = null;
 
-            _testOutputHelper.WriteLine(result.Exception.ToString());
-            //Assert.True(result.IsCompletedSuccessfully);
+            //_testOutputHelper.WriteLine(result.Exception.ToString());
+            Assert.True(result.IsCompletedSuccessfully);
         }
 
         [Fact]
