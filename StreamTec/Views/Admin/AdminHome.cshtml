@@ -12,7 +12,7 @@
 <section class="inner-page">
     <div class="container-fluid row">
         <div class="col-md-2 marginGap d-none d-md-block bg-light sidebar">
-            <form asp-controller="Admin" asp-action="Add" class="d-flex flex-column my-1 ">
+            <form asp-controller="Admin" asp-action="Add" class="d-flex flex-column my-1 input-group-sm">
                 <h4>Enroll</h4>
                 <label class="my-1">Select a student ID:</label>
                 <select name="student" class="form-select-sm">
@@ -35,12 +35,12 @@
         </div>
         <div class="py-2 col-lg-10 marginGap">
                 <h4>Search</h4>
-                <form asp-controller="Admin" asp-action="Search" class="input-group">
+                <form asp-controller="Admin" asp-action="Search" class="d-flex input-group-sm">
                     <input class="input-group-text" type="text" placeholder="StudentID" name="stuID" />
                     <input class="input-group-text" type="text" placeholder="StreamID" name="strID" />
                     <input class="btn btn-sm btn-primary text-white" type="submit" value="Search" />
                 </form>
-                <div class="mt-5">
+                <div class="mt-3">
                     <table class="table table-striped">
                         <thead>
                             <tr>
