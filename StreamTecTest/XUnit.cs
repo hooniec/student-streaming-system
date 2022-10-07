@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Web.Http;
 using Xunit;
 using Xunit.Abstractions;
@@ -399,14 +400,12 @@ namespace StreamTecTest
             using (var context = new WelTecContext(options))
             {
                 //
-                var student = new Student { StudentId = "1111111", Email = "one@email.com" };
+                var student = new Student { StudentId = "2208266", Email = "ethan@email.com" };
 
                 //
                 var homeController = new HomeController(context);
-
-                HttpCookie cookie = new HttpCookie("LoginCookie", student.StudentId, "LocalHost");
-
                 var view = homeController.Index(student);
+
                 //
                 Assert.True(view.IsCompletedSuccessfully);
             }
