@@ -41,6 +41,7 @@ namespace StreamTec.Controllers
             return studentsList;
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult AdminHome()
         {
             ViewData["Enrollments"] = EnrollmentList();
@@ -50,6 +51,7 @@ namespace StreamTec.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Sorting(string sortOrder)
         {
             ViewData["StuSortParm"] = String.IsNullOrEmpty(sortOrder) ? "stuID_desc" : "";
@@ -80,7 +82,7 @@ namespace StreamTec.Controllers
             return View("AdminHome");
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Search(string stuID, string strID)
         {
             var enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
@@ -109,7 +111,8 @@ namespace StreamTec.Controllers
             ViewData["EnrollmentCount"] = enrollments.ToList().Count();
             return View("AdminHome");
         }
-        //[Authorize(Roles = "Admin")]
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id == null || Context.Enrollments == null)
@@ -140,7 +143,7 @@ namespace StreamTec.Controllers
             return View("AdminHome");
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(string stream, string student)
         {
  
@@ -174,6 +177,7 @@ namespace StreamTec.Controllers
             return View("AdminHome");
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             ViewData["Streams"] = StreamList();
@@ -181,6 +185,7 @@ namespace StreamTec.Controllers
             return View("AdminHome");
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult AddView()
         {
             return View("AdminAdd");

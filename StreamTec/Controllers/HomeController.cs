@@ -76,8 +76,8 @@ namespace StreamTec.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(Student student)
         {
-            string testID = "2208266";
-            string testEmail = "ethan@email.com";
+            string testID = "2022091";
+            string testEmail = "admin@streamtec.com";
             try
             {
                 // Validate a student details
@@ -217,6 +217,7 @@ namespace StreamTec.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitTimetable(string studentId, List<string> completedStreamList)
         {
             try
@@ -250,6 +251,7 @@ namespace StreamTec.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SendEmail(string studentId, List<string> completedStreamList)
         {
             var studentEmail = _context.Students.Where(s => s.StudentId.Equals(studentId)).FirstOrDefault().Email;

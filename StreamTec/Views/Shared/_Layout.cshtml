@@ -20,7 +20,7 @@
           <a class="logo"><img src="~/img/logo.png" alt="" class="img-fluid"></a>
           <nav id="navbar" class="navbar">
             <ul>
-                @if(@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") == "2208266")
+                    @if (@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") == "2022091")
                 {
                         <li><a class="text-white fw-bold" asp-area="" asp-controller="Admin" asp-action="AdminHome">Admin</a></li>
                         
