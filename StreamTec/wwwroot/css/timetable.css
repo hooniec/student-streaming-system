@@ -4,12 +4,23 @@
   --timeHeight: 70px;
   --calBgColor: #fff1f8;
   --eventBorderColor: #f2d3d8;
-  --eventColor1: #ffd6d1;
-  --eventColor2: #fafaa3;
-  --eventColor3: #e2f8ff;
-  --eventColor4: #d1ffe6;
+  --eventColor1: #084887;
+  --eventColor2: #137547;
+  --eventColor3: #6761A8;
+  --eventColor4: #ED6A5A;
 }
 
+/*--------------------------------------------------------------
+# Sidebar 
+--------------------------------------------------------------*/
+
+.courseObj label {
+    font-size: large;
+}
+
+/*--------------------------------------------------------------
+# Timetable 
+--------------------------------------------------------------*/
 
 .timetable {
     display: grid;
@@ -21,6 +32,10 @@
     border-color: rgba(211, 211, 211, .25);
 }
 
+.marginGap{
+    margin-top: 10px;
+}
+
 .grid {
     background-image: repeating-linear-gradient(rgba(211, 211, 211, .25) 0 1px, transparent 2px 100%);
     background-size: 1px 70px;
@@ -28,7 +43,9 @@
 
 .timeline {
     display: grid;
+    grid-template-columns: minmax(30px, 100px);
     grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+    z-index: -1;
 }
 
 .days {
@@ -45,11 +62,13 @@
     border-left: 1px;
     border-left-style: solid;
     border-left-width: 2px;
+    border-bottom-width: 2px;
     border-color: rgba(211, 211, 211, .25);
+    margin-top: 0.4px;    
 }
 
 .time-marker {
-    margin-top: -22px;
+    margin-top: 0px;
 }
 // Place on Timeline
 .start-0700 {
@@ -123,21 +142,23 @@
 }
 
 .event {
-  
-  text-align: center;
-  margin: 2px 1px 2px 5px;
-  background: white;
-
+    text-align: center;
+    margin: 4px 0px 4px 4px;
+    background: white;
+    font-size: 0.7rem;
+    border-radius: 0.5rem;
 }
 
 .event p {
     display: block;
+    margin-bottom: 0.1rem !important;
 }
 
 .space,
 .date {
-  height: 60px
+  height: 69px
 }
+
 
 // Global / Etc
 
@@ -176,4 +197,32 @@ body {
 .date-day {
   display: inline;
   font-size: 2rem;
+}
+
+
+.sidebar {
+    position: unset;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 0px 0 0;
+    box-shadow: inset -1px 0 0 rgb(0 0 0 / 10%);
+}
+
+
+.first {
+    background: var(--eventColor1);
+}
+
+.second {
+    background: var(--eventColor2);
+}
+
+.third {
+    background: var(--eventColor3);
+}
+
+.fourth {
+    background: var(--eventColor4);
 }

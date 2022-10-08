@@ -2,18 +2,15 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using StreamTec.Models;
-using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Security.Claims;
-using System.Security.Permissions;
-using System.Reflection.Metadata;
-using Microsoft.AspNetCore.Identity;
-
+using System.Net.Mail;
+using MimeKit;
 
 namespace StreamTec.Controllers
 {
-    
+
     public class HomeController : Controller
     {
         private readonly WelTecContext _context;
@@ -28,6 +25,11 @@ namespace StreamTec.Controllers
             return View("Index");
         }
 
+        public IActionResult Help()
+        {
+            return View("Help");
+        }
+
         // Register Action for registring a student
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -35,13 +37,24 @@ namespace StreamTec.Controllers
         {
             try
             {
+                
                 // Add a student details to database and redirect user to homepage
                 if (ModelState.IsValid)
                 {
-                    _context.Add(student);
-                    await _context.SaveChangesAsync();
-                    //TempData["message"] = string.Format("Successfully Registered with Student ID: {0}", student.StudentId);
-                    return RedirectToAction("Index", "Home");
+                    var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId)).FirstOrDefault();
+                    if(obj != null)
+                    {
+                        TempData["message"] = string.Format("Student ID: {0} is already registered", student.StudentId);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        _context.Add(student);
+                        await _context.SaveChangesAsync();
+                        TempData["message"] = string.Format("Successfully Registered with Student ID: {0}", student.StudentId);
+                        return RedirectToAction("Index", "Home");
+                    }
+
                 }
                 else
                 {
@@ -63,17 +76,22 @@ namespace StreamTec.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(Student student)
         {
-            string testID = "2208266";
-            string testEmail = "ethan@email.com";
+            string testID = "2022091";
+            string testEmail = "admin@streamtec.com";
             try
             {
                 // Validate a student details
                 if (ModelState.IsValid)
                 {
                     using (_context)
-                    {                        
+                    {   
                         var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId) && s.Email.Equals(student.Email)).FirstOrDefault();
-                        if (obj.StudentId == testID && obj.Email == testEmail)
+                        if (obj == null)
+                        {
+                            TempData["message"] = "User does not exist";
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else if (obj.StudentId == testID && obj.Email == testEmail)
                         {
                             var claims = new List<Claim>
                             {
@@ -109,11 +127,12 @@ namespace StreamTec.Controllers
                             };
 
                             // Add a student details to session                            
-                            //HttpContext.Session.SetString("_StudentId", obj.StudentId);
-                            //HttpContext.Session.SetString("_Email", obj.Email);
+                            HttpContext.Session.SetString("_StudentId", obj.StudentId);
+                            HttpContext.Session.SetString("_Email", obj.Email.ToString());
+                            TempData["_Email"] = obj.Email;
 
-                            //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
+                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                            
                             return RedirectToAction("Index", "Stream");
                         }else if (obj != null)
                         {
@@ -160,7 +179,7 @@ namespace StreamTec.Controllers
                         else
                         {
                             return View(student);
-                        }                        
+                        }                  
                     }
                 }
                 //TempData["message"] = "Invalid student details";
@@ -186,10 +205,93 @@ namespace StreamTec.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public async Task<IActionResult> AfterSubmit()
+        {
+            // SendEmail();
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+            TempData["message"] = "Successfully Submitted";
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitTimetable(string studentId, List<string> completedStreamList)
+        {
+            try
+            {  
+                if (ModelState.IsValid)
+                {
+                    using (_context)
+                    {
+                        foreach (var stream in completedStreamList)
+                        {
+                            var enrollment = new Enrollment { StudentId = studentId, StreamID = stream };
+                            _context.Add(enrollment);
+
+                            var streamObj = _context.Streams.Where(s => s.StreamID.Equals(stream)).FirstOrDefault();
+                            streamObj.Capacity -= 1;
+                        }
+                        _context.SaveChanges();
+
+                        return Json("Success");
+                    }
+                }
+                else
+                {
+                    return Json("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return Json("Caught error");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SendEmail(string studentId, List<string> completedStreamList)
+        {
+            var studentEmail = _context.Students.Where(s => s.StudentId.Equals(studentId)).FirstOrDefault().Email;
+
+            var msg = new MimeMessage();
+            msg.From.Add(new MailboxAddress("WelTec Stream System", "streamtec.weltec@gmail.com"));
+            msg.To.Add(new MailboxAddress("Student", studentEmail));
+            msg.Subject = "Here is your completed timetable for student ID: " + studentId + ".";
+
+            var builder = new BodyBuilder();
+
+            foreach (var stream in completedStreamList)
+            {
+                var obj = _context.Streams.Where(s => s.StreamID.Equals(stream)).FirstOrDefault();
+
+                builder.TextBody += obj.StreamID + " : " + obj.Day + " ( Start - " + obj.StartTime + ", End - " + obj.EndTime + " ) \n";
+            }
+
+            msg.Body = builder.ToMessageBody();
+
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("streamtec.weltec@gmail.com", "yacdyxmmtfldmkrh");
+
+                client.Send(msg);
+                client.Disconnect(true);
+            }
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult ErrorPage()
+        {
+            return View();
         }
     }
 }

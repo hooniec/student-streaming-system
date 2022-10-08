@@ -345,7 +345,7 @@ h1, h2, h3, h4, h5, h6 {
 # Sections General
 --------------------------------------------------------------*/
 section {
-  padding: 60px 0;
+  padding: 0px 0;
 }
 
 .section-bg {
@@ -1378,3 +1378,4 @@ section {
     width: calc(100% + 2px);
 
 }
+

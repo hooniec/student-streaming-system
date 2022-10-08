@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/streamtec2dbserver/databases/StreamTec_db2",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:streaming"
+    }
+  }
+}

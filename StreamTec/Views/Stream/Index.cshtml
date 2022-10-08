@@ -1,11 +1,12 @@
 ﻿@model Dictionary<string, Dictionary<string, List<Stream>>>
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
 ViewData["Title"] = "Timetable";
 IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 }
 
-<!-- ======= Breadcrumbs ======= -->
+@*<!-- ======= Breadcrumbs ======= -->
 <section class="breadcrumbs">
 <div class="container">
 
@@ -14,17 +15,18 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 	</div>
 
 </div>
-</section><!-- End Breadcrumbs -->
+</section><!-- End Breadcrumbs -->*@
 
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
     <div class="container-fluid">
-        <div class="row pt-xxl-3">
-	        <nav class="sidebar card py-2 mb-4 col-1">
-		        <ul class="nav flex-column" id="nav_accordion">
+        <div class="row justify-content-around">
+            <nav class="col-md-2 marginGap d-none d-md-block bg-light sidebar">
+                <ul class="flex-column list-unstyled">
+                    <h4>Courses: </h4>
 			        <li class="nav-item">
-				        <select class="form-select form-select-sm" aria-label=".form-select-sm example" onchange="displayMajorCourses(this)">
-					        <option selected>Please select a major</option>
+				        <select class="form-select form-select-sm aria-label form-select-sm example my-1" onchange="displayMajorCourses(this)">
+					        <option disabled selected>Select a major</option>
 					        @foreach (var major in Model)
 					        {
 						        <option value="@major.Key">@major.Key</option>
@@ -35,70 +37,71 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 				        <div class="js-course-selection"></div>
 			        </li>
 			        <li>
-				        <button id="reset-btn">Unchecked All</button>
+				        <button id="reset-btn" class="btn btn-danger w-100 my-2">Unselect</button>
 			        </li>
 			        <li>
-				        <button id="btn">Get Selected Courses</button>
+				        <button id="btn" class="btn btn-success w-100">Get Streams</button>
 			        </li>
 		        </ul>
 	        </nav>
-            
-            <div class="timetable col-10 grid">
+           <nav class="py-2 col-lg-10 text-align-center">
+            <div class="timetable grid">
               
-              <div class="timeline">
-                <div class="spacer"></div>
-                <div class="time-marker">8:00</div>
-                <div class="time-marker">9:00</div>
-                <div class="time-marker">10:00</div>
-                <div class="time-marker">11:00</div>
-                <div class="time-marker">12:00</div>
-                <div class="time-marker">13:00</div>
-                <div class="time-marker">14:00</div>
-                <div class="time-marker">15:00</div>
-                <div class="time-marker">16:00</div>
-                <div class="time-marker">17:00</div>
-                <div class="time-marker">18:00</div>
+              <div class="timeline justify-content-center">
+                        <div class="badgeLeftCol time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap spacer"></div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">8:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">9:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">10:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">11:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">12:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">13:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">14:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">15:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">16:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">17:00</div>
+                <div class="time-marker fw-bold ml-3 badgeLeftCol bg-secondary text-wrap">18:00</div>
               </div>
-              <div class="days">
-                
+
+              <div class="days events">
                 <div class="day mon">
-                  <div class="date">
-                    <p class="text-primary">Monday</p>
+                            <div class="date badge bg-secondary text-wrap align-items-center">
+                    <p class="text-white">Monday</p>
                   </div>
                   <div class="events mon-events">
                   </div>
                 </div>
                 <div class="day tues">
-                  <div class="date">
-                    <p class="text-primary">Tuesday</p>
+                            <div class="date badge bg-secondary text-wrap align-items-center">
+                    <p class="text-white">Tuesday</p>
                   </div>
                   <div class="events tues-events">
                   </div>
                 </div>
                 <div class="day wed">
-                  <div class="date">
-                    <p class="text-primary">Wednesday</p>
+                            <div class="date badgeWednesday bg-secondary text-wrap align-items-center">
+                    <p class="text-white">Wednesday</p>
                   </div>
                   <div class="events wed-events">
                   </div>
                 </div>
                 <div class="day thurs">
-                  <div class="date">
-                    <p class="text-primary">Thursday</p>
+                            <div class="date badge bg-secondary text-wrap align-items-center">
+                    <p class="text-white">Thursday</p>
                   </div>
                   <div class="events thurs-events">
                   </div>
                 </div>
                 <div class="day fri">
-                  <div class="date">
-                    <p class="text-primary">Friday</p>
+                            <div class="date badgeFriday bg-secondary text-wrap align-items-center">
+                    <p class="text-white">Friday</p>
                   </div>
                   <div class="events fri-events">
                   </div>
                 </div>
               </div>
-              <button id="submit-btn">Submit Timetable</button>
             </div><!-- End Timetable-->
+                <button id="submit-btn" class="btnSubmit btn-primary w-25 text-white">Submit Timetable</button>
+            </nav>
         </div>
     </div>
 </section><!-- End Main Content -->
@@ -115,34 +118,22 @@ const courseSelection = document.querySelector(".js-course-selection"),
     tuesdayEvents = document.querySelector(".tues-events"),
     wednesdayEvents = document.querySelector(".wed-events"),
     thursdayEvents = document.querySelector(".thurs-events"),
-    fridayEvents = document.querySelector(".fri-events");
+    fridayEvents = document.querySelector(".fri-events"),
+    studentId = document.querySelector(".student-id").innerText;
 
 submitBtn.addEventListener('click', (event) => {
-    var mondayRadioBtns = thursdayEvents.querySelectorAll('input[type="radio"]:checked');
+    let radioBtnsByDays = [];
+    let selectedStreamCodes = [];
 
-    for (var i = 0; i < mondayRadioBtns.length - 1; i++) {
-        var stream1 = mondayRadioBtns[i],
-            streamValueArr = mondayRadioBtns[i].value.split(','),
-            stream1StartTime = streamValueArr[1],
-            stream1EndTime = streamValueArr[2];
+    var mondayRadioBtns = tuesdayEvents.querySelectorAll('input[type="radio"]:checked'),
+     tuesdayRadioBtns = tuesdayEvents.querySelectorAll('input[type="radio"]:checked'),
+     wednesdayRadioBtns = wednesdayEvents.querySelectorAll('input[type="radio"]:checked'),
+     thursdayRadioBtns = thursdayEvents.querySelectorAll('input[type="radio"]:checked'),
+     fridayRadioBtns = fridayEvents.querySelectorAll('input[type="radio"]:checked');
 
-        for (var j = i + 1; j < mondayRadioBtns.length; j++) {
-            var stream2 = mondayRadioBtns[j],
-            streamValueArr = mondayRadioBtns[j].value.split(','),
-            stream2StartTime = streamValueArr[1],
-            stream2EndTime = streamValueArr[2];
+    radioBtnsByDays.push(mondayRadioBtns, tuesdayRadioBtns, wednesdayRadioBtns, thursdayRadioBtns, fridayRadioBtns);
 
-            if ((stream1StartTime < stream2EndTime && stream1StartTime >= stream2StartTime) || 
-                (stream2StartTime < stream1EndTime && stream2StartTime > stream1StartTime) || 
-                (stream1StartTime == stream2StartTime && stream1EndTime == stream2EndTime)) {
-                    console.log("There is clash");
-            }
-            else {
-                console.log("No clashes");
-            }
-        }
-    }
-
+    validateClash(radioBtnsByDays);
 });
 
 resetBtn.addEventListener('click', (event) => {
@@ -156,8 +147,11 @@ resetBtn.addEventListener('click', (event) => {
 btn.addEventListener('click', (event) => {
 	let checkboxes = document.querySelectorAll('input:checked');
 	let selectedCourses = [];
+
+    cleanTimetable();
+
 	checkboxes.forEach((checkbox) => {
-		var text = checkbox.previousElementSibling.innerText;
+        var text = checkbox.nextElementSibling.innerText;
 		selectedCourses.push(text);		
 	});
 
@@ -175,9 +169,118 @@ btn.addEventListener('click', (event) => {
     displayTimetable(submitCourses);
 });
 
+function validateClash(radioBtnsByDays) {
+    var hasClash = false;
+
+    for (const radioBtns of radioBtnsByDays) {
+
+        for (var i = 0; i < radioBtns.length - 1; i++) {
+            var stream1 = radioBtns[i],
+                streamValueArr = radioBtns[i].value.split(','),
+                stream1Code = streamValueArr[0],
+                stream1StartTime = streamValueArr[1],
+                stream1EndTime = streamValueArr[2];
+
+            for (var j = i + 1; j < radioBtns.length; j++) {
+                var stream2 = radioBtns[j],
+                streamValueArr = radioBtns[j].value.split(','),
+                stream2Code = streamValueArr[0],
+                stream2StartTime = streamValueArr[1],
+                stream2EndTime = streamValueArr[2];
+
+                if ((stream1StartTime < stream2EndTime && stream1StartTime >= stream2StartTime) || 
+                    (stream2StartTime < stream1EndTime && stream2StartTime > stream1StartTime) || 
+                    (stream1StartTime == stream2StartTime && stream1EndTime == stream2EndTime)) {
+
+                    hasClash = true;
+                    console.log(hasClash);
+                }
+                else {
+                    console.log("No clashes");
+                }
+            }
+        }
+    }
+
+
+    if (hasClash) {
+        if (confirm('We found stream clash(es)\nAre you sure you want to submit this timetable?')) {
+            pushSelectedStreams();
+        } else {
+            console.log("Do nothing and user acknowledged the clashes.")
+        }
+    } else {
+        if (confirm('There are no clashes\nAre you sure you want to submit this timetable?')) {
+            pushSelectedStreams();
+        } else {
+            console.log("Do nothing")
+        }
+    }
+};
+
+function pushSelectedStreams() {
+    var selectedStreamCodes = [];
+    var timetable = document.querySelector('.timetable');
+    var selectedStreams = timetable.querySelectorAll('input[type="radio"]:checked');
+
+    for (var stream of selectedStreams){
+        var streamValueArr = stream.value.split(','),
+            streamCode = streamValueArr[0];
+
+        selectedStreamCodes.push(streamCode);
+    }
+
+    if (selectedStreamCodes.length == 0){
+        if (confirm('None of streams selected.')) {
+            return;
+        } else {
+            return;
+        }
+    }
+
+    $.post('/Home/SubmitTimetable', { studentId: studentId, completedStreamList: selectedStreamCodes },
+        function(data) {
+            if (data.result != null && data.result != undefined) {
+                alert(data.result);
+            }
+    })
+
+    $.post('/Home/SendEmail', { studentId: studentId, completedStreamList: selectedStreamCodes },
+        function(data) {
+            if (data.result != null && data.result != undefined) {
+                alert(data.result);
+            }
+    })
+
+    window.location.href = '@Url.Action("AfterSubmit", "Home")';
+};
+
+
+function colorPicker(streamID) {
+
+    let checkboxes = document.querySelectorAll('input:checked');
+    let selectedCourses = [];
+    checkboxes.forEach((checkbox) => {
+        var text = checkbox.nextElementSibling.innerText;
+        selectedCourses.push(text);
+    });
+
+    if (streamID.includes(selectedCourses[0]) === true) {
+        return 'first';
+    }
+    else if (streamID.includes(selectedCourses[1]) === true) {
+        return 'second';
+    }
+    else if (streamID.includes(selectedCourses[2]) === true) {
+        return 'third';
+    }
+    else if (streamID.includes(selectedCourses[3]) === true) {
+        return 'fourth';
+    }
+};
+
 function displayTimetable(submitCourses) {
     cleanTimetable();
-    console.log(submitCourses);
 
     for (var i = 0; i < submitCourses.length; i++){
         const div = document.createElement("div");
@@ -192,6 +295,9 @@ function displayTimetable(submitCourses) {
         classroomSpan.innerText = 'Room: ' + submitCourses[i]['room'] + ' / ';
         capacitySpan.innerText = 'Capa: ' + submitCourses[i]['capacity'];
 
+        if (submitCourses[i]['capacity'] == 0) {
+            input.disabled = true;
+        }
         input.type = "radio";
         input.name = streamID.slice(0, -3);
         input.value = submitCourses[i]['streamID'] + ", " + submitCourses[i]['startTime'] + ", " + submitCourses[i]['endTime'];
@@ -201,7 +307,7 @@ function displayTimetable(submitCourses) {
         div.appendChild(capacitySpan);
         div.appendChild(input);
 
-        div.classList.add('event', 'start-' + submitCourses[i]['startTime'], 'end-' + submitCourses[i]['endTime'], 'bg-info', 'text-white')
+            div.classList.add('event', 'start-' + submitCourses[i]['startTime'], 'end-' + submitCourses[i]['endTime'], colorPicker(submitCourses[i]['streamID']), 'text-white')
 
         switch (submitCourses[i]['day']) {
             case 'Monday':
@@ -262,8 +368,9 @@ function displayMajorCourses(selectMajor) {
         majorCourses.push(key);
     } 
 
+
     for (const courseObj of courseObjs) {
-        let courseID = courseObj.firstElementChild.innerHTML;
+        let courseID = courseObj.lastElementChild.innerHTML;
         courseObj.style.display = "none";
 
         if (majorCourses.includes(courseID)) {
@@ -282,9 +389,10 @@ function createCourseCheckbox(course) {
     }
     label.innerText = course;
     checkbox.type = "checkbox";
-    li.appendChild(label);
+    checkbox.classList.add("mx-1");
     li.appendChild(checkbox);
-    li.classList.add("courseObj")
+    li.appendChild(label);
+    li.classList.add("courseObj");
     courseSelection.appendChild(li);
 };
 

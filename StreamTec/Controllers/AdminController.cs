@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Stream = StreamTec.Models.Stream;
 // Was causing ambgious error with .Include but dont think it is being used for anything else.
-//using System.Data.Entity; 
+// using System.Data.Entity; 
 
 namespace StreamTec.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class AdminController : Controller
     {
         private WelTecContext Context { get; }
@@ -41,38 +41,74 @@ namespace StreamTec.Controllers
             return studentsList;
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult AdminHome()
         {
             ViewData["Enrollments"] = EnrollmentList();
             ViewData["Streams"] = StreamList();
             ViewData["Students"] = StudentList();
+            ViewData["EnrollmentCount"] = EnrollmentList().Count();
             return View();
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Search(string search)
+        public async Task<IActionResult> Sorting(string sortOrder)
         {
-            try
+            ViewData["StuSortParm"] = String.IsNullOrEmpty(sortOrder) ? "stuID_desc" : "";
+            ViewData["StrSortParm"] = sortOrder == "strID" ? "strID_desc" : "strID";
+
+            var enrollments = from e in Context.Enrollments.Include(s => s.Students).Include(s => s.Streams) select e;
+
+            switch (sortOrder)
             {
-                var enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
-
-                if (!String.IsNullOrEmpty(search))
-                {
-                    enrollments = enrollments.Where(s => s.StudentId.Contains(search));
-                }
-
-                ViewData["Enrollments"] = enrollments.ToList();
-            }
-            catch (DbUpdateException /* ex */)
-            {
-                //Log the error (uncomment ex variable name and write a log.
-                ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator.");
+                case "stuID_desc":
+                    enrollments = enrollments.OrderByDescending(s => s.StudentId);
+                    break;
+                case "strID":
+                    enrollments = enrollments.OrderBy(s => s.StreamID);
+                    break;
+                case "strID_desc":
+                    enrollments = enrollments.OrderByDescending(s => s.StreamID);
+                    break;
+                default:
+                    enrollments = enrollments.OrderBy(s => s.StudentId);
+                    break;
             }
 
+            ViewData["Enrollments"] = enrollments.ToList();
             ViewData["Streams"] = StreamList();
             ViewData["Students"] = StudentList();
+            ViewData["EnrollmentCount"] = enrollments.ToList().Count();
+            return View("AdminHome");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Search(string stuID, string strID)
+        {
+            var enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
+
+            if (!String.IsNullOrEmpty(stuID) && !String.IsNullOrEmpty(strID))
+            {
+                enrollments = enrollments.Where(s => s.StudentId.Contains(stuID) && s.StreamID.Contains(strID));
+                
+            }
+            else if (!String.IsNullOrEmpty(stuID))
+            {
+                enrollments = enrollments.Where(s => s.StudentId.Contains(stuID));
+            }
+            else if (!String.IsNullOrEmpty(strID))
+            {
+                enrollments = enrollments.Where(s => s.StreamID.Contains(strID));
+            }
+            else
+            {
+                enrollments = from e in Context.Enrollments.Include(s => s.Students) select e;
+            }
+
+            ViewData["Enrollments"] = enrollments.ToList();
+            ViewData["Streams"] = StreamList();
+            ViewData["Students"] = StudentList();
+            ViewData["EnrollmentCount"] = enrollments.ToList().Count();
             return View("AdminHome");
         }
 
@@ -103,11 +139,14 @@ namespace StreamTec.Controllers
             ViewData["Enrollments"] = enrollments.ToList();
             ViewData["Streams"] = StreamList();
             ViewData["Students"] = StudentList();
+            ViewData["EnrollmentCount"] = enrollments.ToList().Count();
             return View("AdminHome");
         }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(string stream, string student)
         {
+ 
             if (stream == null || student == null)
             {
                 TempData["message"] = "Please select stream and student to add";
@@ -134,14 +173,19 @@ namespace StreamTec.Controllers
             ViewData["Enrollments"] = enrollments.ToList();
             ViewData["Streams"] = StreamList();
             ViewData["Students"] = StudentList();
+            ViewData["EnrollmentCount"] = enrollments.ToList().Count();
             return View("AdminHome");
         }
+
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
-        { 
-
+        {
+            ViewData["Streams"] = StreamList();
+            ViewData["Students"] = StudentList();
             return View("AdminHome");
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult AddView()
         {
             return View("AdminAdd");
