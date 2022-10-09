@@ -106,10 +106,9 @@ namespace StreamTec.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(Student student)
         {
-            //string testID = "2022091";
-            //string testEmail = "admin@streamtec.com";
-            string testID = "2208266";
-            string testEmail = "ethan@email.com";
+            string adminID = "2022091";
+            string adminEmail = "admin@streamtec.com";
+
             try
             {
                 // Validate a student details
@@ -125,7 +124,7 @@ namespace StreamTec.Controllers
                             return RedirectToAction("Index", "Home");
                         }
                         // Give admin and student role if the object is the admin account
-                        else if (obj.StudentId == testID && obj.Email == testEmail)
+                        else if (obj.StudentId == adminID && obj.Email == adminEmail)
                         {
                             var claims = new List<Claim>
                             {
@@ -141,7 +140,7 @@ namespace StreamTec.Controllers
                                 AllowRefresh = true,
                                 // Refreshing the authentication session should be allowed.
 
-                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
                                 // The time at which the authentication ticket expires. A 
                                 // value set here overrides the ExpireTimeSpan option of 
                                 // CookieAuthenticationOptions set with AddCookie.
@@ -155,7 +154,7 @@ namespace StreamTec.Controllers
                                 //IssuedUtc = < DateTimeOffset >,
                                 // The time at which the authentication ticket was issued.
 
-                                RedirectUri = "~/Home/Index"
+                                RedirectUri = "~/Stream/Index"
                                 // The full path or absolute URI to be used as an http 
                                 // redirect response value.
                             };
@@ -185,7 +184,7 @@ namespace StreamTec.Controllers
                                 AllowRefresh = true,
                                 // Refreshing the authentication session should be allowed.
 
-                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30),
                                 // The time at which the authentication ticket expires. A 
                                 // value set here overrides the ExpireTimeSpan option of 
                                 // CookieAuthenticationOptions set with AddCookie.
@@ -199,7 +198,7 @@ namespace StreamTec.Controllers
                                 //IssuedUtc = < DateTimeOffset >,
                                 // The time at which the authentication ticket was issued.
 
-                                RedirectUri = "~/Home/Index"
+                                RedirectUri = "~/Stream/Index"
                                 // The full path or absolute URI to be used as an http 
                                 // redirect response value.
                             };
