@@ -20,17 +20,16 @@
           <a class="logo"><img src="~/img/logo.png" alt="" class="img-fluid"></a>
           <nav id="navbar" class="navbar">
             <ul>
-                    @if (@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") == "2022091")
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") == "2022091")
                 {
                         <li><a class="text-white fw-bold" asp-area="" asp-controller="Admin" asp-action="AdminHome">Admin</a></li>
                         
                 }
-                    @if (@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") == null)
-                    {
-                        <li><a class="text-white fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    }
-                    <li><a class="text-white fw-bold" asp-area="" asp-controller="Home" asp-action="Help">Help</a></li>
-                   @* <li><a></a></li>*@
+                @if (@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") == null)
+                {
+                    <li><a class="text-white fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                }
+                 <li><a class="text-white fw-bold" asp-area="" asp-controller="Home" asp-action="Help">Help</a></li>
                 @if(@HttpContextAccessor.HttpContext.Session.GetString("_StudentId") != null)
                 {
                     <li><a class="text-white fw-bold" asp-area="" asp-controller="Stream" asp-action="Index">Timetable</a></li>

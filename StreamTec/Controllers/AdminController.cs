@@ -11,15 +11,29 @@ using Stream = StreamTec.Models.Stream;
 
 namespace StreamTec.Controllers
 {
-    
+    /// <summary>
+    /// AdminController contains the methods to function admin jobs for streaming system.
+    /// </summary>
     public class AdminController : Controller
     {
+        /// <summary>
+        /// Load the database context as Context
+        /// </summary>
         private WelTecContext Context { get; }
+
+        /// <summary>
+        /// Creating AdminController object with context.
+        /// </summary>
+        /// <param name="context">Database to manage data</param>
         public AdminController(WelTecContext context)
         {
             Context = context;
         }
-        
+
+        /// <summary>
+        /// Find all the data rows of Enrollments table to return them as list.
+        /// </summary>
+        /// <returns>A list of enrollment's data</returns>
         public List<Enrollment> EnrollmentList()
         {
             var enrollments = Context.Enrollments.Include(s => s.Streams).Include(s => s.Students).ToList() ; 
@@ -27,6 +41,10 @@ namespace StreamTec.Controllers
             return enrollments;
         }
 
+        /// <summary>
+        /// Find all the data rows of Streams table to return them as list.
+        /// </summary>
+        /// <returns>A list of stream's data</returns>
         public List<Stream> StreamList()
         {
             var streams = Context.Streams.ToList();
@@ -34,6 +52,10 @@ namespace StreamTec.Controllers
             return streams;
         }
 
+        /// <summary>
+        /// Find all the data rows of Students table to return them as list.
+        /// </summary>
+        /// <returns>A list of student's data</returns>
         public List<Student> StudentList()
         {
             var studentsList = Context.Students.ToList();
@@ -41,6 +63,10 @@ namespace StreamTec.Controllers
             return studentsList;
         }
 
+        /// <summary>
+        /// Put tables data into ViewData to return view with those data.
+        /// </summary>
+        /// <returns>AdminHome View</returns>
         [Authorize(Roles = "Admin")]
         public ActionResult AdminHome()
         {
@@ -51,6 +77,11 @@ namespace StreamTec.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Sorting functionality for student ID and stream ID to admin
+        /// </summary>
+        /// <param name="sortOrder">A string keyword for sorting</param>
+        /// <returns>AdminHome view with sorted data</returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Sorting(string sortOrder)
         {
@@ -82,6 +113,12 @@ namespace StreamTec.Controllers
             return View("AdminHome");
         }
 
+        /// <summary>
+        /// Search functionality by student ID and stream ID given by Admin to display relevant result.
+        /// </summary>
+        /// <param name="stuID">A string keyword for student ID</param>
+        /// <param name="strID">A string keyword for stream ID</param>
+        /// <returns>AdminHome view with result</returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Search(string stuID, string strID)
         {
@@ -112,6 +149,11 @@ namespace StreamTec.Controllers
             return View("AdminHome");
         }
 
+        /// <summary>
+        /// Delete a Enrollment row specified by Admin
+        /// </summary>
+        /// <param name="id">A int of enrollment ID</param>
+        /// <returns>AdminHome view with updated result</returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -143,6 +185,12 @@ namespace StreamTec.Controllers
             return View("AdminHome");
         }
 
+        /// <summary>
+        /// Add functionality allows admin to add Enrollment row
+        /// </summary>
+        /// <param name="stream">A string of stream ID</param>
+        /// <param name="student">A string of student ID</param>
+        /// <returns>AdminHome view with updated result and acknowledge message</returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(string stream, string student)
         {

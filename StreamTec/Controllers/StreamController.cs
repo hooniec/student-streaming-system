@@ -6,23 +6,35 @@ using Stream = StreamTec.Models.Stream;
 
 namespace StreamTec.Controllers
 {
+    /// <summary>
+    /// StreamController contains the methods to function streaming system
+    /// </summary>
     [Authorize(Roles = "Student")]
     public class StreamController : Controller
     {
+        /// <summary>
+        /// Creating StreamController object with context.
+        /// </summary>
+        /// <param name="context">Database to manage data</param>
         public StreamController(WelTecContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Load the database context as _context
+        /// </summary>
         private readonly WelTecContext _context;
 
-
-
-        public List<Stream> StreamList()
-        {
-            var enrollments = _context.Streams.ToList();
-            return (enrollments);
-        }
+        /// <summary>
+        /// Load 
+        /// </summary>
+        /// <returns></returns>
+        //public List<Stream> StreamList()
+        //{
+        //    var enrollments = _context.Streams.ToList();
+        //    return (enrollments);
+        //}
 
         // Stream Dictionary<majorname, Dictionary<courseid, List<stream object>>>
         Dictionary<string, Dictionary<string, List<Stream>>> streamDic = new Dictionary<string, Dictionary<string, List<Stream>>>();
@@ -37,6 +49,10 @@ namespace StreamTec.Controllers
             { "Other", "IT"},
         };
 
+        /// <summary>
+        /// Load Stream rows to classify its major and course name and put them into nested dictionary
+        /// </summary>
+        /// <returns>Nested dictionary with stream data</returns>
         public IActionResult Index()
         {
             // Classify major, course id based on course ID string
@@ -64,12 +80,13 @@ namespace StreamTec.Controllers
                             {
                                 streamDic[major.Key][courseId].Add(stream);
                             }
+                            // if course ID is not exist in keys of dictionary, creating a new key using courseId
                             else if (!courseExist)
                             {
                                 streamDic[major.Key].Add(courseId, new List<Stream>());
                                 streamDic[major.Key][courseId].Add(stream);
                             }
-                        }//Else statement for creating a new Major. How do we define each major with only a major code?
+                        }
                     }
                 }
             }

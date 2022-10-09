@@ -10,27 +10,49 @@ using MimeKit;
 
 namespace StreamTec.Controllers
 {
-
+    /// <summary>
+    /// HomeController contains the methods to function streaming system
+    /// </summary>
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Load the database context as _context
+        /// </summary>
         private readonly WelTecContext _context;
 
+        /// <summary>
+        /// Creating HomeController object with context.
+        /// </summary>
+        /// <param name="context">Database to manage data</param>
         public HomeController(WelTecContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Display Home page View
+        /// </summary>
+        /// <returns>Home Index View</returns>
         public IActionResult Index()
         {
             return View("Index");
         }
 
+        /// <summary>
+        /// Display Help page  View
+        /// </summary>
+        /// <returns>Home Help View</returns>
         public IActionResult Help()
         {
             return View("Help");
         }
 
-        // Register Action for registring a student
+        /// <summary>
+        /// Register Action for registring a student
+        /// Verify duplicate registration
+        /// </summary>
+        /// <param name="student">A student object</param>
+        /// <returns>View with the student object</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register([Bind("StudentId,Email")] Student student)
@@ -41,12 +63,14 @@ namespace StreamTec.Controllers
                 // Add a student details to database and redirect user to homepage
                 if (ModelState.IsValid)
                 {
+                    // Verifies the student object is duplicated
                     var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId)).FirstOrDefault();
                     if(obj != null)
                     {
                         TempData["message"] = string.Format("Student ID: {0} is already registered", student.StudentId);
                         return RedirectToAction("Index", "Home");
                     }
+                    // Save the student object to database
                     else
                     {
                         _context.Add(student);
@@ -72,12 +96,20 @@ namespace StreamTec.Controllers
             return View(student);
         }
 
+        /// <summary>
+        /// Login function allows users to login streaming system
+        /// Verifies admin account and gives roles
+        /// </summary>
+        /// <param name="student">A student object including student ID and email</param>
+        /// <returns>A timetable view</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(Student student)
         {
-            string testID = "2022091";
-            string testEmail = "admin@streamtec.com";
+            //string testID = "2022091";
+            //string testEmail = "admin@streamtec.com";
+            string testID = "2208266";
+            string testEmail = "ethan@email.com";
             try
             {
                 // Validate a student details
@@ -85,12 +117,14 @@ namespace StreamTec.Controllers
                 {
                     using (_context)
                     {   
+                        // Search the given student object
                         var obj = _context.Students.Where(s => s.StudentId.Equals(student.StudentId) && s.Email.Equals(student.Email)).FirstOrDefault();
                         if (obj == null)
                         {
                             TempData["message"] = "User does not exist";
                             return RedirectToAction("Index", "Home");
                         }
+                        // Give admin and student role if the object is the admin account
                         else if (obj.StudentId == testID && obj.Email == testEmail)
                         {
                             var claims = new List<Claim>
@@ -134,7 +168,9 @@ namespace StreamTec.Controllers
                             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                             
                             return RedirectToAction("Index", "Stream");
-                        }else if (obj != null)
+                        }
+                        // Give student role
+                        else if (obj != null)
                         {
                             var claims = new List<Claim>
                             {
@@ -182,7 +218,6 @@ namespace StreamTec.Controllers
                         }                  
                     }
                 }
-                //TempData["message"] = "Invalid student details";
                 return View(student);
             }
             catch (DbUpdateException /* ex */)
@@ -195,6 +230,10 @@ namespace StreamTec.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Logout function returns acknowledge message and clears the Session and Cookie
+        /// </summary>
+        /// <returns>Homepage of the system</returns>
         public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Clear();
@@ -205,6 +244,10 @@ namespace StreamTec.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// AfterSubmit function returns acknowledge message and clears the Session and Cookie after users submit the timetable
+        /// </summary>
+        /// <returns>Homepage of the system</returns>
         public async Task<IActionResult> AfterSubmit()
         {
             // SendEmail();
@@ -216,6 +259,12 @@ namespace StreamTec.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// SubmitTimetable function saves the completed timetable into enrollments table
+        /// </summary>
+        /// <param name="studentId">a string of student ID</param>
+        /// <param name="completedStreamList">A list of submitted streams</param>
+        /// <returns>Json file with messages</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitTimetable(string studentId, List<string> completedStreamList)
@@ -231,6 +280,7 @@ namespace StreamTec.Controllers
                             var enrollment = new Enrollment { StudentId = studentId, StreamID = stream };
                             _context.Add(enrollment);
 
+                            // Taking away a capacity whenever a stream is enrolled
                             var streamObj = _context.Streams.Where(s => s.StreamID.Equals(stream)).FirstOrDefault();
                             streamObj.Capacity -= 1;
                         }
@@ -250,12 +300,20 @@ namespace StreamTec.Controllers
             }
         }
 
+        /// <summary>
+        /// SendEmail function sends an email with completed timetable to the student
+        /// </summary>
+        /// <param name="studentId">A string of student ID</param>
+        /// <param name="completedStreamList">A list of completed streams</param>
+        /// <returns>Homepage View</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SendEmail(string studentId, List<string> completedStreamList)
         {
+            // Search student's email based on the studentID param
             var studentEmail = _context.Students.Where(s => s.StudentId.Equals(studentId)).FirstOrDefault().Email;
 
+            // Creating message format using MimeMessage
             var msg = new MimeMessage();
             msg.From.Add(new MailboxAddress("WelTec Stream System", "streamtec.weltec@gmail.com"));
             msg.To.Add(new MailboxAddress("Student", studentEmail));

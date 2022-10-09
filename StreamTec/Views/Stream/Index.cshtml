@@ -6,21 +6,11 @@ ViewData["Title"] = "Timetable";
 IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 }
 
-@*<!-- ======= Breadcrumbs ======= -->
-<section class="breadcrumbs">
-<div class="container">
-
-	<div class="d-flex justify-content-between align-items-center">
-		<h2>Stream Timetable</h2>
-	</div>
-
-</div>
-</section><!-- End Breadcrumbs -->*@
-
 <!-- ======= Main Content ======= -->
 <section class="inner-page">
     <div class="container-fluid">
         <div class="row justify-content-around">
+            <!-- ======= Course List Sidebar ======= -->
             <nav class="col-md-2 marginGap d-none d-md-block bg-light sidebar">
                 <ul class="flex-column list-unstyled">
                     <h4>Courses: </h4>
@@ -43,7 +33,8 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
 				        <button id="btn" class="btn btn-success w-100">Get Streams</button>
 			        </li>
 		        </ul>
-	        </nav>
+            </nav><!-- End Course List Sidebar -->
+            <!-- ======= Timetable ======= -->
            <nav class="py-2 col-lg-10 text-align-center">
             <div class="timetable grid">
               
@@ -99,17 +90,18 @@ IEnumerable<Stream> streams = ViewData["Streams"] as IEnumerable<Stream>;
                   </div>
                 </div>
               </div>
-            </div><!-- End Timetable-->
+            </div>
                 <button id="submit-btn" class="btnSubmit btn-primary w-25 text-white">Submit Timetable</button>
-            </nav>
+            </nav><!-- End Timetable-->
         </div>
     </div>
 </section><!-- End Main Content -->
 
 <script>
-let collection = @Json.Serialize(Model);
-let courses = [];
-let submitCourses = [];
+let collection = @Json.Serialize(Model); // JSON File contains the streams data from StreamController/Index Action
+let courses = []; // Array of courses
+let submitCourses = []; // Array of submitted courses
+
 const courseSelection = document.querySelector(".js-course-selection"),
     submitBtn = document.querySelector('#submit-btn'),
     resetBtn = document.querySelector('#reset-btn'),
@@ -121,8 +113,9 @@ const courseSelection = document.querySelector(".js-course-selection"),
     fridayEvents = document.querySelector(".fri-events"),
     studentId = document.querySelector(".student-id").innerText;
 
+// Finds the selected stream's radio button
 submitBtn.addEventListener('click', (event) => {
-    let radioBtnsByDays = [];
+    let radioBtnsByDays = []; 
     let selectedStreamCodes = [];
 
     var mondayRadioBtns = tuesdayEvents.querySelectorAll('input[type="radio"]:checked'),
@@ -136,20 +129,24 @@ submitBtn.addEventListener('click', (event) => {
     validateClash(radioBtnsByDays);
 });
 
+// Clear Selected course's checkboxes
 resetBtn.addEventListener('click', (event) => {
     var checkboxes = courseSelection.querySelectorAll("input");
 
+    // Change all checkboxes checked status to false
     for (var checkbox of checkboxes) {
         checkbox.checked = false;
     }
 });
 
+// Clear Timetable 
 btn.addEventListener('click', (event) => {
 	let checkboxes = document.querySelectorAll('input:checked');
 	let selectedCourses = [];
 
     cleanTimetable();
 
+    // Get Course ID
 	checkboxes.forEach((checkbox) => {
         var text = checkbox.nextElementSibling.innerText;
 		selectedCourses.push(text);		
@@ -157,6 +154,7 @@ btn.addEventListener('click', (event) => {
 
     submitCourses.length = 0;
 
+    // Push streams related selected courses
 	for (const [major, course] of Object.entries(courses)) {
         for (const [key, streams] of Object.entries(course)) {
             if (selectedCourses.includes(key)){
@@ -169,6 +167,7 @@ btn.addEventListener('click', (event) => {
     displayTimetable(submitCourses);
 });
 
+// Send an acknowledge message if two streams clash
 function validateClash(radioBtnsByDays) {
     var hasClash = false;
 
@@ -202,7 +201,7 @@ function validateClash(radioBtnsByDays) {
         }
     }
 
-
+    // Create alert if we found any clash
     if (hasClash) {
         if (confirm('We found stream clash(es)\nAre you sure you want to submit this timetable?')) {
             pushSelectedStreams();
@@ -218,11 +217,13 @@ function validateClash(radioBtnsByDays) {
     }
 };
 
+// Send selected streams to actions in HomeController to update database
 function pushSelectedStreams() {
     var selectedStreamCodes = [];
     var timetable = document.querySelector('.timetable');
     var selectedStreams = timetable.querySelectorAll('input[type="radio"]:checked');
 
+    // Extract course IDs
     for (var stream of selectedStreams){
         var streamValueArr = stream.value.split(','),
             streamCode = streamValueArr[0];
@@ -230,6 +231,7 @@ function pushSelectedStreams() {
         selectedStreamCodes.push(streamCode);
     }
 
+    // Validate the submitted timetable is not null
     if (selectedStreamCodes.length == 0){
         if (confirm('None of streams selected.')) {
             return;
@@ -238,6 +240,7 @@ function pushSelectedStreams() {
         }
     }
 
+    // Send student ID and a list of selected streams to SubmitTimetable action in HomeController
     $.post('/Home/SubmitTimetable', { studentId: studentId, completedStreamList: selectedStreamCodes },
         function(data) {
             if (data.result != null && data.result != undefined) {
@@ -245,6 +248,7 @@ function pushSelectedStreams() {
             }
     })
 
+    // Send student ID and a list of selected streams to SubmitTimetable action in HomeController
     $.post('/Home/SendEmail', { studentId: studentId, completedStreamList: selectedStreamCodes },
         function(data) {
             if (data.result != null && data.result != undefined) {
@@ -255,7 +259,7 @@ function pushSelectedStreams() {
     window.location.href = '@Url.Action("AfterSubmit", "Home")';
 };
 
-
+// Set colours for different courses
 function colorPicker(streamID) {
 
     let checkboxes = document.querySelectorAll('input:checked');
@@ -279,6 +283,7 @@ function colorPicker(streamID) {
     }
 };
 
+// Create html elements based on the streams data of SubmitCourses array
 function displayTimetable(submitCourses) {
     cleanTimetable();
 
@@ -328,6 +333,7 @@ function displayTimetable(submitCourses) {
     }
 };
 
+// Clean childrent of each day's div
 function cleanTimetable() {
     mondayEvents.replaceChildren();
     tuesdayEvents.replaceChildren();
@@ -336,6 +342,7 @@ function cleanTimetable() {
     fridayEvents.replaceChildren();
 };
 
+// Limit the courses selection
 function limitCheckBoxSelection(checkboxgroup, limit) {
 	for (var i = 0; i < checkboxgroup.length; i++) {
         checkboxgroup[i].addEventListener('click', function() {
@@ -359,6 +366,7 @@ function limitCheckBoxSelection(checkboxgroup, limit) {
 	}
 }
 
+// Display courses based on the major sent from dropdown box
 function displayMajorCourses(selectMajor) {
     let majorCourseList = collection[selectMajor.value];
     let majorCourses = [];
@@ -379,6 +387,7 @@ function displayMajorCourses(selectMajor) {
     }   
 }
 
+// Create checkbox for every courses 
 function createCourseCheckbox(course) {
     const li = document.createElement("li");
     const label = document.createElement("label");
@@ -396,6 +405,7 @@ function createCourseCheckbox(course) {
     courseSelection.appendChild(li);
 };
 
+// Load major, course name and streams data from JSON file.
 function loadAllCourse() {
     for (var major in collection) {
         var courseList = collection[major];
